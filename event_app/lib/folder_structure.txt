@@ -1,0 +1,17 @@
+Structure de dossiers pour gros projet
+Séparé en modules (features)
+
+Plusieurs commentaires sont dans les fichiers .dart déjà créé
+Quelques readme.txt files sont aussi intégérés
+
+Pour une description détaillée de chaque élément
+visit https://medium.com/flutter-community/flutter-scalable-folder-files-structure-8f860faafebd
+
+
+On peut ajouter des notes pour l'équipe à ce fichier texte
+pour ce qui concerne les dossiers et l'emplacement des fichiers
+
+NOTES: 
+- lib/widgets contient des widgets globals réutilisables, boutons, bulle de texte (messages) etc.
+Chaque module contient aussi local_widget pour des widget spécifique sans réutilisation
+
