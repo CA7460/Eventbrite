@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../config/theme/colors.dart';
 
 class NavigationTestScreen extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _NavigationTestScreenState extends State<NavigationTestScreen> {
           // This is the main content.
           Expanded(
             child: Container(
-              color: Color(0xFF0C0C0C),
+              color: primary_background,
               child: Center(
                 child: Text(
                   'selectedIndex: $_selectedIndex',
@@ -28,8 +29,8 @@ class _NavigationTestScreenState extends State<NavigationTestScreen> {
             ),
           ),
           NavigationRail(
-            groupAlignment: -0.5,  //-1.0 = top, 1 = bottom
-            backgroundColor: Color(0xFF101010),
+            groupAlignment: -0.5, // De -1.0=top à 1=bottom
+            backgroundColor: navigationrail_background,
             selectedIndex: _selectedIndex,
             onDestinationSelected: (int index) {
               setState(() {
@@ -39,48 +40,53 @@ class _NavigationTestScreenState extends State<NavigationTestScreen> {
             labelType: NavigationRailLabelType.selected,
             destinations: const [
               NavigationRailDestination(
-                icon: Icon(Icons.collections, color: Colors.black),
-                selectedIcon: Icon(Icons.collections, color: Color(0xFF0033FF)),
-                label: Text('Wall',
+                icon: Icon(Icons.collections, color: black),
+                selectedIcon: Icon(Icons.collections, color: primary_blue),
+                label: Text(
+                  'Wall',
                   style: TextStyle(
-                    color: Color(0xFF0033FF),
+                    color: primary_blue,
                   ),
                 ),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.comment, color: Colors.black),
-                selectedIcon: Icon(Icons.comment, color: Color(0xFF0033FF)),
-                label: Text('Chat',
+                icon: Icon(Icons.comment, color: black),
+                selectedIcon: Icon(Icons.comment, color: primary_blue),
+                label: Text(
+                  'Chat',
                   style: TextStyle(
-                    color: Color(0xFF0033FF),
+                    color: primary_blue,
                   ),
                 ),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.flare, color: Colors.black),
-                selectedIcon: Icon(Icons.flare, color: Color(0xFF0033FF)),
-                label: Text('Lights',
+                icon: Icon(Icons.flare, color: black),
+                selectedIcon: Icon(Icons.flare, color: primary_blue),
+                label: Text(
+                  'Lights',
                   style: TextStyle(
-                    color: Color(0xFF0033FF),
+                    color: primary_blue,
                   ),
                 ),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.games, color: Colors.black),
-                selectedIcon: Icon(Icons.games, color: Color(0xFF0033FF)),
-                label: Text('games',
+                icon: Icon(Icons.games, color: black),
+                selectedIcon: Icon(Icons.games, color: primary_blue),
+                label: Text(
+                  'games',
                   style: TextStyle(
-                    color: Color(0xFF0033FF),
+                    color: primary_blue,
                   ),
                 ),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.directions_car, color: Colors.black),
+                icon: Icon(Icons.directions_car, color: black),
                 selectedIcon:
-                    Icon(Icons.directions_car, color: Color(0xFF0033FF)),
-                label: Text('Carpool',
+                    Icon(Icons.directions_car, color: primary_blue),
+                label: Text(
+                  'Carpool',
                   style: TextStyle(
-                    color: Color(0xFF0033FF),
+                    color: primary_blue,
                   ),
                 ),
               ),
