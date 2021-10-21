@@ -1,32 +1,27 @@
+import 'package:event_app/config/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'config/routes/routes_handler.dart' as router;
 
-void main() {
-  runApp(const MyApp());
-}
-
-Widget homePage() {
-//  return const Text('test');
-
-// Si le user est déja inscrit, direction vers la liste 'devents (module event_manager)
-// si l'app est ouverte pour la première fois, direction login form (module login)
-
-// Module login à élaborer dans les dossiers appropriés 
-// Ne pas oublier de l'importer ici 
-  return loginScreen();
+void main() async {
+  //final String? user = await getUser();
+  final MyApp myapp = MyApp(
+    initialRoute: welcomeScreenRoute,
+    //initialRoute: user == null ? WelcomeScreenRoute: EventManagerScreenRoute
+  );
+  runApp(myapp);
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String? initialRoute;
+  MyApp({this.initialRoute});
+
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SafeArea(
-        child: Scaffold(
-          body: homePage(),
-        ),
-      ),
+      onGenerateRoute: router.generateRoute,
+      initialRoute: initialRoute,
     );
   }
 }
