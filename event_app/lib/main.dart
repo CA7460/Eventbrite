@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
   final String? initialRoute;
   MyApp({this.initialRoute});
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
