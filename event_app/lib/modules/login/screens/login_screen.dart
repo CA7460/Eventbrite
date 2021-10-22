@@ -10,7 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
+  
   //key for the form
   final _loginFormKey = GlobalKey<FormState>();
 
@@ -23,15 +23,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return _loginFormKey.currentState!.validate();
   }
 
-    // validateRequest is in utils/services/rest_api_service
+  // validateRequest is in utils/services/rest_api_service
   _checkLogin(String email, String password) async {
     var response = await validateRequest(email, password);
-    if( response[1] == '0') {
+    if (response[1] == '0') {
       isLogged = false;
     } else {
       //await setUser('email');
-      isLogged =  true;
+      isLogged = true;
     }
+    print(response);
   }
 
   @override
@@ -54,8 +55,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    hintText: 'Enter your email', 
-                    ),
+                    hintText: 'Enter your email',
+                  ),
                   controller: emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -73,8 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     hintText: 'Enter your password',
-                    
-                    ),
+                  ),
                   controller: passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -83,16 +83,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     return null;
                   },
                 ),
-                ElevatedButton(onPressed: () async {
-                  if(_validateForm()) {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                   await _checkLogin(emailController.text, passwordController.text);
-                    if(isLogged){
-                      Navigator.pushNamed(context, eventManagerScreenRoute);
-                    } 
-                  }  
-                }, 
-                child: Text('Login'))
+                ElevatedButton(
+                    onPressed: () async {
+                      if (_validateForm()) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        await _checkLogin(
+                            emailController.text, passwordController.text);
+                        if (isLogged) {
+                          Navigator.pushNamed(context, eventManagerScreenRoute);
+                        }
+                      }
+                    },
+                    child: Text('Login'), 
+                ),
               ],
             ),
           ),
