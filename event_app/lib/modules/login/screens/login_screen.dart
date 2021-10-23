@@ -10,7 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  
+
   //key for the form
   final _loginFormKey = GlobalKey<FormState>();
 
@@ -84,17 +84,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 ElevatedButton(
-                    onPressed: () async {
-                      if (_validateForm()) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        await _checkLogin(
-                            emailController.text, passwordController.text);
-                        if (isLogged) {
-                          Navigator.pushNamed(context, eventManagerScreenRoute);
-                        }
+                  onPressed: () async {
+                    if (_validateForm()) {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      await _checkLogin(
+                          emailController.text, passwordController.text);
+                      if (isLogged) {
+                        Navigator.pushNamed(context, eventManagerScreenRoute);
                       }
-                    },
-                    child: Text('Login'), 
+                    }
+                  },
+                  child: Text('Login'),
                 ),
               ],
             ),
