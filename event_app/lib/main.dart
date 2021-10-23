@@ -1,13 +1,15 @@
 import 'package:event_app/config/routes/routes.dart';
+import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'config/routes/routes_handler.dart' as router;
 import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
-  //final String? user = await getUser();
+  WidgetsFlutterBinding.ensureInitialized();
+  final String? user = await getUser();
   final MyApp myapp = MyApp(
-    initialRoute: welcomeScreenRoute,
-    //initialRoute: user == null ? WelcomeScreenRoute: EventManagerScreenRoute
+    //initialRoute: welcomeScreenRoute,
+    initialRoute: user == null ? welcomeScreenRoute: eventManagerScreenRoute
   );
   runApp(myapp);
 }

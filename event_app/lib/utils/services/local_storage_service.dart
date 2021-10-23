@@ -5,12 +5,13 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<String?> getUser() async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getString('user'); 
+getUser() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? user = prefs.getString('user');
+  return user; 
 }
 
-Future<void> setUser(String user) async {
+setUser(String user) async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setString('user', user);
 }
