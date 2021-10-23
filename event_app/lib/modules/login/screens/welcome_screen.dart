@@ -30,12 +30,14 @@ class WelcomeScreen extends StatelessWidget {
             
             children: [
               Text("eventbrite", style: TextStyle(fontSize: 40, color: eventbrite_red),),
-              Image.asset('assets/images/eventbrite_welcome.jpg'),
+              SizedBox(height: 30,),
+              Image.asset('assets/images/eventbrite_welcome.jpg', height: 225,),
+              SizedBox(height: 30,),
               ElevatedButton(onPressed: () {
                 Navigator.pushNamed(context, loginScreenRoute);
               },
               child: Text("Sign in")),
-              TextButton(onPressed: _redirectEventbrite, child: Text("Don't have an eventbrite account? "))
+              TextButton(onPressed: _redirectEventbrite, child: Text("Don't have an eventbrite account? ", style: TextStyle(color: eventbrite_red),))
             ],
           ),
         ),

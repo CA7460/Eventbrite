@@ -1,5 +1,7 @@
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/config/theme/colors.dart';
+import 'package:event_app/modules/login/widgets/rounded_input_field.dart';
+import 'package:event_app/modules/login/widgets/rounded_password_field.dart';
 import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:flutter/material.dart';
@@ -48,43 +50,15 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: primary_background,
         body: Form(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    hintText: 'Enter your email', 
-                    ),
-                  controller: emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    } else if (!value.contains('@')) {
-                      return 'Please enter a valid email';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    hintText: 'Enter your password',
-                    
-                    ),
-                  controller: passwordController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                ),
+                RoundedInputField(controller: emailController, hintText: 'Your Email',),
+                RoundedPasswordField(controller: passwordController, hintText: 'Password',),
+                SizedBox(height: 30),
                 ElevatedButton(onPressed: () async {
                   if(_validateForm()) {
                     FocusScope.of(context).requestFocus(FocusNode());
@@ -104,3 +78,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+
+
