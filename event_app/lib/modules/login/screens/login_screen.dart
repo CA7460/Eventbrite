@@ -1,4 +1,6 @@
 import 'package:event_app/config/routes/routes.dart';
+import 'package:event_app/config/theme/colors.dart';
+import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if( response[1] == '0') {
       isLogged = false;
     } else {
-      //await setUser('email');
+      await setUser('email');
       isLogged =  true;
     }
   }
