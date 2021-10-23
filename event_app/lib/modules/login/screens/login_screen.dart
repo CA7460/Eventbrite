@@ -27,15 +27,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return _loginFormKey.currentState!.validate();
   }
 
-    // validateRequest is in utils/services/rest_api_service
+  // validateRequest is in utils/services/rest_api_service
   _checkLogin(String email, String password) async {
     var response = await validateRequest(email, password);
-    if( response[1] == '0') {
+    if (response[1] == '0') {
       isLogged = false;
     } else {
       await setUser('email');
       isLogged =  true;
     }
+    print(response);
   }
 
   @override
@@ -78,6 +79,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-
-

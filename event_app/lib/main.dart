@@ -2,6 +2,7 @@ import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'config/routes/routes_handler.dart' as router;
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Roboto'
+        textTheme: GoogleFonts.robotoTextTheme(
+          Theme.of(context).textTheme,    
+        ),
       ),
       onGenerateRoute: router.generateRoute,
       initialRoute: initialRoute,
