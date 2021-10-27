@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../config/theme/colors.dart';
 
 class NavigationTestScreen extends StatefulWidget {
+  const NavigationTestScreen({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _NavigationTestScreenState();
@@ -9,6 +11,7 @@ class NavigationTestScreen extends StatefulWidget {
 }
 
 class _NavigationTestScreenState extends State<NavigationTestScreen> {
+  // 0=main wall, 1=chatroom/msg, 2=Light effects, 3=crowd games, 4=Carpool
   int _selectedIndex = 0;
 
   @override
@@ -16,7 +19,9 @@ class _NavigationTestScreenState extends State<NavigationTestScreen> {
     return Scaffold(
       body: Row(
         children: <Widget>[
-          // This is the main content.
+          // This is where feature content goes
+          // ...
+
           Expanded(
             child: Container(
               color: primary_background,
