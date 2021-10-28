@@ -11,10 +11,11 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.black.withOpacity(0),
   ));
-  // final String? user = await getUser();
+  final String? user = await getUser();
   final MyApp myapp = MyApp(
-    initialRoute: appFeaturesMainScreenRoute,
-    // initialRoute: user == null ? welcomeScreenRoute: eventManagerScreenRoute
+    // Test pour Sam
+    // initialRoute: appFeaturesMainScreenRoute,
+    initialRoute: user == null ? welcomeScreenRoute: eventManagerScreenRoute
   );
   runApp(myapp);
 }
