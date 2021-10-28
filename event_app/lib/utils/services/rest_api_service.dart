@@ -22,3 +22,10 @@ Future<List> getGameRoomListFromDatabase() async {
   final data = json.decode(response.body);
   return data;
 }
+
+Future<List> getPlayersInGameRoomFromDatabase(String roomId) async {
+  var url = Uri.parse(gameControlorUrl);
+  var response = await http.post(url, body: {'action': 'getPlayersForRoomId', 'gameroomid': roomId});
+  final data = json.decode(response.body);
+  return data;
+}

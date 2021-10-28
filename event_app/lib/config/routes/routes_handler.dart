@@ -1,4 +1,5 @@
 import 'package:event_app/config/routes/routes.dart';
+import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
 import 'package:event_app/modules/login/screens/login_screen.dart';
 import 'package:event_app/modules/login/screens/welcome_screen.dart';
@@ -28,48 +29,41 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   }
 }
 
-// NESTED NAVIGATOR pour le navigation Rail
+// NESTED NAVIGATOR pour le navigation Rail, landing screen de chaque feature
 Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
   switch (settings.name) {
     // main wall
     // messenger
     // lights
-    
-    // case crowdGamesLandingScreenRoute:
-    //   return MaterialPageRoute(builder: (context) => GameRoomListScreen());
-    
     case gameRoomListRoute:
       return MaterialPageRoute(builder: (context) => GameRoomListScreen());
-
     // carpool
-    // ON MET QUOI COMME DEFAULT??  
-    default:
+    default: // PENSER À QQCHOSE POUR DEFAULT   
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
 }
 
 
-// Navigations individuelles pour chaque feature, bonne idée??
+// Navigations individuelles pour chaque feature
 // Exemple pour crowd Games, génère plusieurs écrans, il faut back au bonnes places
-// semble fonctionner
 Route<dynamic> generateGameRoute(RouteSettings settings) {
   switch (settings.name) {
     case gameRoomListRoute:
       return MaterialPageRoute(builder: (context) => GameRoomListScreen());
     case enterGameRoomRoute:
-      return MaterialPageRoute(builder: (context) => GameRoomScreen());
+      return MaterialPageRoute(builder: (context) => GameRoomScreen(gameroom:settings.arguments as GameRoom));
     case scoreboardRoute:
       return MaterialPageRoute(builder: (context) => ScoreboardScreen());
     // case joinGameRoute:
-    //  return MaterialPageRoute(builder: (context) => GameScreen());
-    
-    // ENLEVER LE DEFAULT OU QQCHOSE 
+    //  return MaterialPageRoute(builder: (context) => OngoingGameScreen());
+    // case createGameRoute:
+    //  return MaterialPageRoute(builder: (context) => CreateGameScreen());
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
 }
 
-// exemple pour carpool
+// CARPOOL exemple Navigation individuelle
 // Route<dynamic> generateCarpoolRoute(RouteSettings settings) {
 //   switch (settings.name) {
 //     case carpoolListRoute:
@@ -78,6 +72,5 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
 //   // Autres routes possible à l'intérieur du feature 
 
 //     default:
-      
 //   }
 // }

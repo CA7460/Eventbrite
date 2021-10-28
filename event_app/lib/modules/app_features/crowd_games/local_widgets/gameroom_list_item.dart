@@ -1,11 +1,9 @@
 import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/modules/app_features/crowd_games/local_widgets/join_game_button.dart';
+import 'package:event_app/utils/utils.dart';
+import 'package:event_app/config/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
-
-void joinGame(String roomId) {
-  print(roomId);
-}
 
 class GameRoomListItem extends StatelessWidget {
   final List<GameRoom> gamerooms;
@@ -16,7 +14,7 @@ class GameRoomListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.fromLTRB(24, 6, 32, 0),
+      margin: EdgeInsets.fromLTRB(48, 6, 42, 0),
       color: primary_background,
       child: Padding(
         padding: EdgeInsets.all(4),
@@ -41,12 +39,12 @@ class GameRoomListItem extends StatelessWidget {
                         padding: EdgeInsets.fromLTRB(20, 0, 0, 3),
                         child: Text(
                             "Players ${gamerooms[index].playerCount}/${gamerooms[index].capacity}",
-                            style: TextStyle(color: primary_red)),
+                            style: TextStyle(color: Colors.white70)),
                       ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(20, 0, 0, 3),
                         child: Text("Progress ${gamerooms[index].progress}%",
-                            style: TextStyle(color: primary_red)),
+                            style: TextStyle(color: Colors.white70)),
                       ),
                       SizedBox(height: 15),
                     ],
@@ -59,14 +57,13 @@ class GameRoomListItem extends StatelessWidget {
                       SizedBox(
                         height: 15,
                       ),
-
+                      // Bouton déja formatté, fonction onPressed appelle le navigateur
+                      // En spécifiant la route à prendre et les arguments (paramètres)
+                      // Ici je passe un array de String 
                       JoinGameButton(
-                          onPressed: () =>
-                              joinGame(gamerooms[index].gameroomid)),
-                      // Text(
-                      //   'Join Game',
-                      //   style: TextStyle(color: primary_green),
-                      // ),
+                          onPressed: () => Utils.appFeaturesNav.currentState!
+                                  .pushNamed(enterGameRoomRoute, arguments:
+                                gamerooms[index])),
                     ],
                   ),
                 ),

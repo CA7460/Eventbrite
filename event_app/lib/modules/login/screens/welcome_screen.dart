@@ -23,7 +23,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: black,
+        backgroundColor: primary_background,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

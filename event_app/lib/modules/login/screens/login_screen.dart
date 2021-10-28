@@ -65,12 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     FocusScope.of(context).requestFocus(FocusNode());
                    await _checkLogin(emailController.text, passwordController.text);
                     if(isLogged){
-
-                      // Code d'origine, fonctionnel vers module event_manager
                       // Navigator.pushNamed(context, eventManagerScreenRoute);
 
                       // Code test pour Sam - crowd games
-                      Navigator.pushNamed(context, crowdGamesLandingScreenRoute);
+                      Navigator.pushNamed(context, appFeaturesMainScreenRoute);
                     } 
                   }  
                 }, 
