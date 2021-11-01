@@ -25,7 +25,18 @@ Future<List> getGameRoomListFromDatabase() async {
 
 Future<List> getPlayersInGameRoomFromDatabase(String roomId) async {
   var url = Uri.parse(gameControlorUrl);
-  var response = await http.post(url, body: {'action': 'getPlayersForRoomId', 'gameroomid': roomId});
+  var response = await http
+      .post(url, body: {'action': 'getPlayersForRoomId', 'gameroomid': roomId});
+  final data = json.decode(response.body);
+  return data;
+}
+
+//EventList
+
+Future<List> getEventsListFromDatabase(String mail) async {
+  var url = Uri.parse(eventControlorUrl);
+  var response = await http
+      .post(url, body: {'action': 'listEventsForUserMail', 'mail': mail});
   final data = json.decode(response.body);
   return data;
 }

@@ -7,14 +7,13 @@ import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({ Key? key }) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   //key for the form
   final _loginFormKey = GlobalKey<FormState>();
 
@@ -33,8 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response[1] == '0') {
       isLogged = false;
     } else {
-      await setUser('email');
-      isLogged =  true;
+      await setUser(email);
+      isLogged = true;
     }
     print(response);
   }
@@ -57,22 +56,30 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                RoundedInputField(controller: emailController, hintText: 'Your Email',),
-                RoundedPasswordField(controller: passwordController, hintText: 'Password',),
+                RoundedInputField(
+                  controller: emailController,
+                  hintText: 'Your Email',
+                ),
+                RoundedPasswordField(
+                  controller: passwordController,
+                  hintText: 'Password',
+                ),
                 SizedBox(height: 30),
-                ElevatedButton(onPressed: () async {
-                  if(_validateForm()) {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                   await _checkLogin(emailController.text, passwordController.text);
-                    if(isLogged){
-                      Navigator.pushNamed(context, eventManagerScreenRoute);
+                ElevatedButton(
+                    onPressed: () async {
+                      if (_validateForm()) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        await _checkLogin(
+                            emailController.text, passwordController.text);
+                        if (isLogged) {
+                          Navigator.pushNamed(context, eventManagerScreenRoute);
 
-                      // Code test pour Sam - crowd games
-                      // Navigator.pushNamed(context, appFeaturesMainScreenRoute);
-                    } 
-                  }  
-                }, 
-                child: Text('Login'))
+                          // Code test pour Sam - crowd games
+                          // Navigator.pushNamed(context, appFeaturesMainScreenRoute);
+                        }
+                      }
+                    },
+                    child: Text('Login'))
               ],
             ),
           ),
