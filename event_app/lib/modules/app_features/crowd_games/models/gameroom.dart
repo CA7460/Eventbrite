@@ -1,4 +1,8 @@
+import 'gamestatus.dart';
+
 class GameRoom {
+  static const int playerCapacity = 5;
+
   String _gameroomid;
   DateTime createdAt;
   String _userid;
@@ -22,6 +26,16 @@ class GameRoom {
     _userid = userid;
   }
 
+  // GameRoom.createNewGame()
+  //     : _gameroomid = "",
+  //       createdAt = DateTime.now(),
+  //       _userid = "",
+  //       hostName = "",
+  //       capacity = 5,
+  //       playerCount = 1,
+  //       progress = 0,
+  //       roomStatus = GameStatus.pending;
+
   // OTHER CONSTRUCTORS
   GameRoom.fromJson(Map<String, dynamic> json)
       : _gameroomid = json['gameroomid'],
@@ -33,29 +47,29 @@ class GameRoom {
         progress = int.parse(json['progress']),
         roomStatus = json['roomStatus'];
 
-  GameRoom.fromMapToObject(Map<String, dynamic> map)
-      : _gameroomid = map['gameroomid'],
-        createdAt = map['createdAt'],
-        _userid = map['userid'],
-        hostName = map['hostname'],
-        capacity = map['capacity'],
-        playerCount = map['playerCount'],
-        progress = map['progress'],
-        roomStatus = map['roomStatus'];
+  // GameRoom.fromMapToObject(Map<String, dynamic> map)
+  //     : _gameroomid = map['gameroomid'],
+  //       createdAt = map['createdAt'],
+  //       _userid = map['userid'],
+  //       hostName = map['hostname'],
+  //       capacity = map['capacity'],
+  //       playerCount = map['playerCount'],
+  //       progress = map['progress'],
+  //       roomStatus = map['roomStatus'];
 
-  //MAPPING
-  Map<String, dynamic> fromObjectToMap() {
-    var map = <String, dynamic>{};
-    if (_gameroomid != null) {
-      map['gameroomid'] = _gameroomid;
-    }
-    map['createdAt'] = createdAt;
-    map['userid'] = _userid;
-    map['hostname'] = hostName;
-    map['capacity'] = capacity;
-    map['playerCount'] = playerCount;
-    map['progress'] = progress;
-    map['roomStatus'] = roomStatus;
-    return map;
-  }
+  // //MAPPING
+  // Map<String, dynamic> fromObjectToMap() {
+  //   var map = <String, dynamic>{};
+  //   if (_gameroomid != null) {
+  //     map['gameroomid'] = _gameroomid;
+  //   }
+  //   map['createdAt'] = createdAt;
+  //   map['userid'] = _userid;
+  //   map['hostname'] = hostName;
+  //   map['capacity'] = capacity;
+  //   map['playerCount'] = playerCount;
+  //   map['progress'] = progress;
+  //   map['roomStatus'] = roomStatus;
+  //   return map;
+  // }
 }

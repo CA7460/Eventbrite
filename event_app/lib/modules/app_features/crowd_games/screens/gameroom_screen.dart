@@ -1,3 +1,4 @@
+import 'package:event_app/modules/app_features/crowd_games/local_widgets/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/player.dart';
 import 'package:event_app/utils/utils.dart';
 import 'package:event_app/widgets/primary_button_widget.dart';
@@ -30,8 +31,8 @@ class _GameRoomScreenState extends State<GameRoomScreen> {
     final gameroomId = gameroom.gameroomid;
     final gameHost = gameroom.hostName;
     final screenSize = MediaQuery.of(context).size;
-    final topLayoutHeight = screenSize.height * 0.25;
-    final centerLayoutHeight = screenSize.height * 0.50;
+    final topLayoutHeight = screenSize.height * 0.15;
+    final centerLayoutHeight = screenSize.height * 0.60;
     final bottomLayoutHeight = screenSize.height * 0.25;
 
     return Container(
@@ -44,11 +45,14 @@ class _GameRoomScreenState extends State<GameRoomScreen> {
               height: topLayoutHeight,
               child: Text(
                 gameHost + "'s game",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
               ),
             ),
             Container(
-              padding: EdgeInsets.only(top:100),
+              padding: EdgeInsets.only(top:50),
               alignment: Alignment.topCenter,
               height: centerLayoutHeight,
               child: FutureBuilder<List<Player>>(
@@ -56,22 +60,12 @@ class _GameRoomScreenState extends State<GameRoomScreen> {
                   builder: (
                     BuildContext context,
                     AsyncSnapshot<List<Player>> snapshot,
-                  ) {
+                  ) {          
                     if (snapshot.hasData) {
                       List<Player> players = snapshot.data!;
-                      String sortie = "";
-                      for (Player player in players) {
-                        sortie += "Player: " +
-                            player.name +
-                            "\tscore: " +
-                            player.score.toString() +
-                            "\n";
-                      }
-                      return Text(
-                        sortie,
-                        style: TextStyle(color: Colors.white),
-                      );
-                    } else {
+                      return GameRoomWidget(players:players, capacity:gameroom.capacity, gameStatus: gameroom.roomStatus,);
+                    } 
+                    else {
                       return CircularProgressIndicator();
                     }
                   }),
@@ -89,11 +83,11 @@ class _GameRoomScreenState extends State<GameRoomScreen> {
                             //     .pushNamed(
                             //         scoreboardRoute)
                           }),
-                  PrimaryButton('Cancel', primary_pink,
+                  PrimaryButton('Cancel', primary_blue,
                       onPressed: () => {
-                            // Utils.appFeaturesNav.currentState!
-                            //     .pushNamed(scoreboardRoute)
-                          }),
+                       
+                        Utils.appFeaturesNav.currentState!.pop()
+                      }),
                 ],
               ),
             ),

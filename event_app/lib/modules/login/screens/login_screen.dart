@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response[1] == '0') {
       isLogged = false;
     } else {
-      await setUser('email');
+      await setUser(email);
       isLogged =  true;
     }
     print(response);

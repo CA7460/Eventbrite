@@ -8,15 +8,7 @@ import 'package:event_app/utils/utils.dart';
 import 'package:event_app/config/routes/routes.dart';
 
 // SAVER LE STATE D'UN FEATURE QUAND ON NAVIGATE AILLEURS, ON RESUME, ON REFRESH LA LIST OU WTV
-
-Future<List<GameRoom>> getGameRooms() async {
-  var response = await getGameRoomListFromDatabase();
-  if (response[0] == "OK" && response.length > 1) {
-    response.removeAt(0);
-    return response.map((gameroom) => GameRoom.fromJson(gameroom)).toList();
-  }
-  return <GameRoom>[];
-}
+// VOIR MÉTHODE DIDPOPNEXT, Called when the top route has been popped off, and the current route shows up.
 
 class GameRoomListScreen extends StatefulWidget {
   const GameRoomListScreen({Key? key}) : super(key: key);
@@ -26,6 +18,30 @@ class GameRoomListScreen extends StatefulWidget {
 
 class _GameRoomListScreenState extends State<GameRoomListScreen> {
   //var _gameRoomListStateKey = GlobalKey<>();
+
+  late Future<List<GameRoom>> _gameroomFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _gameroomFuture = getGameRooms();
+  }
+
+  void refreshGameRoomList() {
+    print('refreshing list');
+    setState(() {
+      _gameroomFuture = getGameRooms();
+    });
+  }
+
+  Future<List<GameRoom>> getGameRooms() async {
+  var response = await getGameRoomListFromDatabase();
+  if (response[0] == "OK" && response.length > 1) {
+    response.removeAt(0);
+    return response.map((gameroom) => GameRoom.fromJson(gameroom)).toList();
+  }
+  return <GameRoom>[];
+}
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +58,7 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
             child: GestureDetector(
                 onTap: () {
                   print("refresh btn pressed");
+                  refreshGameRoomList();
                 },
                 child: Text("Refresh list",
                     style: TextStyle(color: primary_blue))),
@@ -53,14 +70,18 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
             color: primary_background,
             // child: Center(
             child: FutureBuilder<List<GameRoom>>(
-                future: getGameRooms(),
+                future: _gameroomFuture,
+                // future: getGameRooms(),
                 builder: (
                   BuildContext context,
                   AsyncSnapshot<List<GameRoom>> snapshot,
                 ) {
                   if (snapshot.hasData) {
-                    List<GameRoom> gamerooms = snapshot.data!;
-                    return GameRoomListViewWidget(gamerooms, this);
+                    final items = snapshot.data!;
+                    return GameRoomListViewWidget(
+                        refreshGameRoomList, items, this);
+                    // List<GameRoom> gamerooms = snapshot.data!;
+                    // return GameRoomListViewWidget(gamerooms, this);
                   } else {
                     return CircularProgressIndicator();
                   }
@@ -79,8 +100,10 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
                         {
                           Utils.appFeaturesNav
                               .currentState! // pushReplacementNamed remplace la route, on ne peut pas back dessus
-                              .pushNamed(
-                                  scoreboardRoute) // pushNamed permet de pop()
+                              .pushNamed(createGameRoute)
+                              .then((value) {
+                            refreshGameRoomList();
+                          }) // pushNamed permet de pop()
                           //  AJOUTER UNE NOUVELLE ROUTE POUR CREATE GAME
                         }),
                 PrimaryButton('Scoreboard', primary_blue,
@@ -98,10 +121,12 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
 }
 
 class GameRoomListViewWidget extends StatelessWidget {
+  final Function refreshGameRoomList;
   final List<GameRoom> gamerooms;
   final dynamic _listViewStateInstance;
 
-  const GameRoomListViewWidget(this.gamerooms, this._listViewStateInstance,
+  const GameRoomListViewWidget(
+      this.refreshGameRoomList, this.gamerooms, this._listViewStateInstance,
       {Key? key})
       : super(key: key);
 
@@ -110,12 +135,18 @@ class GameRoomListViewWidget extends StatelessWidget {
     return Container(
       child: gamerooms.isEmpty
           ? emptyList()
-          : ListView.builder(
-              itemCount: gamerooms.length,
-              //itemBuilder: listBuilder,
-              itemBuilder: (context, index) {
-                return GameRoomListItem(gamerooms, index);
-              }),
+          : //RefreshIndicator(   // Pour les scrollable, permet de tjrs avoir une liste à jour
+              //child: 
+              ListView.builder(
+                  itemCount: gamerooms.length,
+                  //itemBuilder: listBuilder,
+                  itemBuilder: (context, index) {
+                    return GameRoomListItem(
+                        refreshGameRoomList, gamerooms, index);
+                  }),
+              //onRefresh:
+              //refreshGameRoomList(), // called when the user pulls the list down enough to trigger this event
+            //),
     );
   }
 

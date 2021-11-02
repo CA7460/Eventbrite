@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 
 class GameRoomListItem extends StatelessWidget {
+  final Function refreshGameRoomList;
   final List<GameRoom> gamerooms;
   final int index;
-  const GameRoomListItem(this.gamerooms, this.index, {Key? key})
+  const GameRoomListItem(this.refreshGameRoomList, this.gamerooms, this.index,
+      {Key? key})
       : super(key: key);
 
   @override
@@ -59,11 +61,14 @@ class GameRoomListItem extends StatelessWidget {
                       ),
                       // Bouton déja formatté, fonction onPressed appelle le navigateur
                       // En spécifiant la route à prendre et les arguments (paramètres)
-                      // Ici je passe un array de String 
+                      // Ici je passe un array de String
                       JoinGameButton(
                           onPressed: () => Utils.appFeaturesNav.currentState!
-                                  .pushNamed(enterGameRoomRoute, arguments:
-                                gamerooms[index])),
+                                  .pushNamed(enterGameRoomRoute,
+                                      arguments: gamerooms[index])
+                                  .then((value) {
+                                refreshGameRoomList();
+                              })),
                     ],
                   ),
                 ),
