@@ -28,6 +28,14 @@ Future<List> getUserDetailsFromDatabase(String userMail) async {
   return data;
 }
 
+//EventList
+Future<List> getEventsListFromDatabase(String mail) async {
+  var url = Uri.parse(eventControlorUrl);
+  var response = await http.post(url, body: {'action': 'listEventsForUserMail', 'mail': mail});
+  final data = json.decode(response.body);
+  return data;
+}
+
 // CROWD GAMES REQUESTS
 Future<List> getGameRoomListFromDatabase() async {
   var url = Uri.parse(gameControlorUrl);
@@ -138,3 +146,4 @@ Future<List> getActionChallengesFromDatabase() async {
   final data = json.decode(response.body);
   return data;
 }
+
