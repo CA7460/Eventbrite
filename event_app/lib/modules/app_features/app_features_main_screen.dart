@@ -1,3 +1,4 @@
+import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/widgets/navigationrail_item_widget.dart';
 import 'package:event_app/config/theme/colors.dart';
@@ -6,7 +7,10 @@ import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/config/routes/routes_handler.dart' as router;
 
 class AppFeaturesMainScreen extends StatefulWidget {
-  const AppFeaturesMainScreen({Key? key}) : super(key: key);
+  final EventMod event;
+
+  const AppFeaturesMainScreen({Key? key, required this.event})
+      : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return _AppFeaturesMainScreenState();

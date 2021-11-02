@@ -1,6 +1,7 @@
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/create_game_screen.dart';
+import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
 import 'package:event_app/modules/login/screens/login_screen.dart';
 import 'package:event_app/modules/login/screens/welcome_screen.dart';
@@ -21,7 +22,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case eventManagerScreenRoute:
       return MaterialPageRoute(builder: (context) => EventManagerScreen());
     case appFeaturesMainScreenRoute:
-      return MaterialPageRoute(builder: (context) => AppFeaturesMainScreen());
+      return MaterialPageRoute(builder: (context) => AppFeaturesMainScreen(event: settings.arguments as EventMod));
 
     // Test pour Sam - crowdGames
     // case crowdGamesLandingScreenRoute:

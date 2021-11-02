@@ -1,5 +1,7 @@
 import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/modules/event_manager/models/eventmod.dart';
+import 'package:event_app/utils/utils.dart';
+import 'package:event_app/config/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class EventListItem extends StatelessWidget {
@@ -20,6 +22,8 @@ class EventListItem extends StatelessWidget {
                   events[index].name +
                   " à été cliquer. Id:" +
                   events[index].eventid);
+              Utils.mainAppNav.currentState!
+                  .pushNamed(appFeaturesMainScreenRoute, arguments: events[index]);
             },
             child: Padding(
               padding: EdgeInsets.all(4),
