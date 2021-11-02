@@ -17,8 +17,6 @@ class WelcomeScreen extends StatelessWidget {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,6 +32,7 @@ class WelcomeScreen extends StatelessWidget {
               Image.asset('assets/images/eventbrite_welcome.jpg', height: 225,),
               SizedBox(height: 30,),
               ElevatedButton(onPressed: () {
+                // Utils.mainAppNav.currentState!.pushNamed(loginScreenRoute);
                 Navigator.pushNamed(context, loginScreenRoute);
               },
               child: Text("Sign in")),

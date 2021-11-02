@@ -12,11 +12,12 @@ void main() async {
     statusBarColor: Colors.black.withOpacity(0),
   ));
   final String? user = await getUser();
+  //print(user);
   final MyApp myapp = MyApp(
-    // Test pour Sam
-    // initialRoute: appFeaturesMainScreenRoute,
-    initialRoute: user == null ? welcomeScreenRoute: eventManagerScreenRoute
-  );
+      // Test pour Sam
+       //initialRoute: appFeaturesMainScreenRoute,
+      initialRoute:
+          user == null ? welcomeScreenRoute : appFeaturesMainScreenRoute);
   runApp(myapp);
 }
 
