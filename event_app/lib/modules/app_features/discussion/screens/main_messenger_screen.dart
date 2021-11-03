@@ -2,8 +2,6 @@ import 'package:event_app/modules/app_features/discussion/local_widgets/avatar_t
 import 'package:event_app/modules/app_features/discussion/local_widgets/chat_list.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation_type.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 
 class MainMessengerScreen extends StatefulWidget {
   const MainMessengerScreen({

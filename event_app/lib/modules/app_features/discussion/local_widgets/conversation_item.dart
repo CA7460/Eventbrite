@@ -23,12 +23,12 @@ class ConversationItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(8,0,12,0),
             child: CircleAvatar(
-              radius: 24,
+              radius: 16,
               child: Text(title.substring(0, 1)),
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.5,
+            width: MediaQuery.of(context).size.width * 0.4,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -54,7 +54,7 @@ class ConversationItem extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 75),
+            padding: const EdgeInsets.only(left: 45),
             child: Text(
               updatedAt,
               style: const TextStyle(

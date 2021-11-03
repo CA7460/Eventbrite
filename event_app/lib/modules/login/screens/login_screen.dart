@@ -1,10 +1,13 @@
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/config/theme/colors.dart';
+import 'package:event_app/models/logged_user.dart';
+import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/login/widgets/rounded_input_field.dart';
 import 'package:event_app/modules/login/widgets/rounded_password_field.dart';
 import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -27,15 +30,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   // validateRequest is in utils/services/rest_api_service
-  _checkLogin(String email, String password) async {
+  _checkLogin(String email, String password, LoggedUser loggedUser) async {
     var response = await validateRequest(email, password);
     if (response[1] == '0') {
       isLogged = false;
     } else {
-      await setUser(email);
-      isLogged = true;
+      User user = User.fromJson(response[3]);
+      loggedUser.logUser(user);
+      if (loggedUser.user != null) {
+        print(loggedUser.user!.mail);
+        await setUser(loggedUser.user!.mail);
+        isLogged = true;
+      }
+      
     }
-    print(response);
   }
 
   @override
@@ -48,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final LoggedUser loggedUser = Provider.of<LoggedUser>(context);
     return SafeArea(
       child: Scaffold(
         backgroundColor: primary_background,
@@ -70,7 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (_validateForm()) {
                         FocusScope.of(context).requestFocus(FocusNode());
                         await _checkLogin(
-                            emailController.text, passwordController.text);
+                            emailController.text,
+                            passwordController.text,
+                            loggedUser
+                            );
                         if (isLogged) {
                           Navigator.pushNamed(context, eventManagerScreenRoute);
 

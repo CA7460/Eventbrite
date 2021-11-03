@@ -1,8 +1,13 @@
 import 'package:event_app/config/routes/routes.dart';
+import 'package:event_app/models/current_event.dart';
+import 'package:event_app/models/logged_user.dart';
+import 'package:event_app/models/user.dart';
+import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/utils/utils.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'config/routes/routes_handler.dart' as router;
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,16 +32,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorKey: Utils.mainAppNav,
-      theme: ThemeData(
-        textTheme: GoogleFonts.robotoTextTheme(
-          Theme.of(context).textTheme,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<LoggedUser>(create: (_) => LoggedUser(),),
+        ChangeNotifierProvider<CurrentEvent?>(create: (_) => CurrentEvent()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: Utils.mainAppNav,
+        theme: ThemeData(
+          textTheme: GoogleFonts.robotoTextTheme(
+            Theme.of(context).textTheme,
+          ),
         ),
-      ),
-      onGenerateRoute: router.generateRoute,
-      initialRoute: initialRoute,
-    );
+        onGenerateRoute: router.generateRoute,
+        initialRoute: initialRoute,
+      )
+    );  
   }
 }

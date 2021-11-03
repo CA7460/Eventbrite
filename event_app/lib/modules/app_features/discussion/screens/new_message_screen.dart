@@ -16,6 +16,11 @@ class _ChatScreenState extends State<NewMessageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(),
+      body: SafeArea(
+        child: Container()
+      )
+    );
   }
 }

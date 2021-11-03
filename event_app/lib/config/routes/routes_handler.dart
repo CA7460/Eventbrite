@@ -4,7 +4,7 @@ import 'package:event_app/modules/app_features/crowd_games/screens/create_game_s
 import 'package:event_app/modules/app_features/discussion/screens/chat_screen.dart';
 import 'package:event_app/modules/app_features/discussion/screens/main_messenger_screen.dart';
 import 'package:event_app/modules/app_features/discussion/screens/new_message_screen.dart';
-import 'package:event_app/modules/event_manager/models/eventmod.dart';
+import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
 import 'package:event_app/modules/login/screens/login_screen.dart';
 import 'package:event_app/modules/login/screens/welcome_screen.dart';

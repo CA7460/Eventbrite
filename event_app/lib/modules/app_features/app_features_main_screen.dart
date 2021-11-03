@@ -1,4 +1,4 @@
-import 'package:event_app/modules/event_manager/models/eventmod.dart';
+import 'package:event_app/models/eventmod.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/widgets/navigationrail_item_widget.dart';
 import 'package:event_app/config/theme/colors.dart';
@@ -20,6 +20,7 @@ class AppFeaturesMainScreen extends StatefulWidget {
 class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
   // Changer pour 0
   int _selectedIndex = 1;
+
 
   @override
   Widget build(BuildContext context) {
