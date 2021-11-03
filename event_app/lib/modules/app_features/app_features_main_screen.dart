@@ -19,7 +19,7 @@ class AppFeaturesMainScreen extends StatefulWidget {
 
 class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
   // Changer pour 0
-  int _selectedIndex = 3;
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,8 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
     var navigationSwitcher = () {
       switch (_selectedIndex) {
         // case 0 : router pour mailwall
-        // case 1 : router pour messenger
+        case 1: 
+          return router.generateMessengerRoute;
         // case 2 : router pour ligths
         case 3:
           return router.generateGameRoute;
@@ -55,7 +56,7 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
             Expanded(
               child: Navigator(
                 key: Utils.appFeaturesNav,
-                initialRoute: gameRoomListRoute,
+                initialRoute: messengerLandingScreenRoute,
                 onGenerateRoute:
                     navigationSwitcher, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
               ),

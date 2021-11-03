@@ -1,7 +1,7 @@
+import 'package:event_app/modules/app_features/discussion/local_widgets/avatar_title.dart';
+import 'package:event_app/modules/app_features/discussion/local_widgets/chat_list.dart';
+import 'package:event_app/modules/app_features/discussion/models/conversation_type.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/conversation_type.dart';
-import 'package:flutter_application_1/widgets/avatar_title.dart';
-import 'package:flutter_application_1/widgets/chat_list.dart';
 import 'package:provider/provider.dart';
 
 

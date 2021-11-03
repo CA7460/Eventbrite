@@ -1,7 +1,7 @@
+import 'package:event_app/modules/app_features/discussion/local_widgets/public_chat_message.dart';
+import 'package:event_app/modules/app_features/discussion/models/message.dart';
+import 'package:event_app/modules/app_features/discussion/models/message_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/message.dart';
-import 'package:flutter_application_1/models/message_list.dart';
-import 'package:flutter_application_1/widgets/public_chat_message.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 

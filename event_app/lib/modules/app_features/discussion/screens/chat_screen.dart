@@ -1,9 +1,9 @@
+import 'package:event_app/modules/app_features/discussion/local_widgets/avatar_title.dart';
+import 'package:event_app/modules/app_features/discussion/local_widgets/chat_input.dart';
+import 'package:event_app/modules/app_features/discussion/local_widgets/chat_window.dart';
+import 'package:event_app/modules/app_features/discussion/models/message.dart';
+import 'package:event_app/modules/app_features/discussion/models/message_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/message.dart';
-import 'package:flutter_application_1/models/message_list.dart';
-import 'package:flutter_application_1/widgets/avatar_title.dart';
-import 'package:flutter_application_1/widgets/chat_input.dart';
-import 'package:flutter_application_1/widgets/chat_window.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:provider/provider.dart';
 

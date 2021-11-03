@@ -1,7 +1,7 @@
+import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
+import 'package:event_app/modules/app_features/discussion/models/conversation_type.dart';
+import 'package:event_app/modules/app_features/discussion/repositories/messenger_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/conversation.dart';
-import 'package:flutter_application_1/models/conversation_type.dart';
-import 'package:flutter_application_1/services/messenger_helper.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'conversation_item.dart';

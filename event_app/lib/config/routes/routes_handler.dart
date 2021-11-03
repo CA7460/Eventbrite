@@ -1,6 +1,9 @@
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/create_game_screen.dart';
+import 'package:event_app/modules/app_features/discussion/screens/chat_screen.dart';
+import 'package:event_app/modules/app_features/discussion/screens/main_messenger_screen.dart';
+import 'package:event_app/modules/app_features/discussion/screens/new_message_screen.dart';
 import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
 import 'package:event_app/modules/login/screens/login_screen.dart';
@@ -36,7 +39,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
   switch (settings.name) {
     // main wall
-    // messenger
+    case messengerLandingScreenRoute:
+      return MaterialPageRoute(builder: (context) => MainMessengerScreen());
     // lights
     case gameRoomListRoute:
       return MaterialPageRoute(builder: (context) => GameRoomListScreen());
@@ -83,3 +87,15 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
 // }
 
 // MESSENGER ...
+Route<dynamic> generateMessengerRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case chatScreenRoute:
+      return MaterialPageRoute(builder: (context) => ChatScreen());
+    case messengerLandingScreenRoute:
+      return MaterialPageRoute(builder: (context) => MainMessengerScreen());
+    case newMessageRoute:
+      return MaterialPageRoute(builder: (context) => NewMessageScreen());
+    default:
+      return MaterialPageRoute(builder: (context) => WelcomeScreen());
+  }
+}

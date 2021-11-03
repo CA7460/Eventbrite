@@ -1,6 +1,6 @@
+import 'package:event_app/modules/app_features/discussion/models/message.dart';
+import 'package:event_app/modules/app_features/discussion/repositories/messenger_helper.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_application_1/models/message.dart';
-import 'package:flutter_application_1/services/messenger_helper.dart';
 
 class MessageList extends ChangeNotifier {
   List<Message> messageList = [];
