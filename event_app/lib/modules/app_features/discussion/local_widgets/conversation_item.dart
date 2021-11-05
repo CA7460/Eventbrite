@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class ConversationItem extends StatelessWidget {
 
   final String title;
-  final String lastMessage;
+  final String? lastMessage;
   final String updatedAt;
 
   const ConversationItem({
     Key? key,
     required this.title,
-    required this.lastMessage,
+    this.lastMessage,
     required this.updatedAt,
   }) : super(key: key);
 
@@ -43,7 +43,7 @@ class ConversationItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 3,),
                 Text(
-                  lastMessage,
+                  lastMessage == null? '': lastMessage!,
                   style: const TextStyle(
                     fontSize: 13,
                     color: Colors.grey,

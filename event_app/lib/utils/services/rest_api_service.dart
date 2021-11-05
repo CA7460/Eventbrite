@@ -5,10 +5,13 @@
 
 import 'dart:convert';
 import 'package:event_app/constants/api_path.dart';
+import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/crowdgame.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gamemanager.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gamestatus.dart';
+import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
+import 'package:event_app/modules/app_features/discussion/models/message.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -147,3 +150,66 @@ Future<List> getActionChallengesFromDatabase() async {
   return data;
 }
 
+//Messenger requests
+
+Future<List> getConversationsForUser(String userMail) async {
+  var url = Uri.parse(messengerControlorUrl);
+  var response = await http.post(url, body: {
+    'action': 'listEventConversationsForUser',
+    'mail': userMail});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> getMessage(String messageId) async {
+  var url = Uri.parse(messengerControlorUrl);
+  var response = await http.post(url, body: {
+    'action': 'getMessage',
+    'mail': messageId});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> getMessagesForConversation(String convoId) async {
+  var url = Uri.parse(messengerControlorUrl);
+  var response = await http.post(url, body: {
+    'action': 'listMessagesForConversation',
+    'convoid': convoId});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> addMessageToConversation(Message message, String convoId) async {
+  var url = Uri.parse(messengerControlorUrl);
+  var response = await http.post(url, body: {
+    'action': 'addMessage',
+    'convoid': convoId,
+    'sentby': message.sentBy,
+    'content': message.content,
+    'isseen': message.isSeen == true ? 1: 0});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> addConversationToEvent(Conversation conversation, String eventId) async {
+  var url = Uri.parse(messengerControlorUrl);
+  var response = await http.post(url, body: {
+    'action': 'addConversation',
+    'eventid': eventId,
+    'title': conversation.title,
+    'type': conversation.type.toString(),
+    'lastmessageid': conversation.lastMessage});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> addUserToConversation(Conversation conversation, List<User> usersToAdd) async {
+  var members = jsonEncode(usersToAdd);
+  var url = Uri.parse(messengerControlorUrl);
+  var response = await http.post(url, body: {
+    'action': 'setMembers',
+    'convoid': conversation.convoId,
+    'members': members,});
+  final data = json.decode(response.body);
+  return data;
+}

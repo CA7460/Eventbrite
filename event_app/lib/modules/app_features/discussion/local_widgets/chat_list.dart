@@ -1,7 +1,10 @@
+import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation_type.dart';
 import 'package:event_app/modules/app_features/discussion/repositories/messenger_helper.dart';
+import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'conversation_item.dart';
@@ -17,6 +20,7 @@ class ChatList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User loggedUser = Provider.of<User>(context);
     return SafeArea(
       child: FutureBuilder(builder: (context, snapshot) {
         if(snapshot.hasData) {
@@ -43,7 +47,7 @@ class ChatList extends StatelessWidget {
           );
         }
       },
-      future: getConversationForUser(),)
+      future: getConversationsForUser(loggedUser.userid))
     );
   }
 }

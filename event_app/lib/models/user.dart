@@ -11,4 +11,13 @@ class User {
       prenom = json['prenom'],
       nom = json['nom'],
       mail = json['mail'];
+
+  Map<String, dynamic> toJson(){
+  return {
+    "userid": userid,
+    "prenom": prenom,
+    "nom": nom,
+    "mail": mail
+  };
+}
 }
