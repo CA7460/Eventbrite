@@ -4,12 +4,13 @@ import 'package:flutter/foundation.dart';
 
 class MessageList extends ChangeNotifier {
   List<Message> messageList = [];
+  String? convoId;
 
   MessageList() {
-    loadMessages();
+    loadMessages(convoId);
   }
 
-  Future<void> loadMessages() async {
+  Future<void> loadMessages(String? convoId) async {
     messageList = await getMessagesForConversation('Dan');
     notifyListeners();
   }

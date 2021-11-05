@@ -29,7 +29,7 @@ class _ChatInputState extends State<ChatInput> {
           Container(
             padding: const EdgeInsets.fromLTRB(18,0,0,0),
             height: 40,
-            width: MediaQuery.of(context).size.width * 0.70,
+            width: MediaQuery.of(context).size.width * 0.59,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(22),
               color: Colors.grey

@@ -1,6 +1,7 @@
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/create_game_screen.dart';
+import 'package:event_app/modules/app_features/discussion/models/chat_screen_argument.dart';
 import 'package:event_app/modules/app_features/discussion/screens/chat_screen.dart';
 import 'package:event_app/modules/app_features/discussion/screens/main_messenger_screen.dart';
 import 'package:event_app/modules/app_features/discussion/screens/new_message_screen.dart';
@@ -15,6 +16,7 @@ import 'package:event_app/modules/app_features/crowd_games/screens/game_screen.d
 import 'package:event_app/modules/app_features/crowd_games/screens/scoreboard_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -90,7 +92,12 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
 Route<dynamic> generateMessengerRoute(RouteSettings settings) {
   switch (settings.name) {
     case chatScreenRoute:
-      return MaterialPageRoute(builder: (context) => ChatScreen());
+      return MaterialPageRoute(builder: (context) {
+        ChatScreenArgument arguments = settings.arguments as ChatScreenArgument;
+        return ChatScreen(
+          socket: arguments.socket,
+          convoId: arguments.convoId);
+      });  
     case messengerLandingScreenRoute:
       return MaterialPageRoute(builder: (context) => MainMessengerScreen());
     case newMessageRoute:

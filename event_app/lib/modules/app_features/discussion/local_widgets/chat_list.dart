@@ -8,8 +8,10 @@ import 'conversation_item.dart';
 
 class ChatList extends StatelessWidget {
   final ConversationType conversationType;
+  final Function(String) onTap;
   const ChatList({
     Key? key,
+    required this.onTap(index),
     required this.conversationType
   }) : super(key: key);
 
@@ -25,7 +27,7 @@ class ChatList extends StatelessWidget {
               final now = DateTime.now();
               final difference = now.difference(listedConversations[index].updatedAt);
               return GestureDetector(
-                onTap: () => print('conversation picked'),
+                onTap: () => onTap(listedConversations[index].convoId),
                 child: ConversationItem(
                   title: listedConversations[index].title,
                   lastMessage: listedConversations[index].lastMessage, 

@@ -8,8 +8,12 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
+  final String convoId;
+  final io.Socket socket;
   const ChatScreen({
     Key? key,
+    required this.socket,
+    required this.convoId
   }) : super(key: key);
 
   @override
@@ -17,15 +21,15 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  late io.Socket socket;
+  //late io.Socket socket;
   late TextEditingController _textController;
   late ScrollController _scrollController;
   
 
   @override
   void initState() {
-    print('Init');
-    _initSocket();
+    //_initSocket();
+    _setSocket();
     _textController = TextEditingController();
     _scrollController = ScrollController();
     WidgetsBinding.instance?.addPostFrameCallback((_){
@@ -37,34 +41,37 @@ class _ChatScreenState extends State<ChatScreen> {
   _send(){
     var message = Message('Ian', _textController.text, DateTime.now(), false);
     if(message.content != '') {
-      socket.emit('message', message.toJson());
+      widget.socket.emit('message', message.toJson());
       setState(() {
         _textController.text = '';
       });
     }
-    
   }
 
-  _initSocket() {
-    print('innit socket');
-    try {
-      // socket = io.io('http://192.168.1.159:5000', <String, dynamic>{
-      //   'transports': ['websocket'],
-      //   'autoConnect': false,
-      // });
-      socket = io.io('https://eventbrite-realtime.herokuapp.com/', <String, dynamic>{
-        'transports': ['websocket'],
-        'autoConnect': false,
-      });
-      socket.connect();
-      socket.onConnect((data) => print('Connected'));
-      socket.on('message', (data) => _addToMessageList(data));
-      print(socket.connected);
-    }catch (e) {
-      print(e.toString());
-    }
-    
+  _setSocket(){
+    widget.socket.on('message', (data) => print(data));
+    widget.socket.on('message', (data) => _addToMessageList(data));
   }
+
+  // _initSocket() {
+  //   print('innit socket');
+  //   try {
+  //     // socket = io.io('http://192.168.1.159:5000', <String, dynamic>{
+  //     //   'transports': ['websocket'],
+  //     //   'autoConnect': false,
+  //     // });
+  //     socket = io.io('https://eventbrite-realtime.herokuapp.com/', <String, dynamic>{
+  //       'transports': ['websocket'],
+  //       'autoConnect': false,
+  //     });
+  //     socket.connect();
+  //     socket.onConnect((data) => print('Connected'));
+  //     socket.on('message', (data) => _addToMessageList(data));
+  //     print(socket.connected);
+  //   }catch (e) {
+  //     print(e.toString());
+  //   }
+  // }
 
   _addToMessageList(data) {
     Message message = Message.fromJson(data);
@@ -99,6 +106,7 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               child: ChatWindow(
                 controller: _scrollController,
+                convoId: widget.convoId,
               )
             ),
             ChatInput(
