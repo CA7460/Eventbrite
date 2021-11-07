@@ -1,5 +1,4 @@
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
-import 'package:event_app/utils/services/rest_api_service.dart';
 
 import 'conversation_type.dart';
 
@@ -7,7 +6,7 @@ class Conversation {
   //String groupId;
   String convoId;
   String title;
-  String? lastMessage;
+  Message? lastMessage;
   ConversationType type;
   DateTime updatedAt;
 
@@ -17,7 +16,15 @@ class Conversation {
     : 
       convoId = json['convoid'],
       title = json['title'],
-      lastMessage = json['lastMessage'],
+      lastMessage = Message.fromJson(json['lastMessage']),
       type = ConversationType.values.firstWhere((e) => e.toString() == json['type']),
       updatedAt = DateTime.parse(json['updatedat']);
 }
+
+
+
+// Message(
+//         json['lastmessage']['sentby'],
+//         json['lastmessage']['content'],
+//         DateTime.parse(json['lastmessage']['sentat']),
+//         json['lastmessage']['sentat']),

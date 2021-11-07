@@ -7,16 +7,16 @@ class Message {
   Message(this.sentBy, this.content, this.sentAt, this.isSeen);
 
   Message.fromJson(Map<String, dynamic> json) 
-    : sentBy = json['sentBy'],
+    : sentBy = json['sentby'],
       content = json['content'],
-      isSeen = json['isSeen'],
-      sentAt = DateTime.parse(json['sentAt']);
+      isSeen = json['isseen'],
+      sentAt = DateTime.parse(json['sentat']);
 
   Map<String, dynamic> toJson() => {
-      'sentBy': sentBy,
+      'sentby': sentBy,
       'content': content,
-      'isSeen': isSeen,
-      'sentAt': sentAt.toString()
+      'isseen': isSeen,
+      'sentat': sentAt.toString()
   };
 
 }

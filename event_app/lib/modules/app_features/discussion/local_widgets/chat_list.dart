@@ -1,7 +1,6 @@
 import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation_type.dart';
-import 'package:event_app/modules/app_features/discussion/repositories/messenger_helper.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +33,7 @@ class ChatList extends StatelessWidget {
                 onTap: () => onTap(listedConversations[index].convoId),
                 child: ConversationItem(
                   title: listedConversations[index].title,
-                  lastMessage: listedConversations[index].lastMessage, 
+                  lastMessage: listedConversations[index].lastMessage == null? null: listedConversations[index].lastMessage!.content, 
                   updatedAt: timeago.format(now.subtract(difference), locale: 'en_short')
                 ),
               );
