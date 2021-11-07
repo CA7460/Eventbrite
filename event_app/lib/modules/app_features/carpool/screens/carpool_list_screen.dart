@@ -10,13 +10,13 @@ import 'package:event_app/config/routes/routes.dart';
 // SAVER LE STATE D'UN FEATURE QUAND ON NAVIGATE AILLEURS, ON RESUME, ON REFRESH LA LIST OU WTV
 // VOIR MÉTHODE DIDPOPNEXT, Called when the top route has been popped off, and the current route shows up.
 
-class GameRoomListScreen extends StatefulWidget {
-  const GameRoomListScreen({Key? key}) : super(key: key);
+class CarPoolScreen extends StatefulWidget {
+  const CarPoolScreen({Key? key}) : super(key: key);
   @override
   _GameRoomListScreenState createState() => _GameRoomListScreenState();
 }
 
-class _GameRoomListScreenState extends State<GameRoomListScreen> {
+class _GameRoomListScreenState extends State<CarPoolScreen> {
   //var _gameRoomListStateKey = GlobalKey<>();
 
   late Future<List<GameRoom>> _gameroomFuture;
@@ -78,7 +78,7 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
                 ) {
                   if (snapshot.hasData) {
                     final items = snapshot.data!;
-                    return GameRoomListViewWidget(
+                    return CarPoolListViewWidget(
                         refreshGameRoomList, items, this);
                     // List<GameRoom> gamerooms = snapshot.data!;
                     // return GameRoomListViewWidget(gamerooms, this);
@@ -88,7 +88,7 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
                 }),
             // ),
           ),
-          Container(
+          /*Container(
             height: bottomLayoutHeight,
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
             child: Column(
@@ -124,19 +124,19 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
                     }),
               ],
             ),
-          ),
+          ),*/
         ],
       ),
     );
   }
 }
 
-class GameRoomListViewWidget extends StatelessWidget {
+class CarPoolListViewWidget extends StatelessWidget {
   final Function refreshGameRoomList;
   final List<GameRoom> gamerooms;
   final dynamic _listViewStateInstance;
 
-  const GameRoomListViewWidget(
+  const CarPoolListViewWidget(
       this.refreshGameRoomList, this.gamerooms, this._listViewStateInstance,
       {Key? key})
       : super(key: key);
@@ -163,7 +163,7 @@ class GameRoomListViewWidget extends StatelessWidget {
 
   Widget emptyList() {
     return Text(
-      'No games availble',
+      'No available routes',
       style: TextStyle(
         color: Colors.white,
       ),

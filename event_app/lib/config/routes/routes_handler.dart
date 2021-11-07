@@ -1,4 +1,5 @@
 import 'package:event_app/config/routes/routes.dart';
+import 'package:event_app/modules/app_features/carpool/screens/carpool_list_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/create_game_screen.dart';
 import 'package:event_app/modules/event_manager/models/eventmod.dart';
@@ -53,15 +54,15 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
     case gameRoomListRoute:
       return MaterialPageRoute(builder: (context) => GameRoomListScreen());
     case enterGameRoomRoute:
-      return MaterialPageRoute(
-          builder: (context) =>
-              GameRoomScreen(gameroom: settings.arguments as GameRoom));
+      return MaterialPageRoute(builder: (context) => GameRoomScreen(gameroom: settings.arguments as GameRoom));
     case createGameRoute:
       return MaterialPageRoute(builder: (context) => CreateGameScreen());
     case startNewGameRoute:
       return MaterialPageRoute(builder: (context) => GameScreen(roomid: settings.arguments as String));
     case scoreboardRoute:
       return MaterialPageRoute(builder: (context) => ScoreboardScreen());
+    case carPoolRoute:
+      return MaterialPageRoute(builder: (context) => CarPoolScreen());
     // case joinGameRoute:
     //  return MaterialPageRoute(builder: (context) => OngoingGameScreen());
 

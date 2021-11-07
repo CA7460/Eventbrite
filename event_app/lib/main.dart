@@ -17,7 +17,7 @@ void main() async {
       // Test pour Sam
        //initialRoute: appFeaturesMainScreenRoute,
       initialRoute:
-          user == null ? welcomeScreenRoute : eventManagerScreenRoute);
+          user == null ? loginScreenRoute : welcomeScreenRoute);
   runApp(myapp);
 }
 

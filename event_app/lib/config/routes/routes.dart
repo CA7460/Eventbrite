@@ -11,3 +11,4 @@ const String createGameRoute = 'createGame';
 const String startNewGameRoute = 'startNewGame';
 const String scoreboardRoute = 'scoreboard';
 const String joinGameRoute = 'joinGame';
+const String carPoolRoute = 'carPool';
