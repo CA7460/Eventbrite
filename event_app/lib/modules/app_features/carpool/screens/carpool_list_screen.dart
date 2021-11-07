@@ -1,3 +1,4 @@
+import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/config/theme/colors.dart';
@@ -7,24 +8,19 @@ import 'package:event_app/modules/app_features/crowd_games/local_widgets/gameroo
 import 'package:event_app/utils/utils.dart';
 import 'package:event_app/config/routes/routes.dart';
 
-// SAVER LE STATE D'UN FEATURE QUAND ON NAVIGATE AILLEURS, ON RESUME, ON REFRESH LA LIST OU WTV
-// VOIR MÉTHODE DIDPOPNEXT, Called when the top route has been popped off, and the current route shows up.
-
 class CarPoolScreen extends StatefulWidget {
   const CarPoolScreen({Key? key}) : super(key: key);
   @override
-  _GameRoomListScreenState createState() => _GameRoomListScreenState();
+  _CarPoolListScreenState createState() => _CarPoolListScreenState();
 }
 
-class _GameRoomListScreenState extends State<CarPoolScreen> {
-  //var _gameRoomListStateKey = GlobalKey<>();
-
-  late Future<List<GameRoom>> _gameroomFuture;
+class _CarPoolListScreenState extends State<CarPoolScreen> {
+  late Future<List<CarPool>> _carPoolFuture;
 
   @override
   void initState() {
     super.initState();
-    _gameroomFuture = getGameRooms();
+    _carPoolFuture = getCarPool();
   }
 
   void refreshGameRoomList() {
@@ -66,15 +62,12 @@ class _GameRoomListScreenState extends State<CarPoolScreen> {
           Container(
             alignment: Alignment.topCenter,
             height: centerLayoutHeight,
-            //key: _GameRoomListStateKey,
             color: primary_background,
-            // child: Center(
-            child: FutureBuilder<List<GameRoom>>(
-                future: _gameroomFuture,
-                // future: getGameRooms(),
+            child: FutureBuilder<List<CarPool>>(
+                future: _carPoolFuture,
                 builder: (
                   BuildContext context,
-                  AsyncSnapshot<List<GameRoom>> snapshot,
+                  AsyncSnapshot<List<CarPool>> snapshot,
                 ) {
                   if (snapshot.hasData) {
                     final items = snapshot.data!;
@@ -164,9 +157,7 @@ class CarPoolListViewWidget extends StatelessWidget {
   Widget emptyList() {
     return Text(
       'No available routes',
-      style: TextStyle(
-        color: Colors.white,
-      ),
+      style: TextStyle(color: Colors.white),
     );
   }
 }
