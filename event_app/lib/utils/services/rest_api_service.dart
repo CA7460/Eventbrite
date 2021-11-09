@@ -147,3 +147,11 @@ Future<List> getActionChallengesFromDatabase() async {
   return data;
 }
 
+//CarPool
+// CROWD GAMES REQUESTS
+Future<List> getCarPoolListFromDatabase() async {
+  var url = Uri.parse(carpoolControlorUrl);
+  var response = await http.post(url, body: {'action': 'listDrivers'});
+  final data = json.decode(response.body);
+  return data;
+}

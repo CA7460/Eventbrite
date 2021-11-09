@@ -1,20 +1,16 @@
+import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
 import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
 import 'package:flutter/material.dart';
-import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
-import 'package:event_app/widgets/primary_button_widget.dart';
-import 'package:event_app/modules/app_features/crowd_games/local_widgets/gameroom_list_item.dart';
-import 'package:event_app/utils/utils.dart';
-import 'package:event_app/config/routes/routes.dart';
 
-class CarPoolScreen extends StatefulWidget {
-  const CarPoolScreen({Key? key}) : super(key: key);
+class CarPoolListScreen extends StatefulWidget {
+  const CarPoolListScreen({Key? key}) : super(key: key);
   @override
   _CarPoolListScreenState createState() => _CarPoolListScreenState();
 }
 
-class _CarPoolListScreenState extends State<CarPoolScreen> {
+class _CarPoolListScreenState extends State<CarPoolListScreen> {
   late Future<List<CarPool>> _carPoolFuture;
 
   @override
@@ -23,20 +19,20 @@ class _CarPoolListScreenState extends State<CarPoolScreen> {
     _carPoolFuture = getCarPool();
   }
 
-  void refreshGameRoomList() {
+  void refreshCarPoolList() {
     print('refreshing list');
     setState(() {
-      _gameroomFuture = getGameRooms();
+      _carPoolFuture = getCarPool();
     });
   }
 
-  Future<List<GameRoom>> getGameRooms() async {
-  var response = await getGameRoomListFromDatabase();
+  Future<List<CarPool>> getCarPool() async {
+  var response = await getCarPoolListFromDatabase();
   if (response[0] == "OK" && response.length > 1) {
     response.removeAt(0);
-    return response.map((gameroom) => GameRoom.fromJson(gameroom)).toList();
+    return response.map((carpool) => CarPool.fromJson(carpool)).toList();
   }
-  return <GameRoom>[];
+  return <CarPool>[];
 }
 
   @override
@@ -54,7 +50,7 @@ class _CarPoolListScreenState extends State<CarPoolScreen> {
             child: GestureDetector(
                 onTap: () {
                   print("refresh btn pressed");
-                  refreshGameRoomList();
+                  refreshCarPoolList();
                 },
                 child: Text("Refresh list",
                     style: TextStyle(color: primary_blue))),
@@ -72,7 +68,7 @@ class _CarPoolListScreenState extends State<CarPoolScreen> {
                   if (snapshot.hasData) {
                     final items = snapshot.data!;
                     return CarPoolListViewWidget(
-                        refreshGameRoomList, items, this);
+                        refreshCarPoolList, items, this);
                     // List<GameRoom> gamerooms = snapshot.data!;
                     // return GameRoomListViewWidget(gamerooms, this);
                   } else {
@@ -125,28 +121,28 @@ class _CarPoolListScreenState extends State<CarPoolScreen> {
 }
 
 class CarPoolListViewWidget extends StatelessWidget {
-  final Function refreshGameRoomList;
-  final List<GameRoom> gamerooms;
+  final Function refreshCarPoolList;
+  final List<CarPool> carpool;
   final dynamic _listViewStateInstance;
 
   const CarPoolListViewWidget(
-      this.refreshGameRoomList, this.gamerooms, this._listViewStateInstance,
+      this.refreshCarPoolList, this.carpool, this._listViewStateInstance,
       {Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: gamerooms.isEmpty
+      child: carpool.isEmpty
           ? emptyList()
           : //RefreshIndicator(   // Pour les scrollable, permet de tjrs avoir une liste à jour
               //child: 
               ListView.builder(
-                  itemCount: gamerooms.length,
+                  itemCount: carpool.length,
                   //itemBuilder: listBuilder,
                   itemBuilder: (context, index) {
-                    return GameRoomListItem(
-                        refreshGameRoomList, gamerooms, index);
+                    return CarPoolListItem(
+                        refreshCarPoolList, carpool, index);
                   }),
               //onRefresh:
               //refreshGameRoomList(), // called when the user pulls the list down enough to trigger this event

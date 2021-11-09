@@ -61,26 +61,11 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => GameScreen(roomid: settings.arguments as String));
     case scoreboardRoute:
       return MaterialPageRoute(builder: (context) => ScoreboardScreen());
-    case carPoolRoute:
-      return MaterialPageRoute(builder: (context) => CarPoolScreen());
+    case carPoolListRoute:
+      return MaterialPageRoute(builder: (context) => CarPoolListScreen());
     // case joinGameRoute:
     //  return MaterialPageRoute(builder: (context) => OngoingGameScreen());
-
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
 }
-
-// CARPOOL exemple Navigation individuelle
-// Route<dynamic> generateCarpoolRoute(RouteSettings settings) {
-//   switch (settings.name) {
-//     case carpoolListRoute:
-//       return MaterialPageRoute(builder: (context) => CarPoolListScreen());
-
-//   // Autres routes possible à l'intérieur du feature
-
-//     default:
-//   }
-// }
-
-// MESSENGER ...
