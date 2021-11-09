@@ -1,5 +1,6 @@
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/config/theme/colors.dart';
+import 'package:event_app/widgets/primary_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,11 +32,10 @@ class WelcomeScreen extends StatelessWidget {
               SizedBox(height: 30,),
               Image.asset('assets/images/eventbrite_welcome.jpg', height: 225,),
               SizedBox(height: 30,),
-              ElevatedButton(onPressed: () {
+              PrimaryButton("Sign in", primary_blue, onPressed: () {
                 // Utils.mainAppNav.currentState!.pushNamed(loginScreenRoute);
                 Navigator.pushNamed(context, loginScreenRoute);
-              },
-              child: Text("Sign in")),
+              }),
               TextButton(onPressed: _redirectEventbrite, child: Text("Don't have an eventbrite account? ", style: TextStyle(color: eventbrite_red),))
             ],
           ),

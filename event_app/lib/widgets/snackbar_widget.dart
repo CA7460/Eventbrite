@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/config/theme/styles.dart';
 
-enum SnackBarType { 
-  welcome, 
-  mainWall, 
-  messenger, 
-  ligths, 
-  crowdGame, 
-  carpool
+enum SnackBarType {
+  welcome,
+  mainWall,
+  messenger,
+  ligths,
+  crowdGame,
+  carpool,
+  warning
 }
 
 Icon getIcon(SnackBarType sbType) {
@@ -25,6 +26,8 @@ Icon getIcon(SnackBarType sbType) {
       return Icon(Icons.games, color: primary_green);
     case SnackBarType.carpool:
       return Icon(Icons.directions_car, color: primary_green);
+    case SnackBarType.warning:
+      return Icon(Icons.warning, color: primary_green);
   }
 }
 
@@ -32,24 +35,24 @@ Icon getIcon(SnackBarType sbType) {
 
 // ignore: non_constant_identifier_names
 SnackBar EventSnackBar(String sbText, SnackBarType sbType) {
-    return SnackBar(
-      backgroundColor: textbox_background,
-      content: Row(
-        children: <Widget>[
-          getIcon(sbType),
-          SizedBox(
-            width: 12,
-          ),
-          Text(sbText, style: snackBarStyle),
-        ],
-      ),
-      duration: const Duration(seconds: 3),
-      // action: SnackBarAction(
-      //   label: 'ACTION',
-      //   onPressed: () {},
-      // ),
-    );
-  }
+  return SnackBar(
+    backgroundColor: textbox_background,
+    content: Row(
+      children: <Widget>[
+        getIcon(sbType),
+        SizedBox(
+          width: 12,
+        ),
+        Text(sbText, style: snackBarStyle),
+      ],
+    ),
+    duration: const Duration(seconds: 3),
+    // action: SnackBarAction(
+    //   label: 'ACTION',
+    //   onPressed: () {},
+    // ),
+  );
+}
 
 
 // class EventSnackBar extends StatelessWidget {
