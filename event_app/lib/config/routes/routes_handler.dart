@@ -1,6 +1,8 @@
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/create_game_screen.dart';
+import 'package:event_app/modules/app_features/crowd_games/screens/loading_screen.dart';
+import 'package:event_app/modules/app_features/crowd_games/screens/ongoing_game_screen.dart';
 import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
 import 'package:event_app/modules/login/screens/login_screen.dart';
@@ -58,12 +60,17 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
               GameRoomScreen(gameroom: settings.arguments as GameRoom));
     case createGameRoute:
       return MaterialPageRoute(builder: (context) => CreateGameScreen());
+    // case startNewGameRoute:
+    //   return MaterialPageRoute(builder: (context) => GameScreen(roomid: settings.arguments as String));
     case startNewGameRoute:
-      return MaterialPageRoute(builder: (context) => GameScreen(roomid: settings.arguments as String));
+      return MaterialPageRoute(builder: (context) => LoadingScreen(roomid: settings.arguments as String));
+
+    case joinGameRoute:
+      return MaterialPageRoute(
+          builder: (context) => 
+              OngoingGameScreen(roomid: settings.arguments as String));
     case scoreboardRoute:
       return MaterialPageRoute(builder: (context) => ScoreboardScreen());
-    // case joinGameRoute:
-    //  return MaterialPageRoute(builder: (context) => OngoingGameScreen());
 
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());

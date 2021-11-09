@@ -24,7 +24,7 @@ class GameRoomWidget extends StatelessWidget {
     return Container(
       height: 212,
       child: Card(
-        margin: EdgeInsets.fromLTRB(48, 6, 42, 0),
+        margin: EdgeInsets.fromLTRB(48, 6, 48, 0),
         color: textbox_background,
         child: Padding(
           padding: EdgeInsets.all(20),

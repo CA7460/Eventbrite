@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
+import 'package:event_app/modules/app_features/crowd_games/repositories/service_call.dart';
 import 'package:event_app/widgets/primary_button_widget.dart';
 import 'package:event_app/modules/app_features/crowd_games/local_widgets/gameroom_list_item.dart';
 import 'package:event_app/utils/utils.dart';
@@ -27,21 +28,27 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
     _gameroomFuture = getGameRooms();
   }
 
-  void refreshGameRoomList() {
-    print('refreshing list');
+  void removeMeAsPlayer() async {
+    await removeMeFromPlayerManager();
+    //await removeMyGames();
+    refreshGameRoomList();
+  }
+
+  void refreshGameRoomList() async {
     setState(() {
       _gameroomFuture = getGameRooms();
     });
   }
 
   Future<List<GameRoom>> getGameRooms() async {
-  var response = await getGameRoomListFromDatabase();
-  if (response[0] == "OK" && response.length > 1) {
-    response.removeAt(0);
-    return response.map((gameroom) => GameRoom.fromJson(gameroom)).toList();
+    await removeMeFromPlayerManager();
+    var response = await getGameRoomListFromDatabase();
+    if (response[0] == "OK" && response.length > 1) {
+      response.removeAt(0);
+      return response.map((gameroom) => GameRoom.fromJson(gameroom)).toList();
+    }
+    return <GameRoom>[];
   }
-  return <GameRoom>[];
-}
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +60,27 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
       child: Column(
         children: [
           Container(
-            alignment: Alignment.bottomCenter,
+            //alignment: Alignment(0.8, 0.2),
             height: topLayoutHeight,
             child: GestureDetector(
-                onTap: () {
-                  print("refresh btn pressed");
-                  refreshGameRoomList();
-                },
-                child: Text("Refresh list",
-                    style: TextStyle(color: primary_blue))),
+              onTap: () {
+                refreshGameRoomList();
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    "Refresh",
+                    style: TextStyle(color: primary_blue),
+                  ),
+                  Icon(Icons.refresh, color: primary_blue),
+                  SizedBox(
+                    width: 25,
+                  )
+                ],
+              ),
+            ),
           ),
           Container(
             alignment: Alignment.topCenter,
@@ -78,12 +97,28 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
                 ) {
                   if (snapshot.hasData) {
                     final items = snapshot.data!;
-                    return GameRoomListViewWidget(
-                        refreshGameRoomList, items, this);
-                    // List<GameRoom> gamerooms = snapshot.data!;
-                    // return GameRoomListViewWidget(gamerooms, this);
+                    if (items.isNotEmpty) {
+                      return GameRoomListViewWidget(
+                          removeMeAsPlayer, items, this);
+                      // List<GameRoom> gamerooms = snapshot.data!;
+                      // return GameRoomListViewWidget(gamerooms, this);
+
+                    } else {
+                      return Center(
+                        child: Text("No games in progress",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold)),
+                      );
+                    }
                   } else {
-                    return CircularProgressIndicator();
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: primary_blue,
+                      ),
+                    );
                   }
                 }),
             // ),
@@ -102,9 +137,11 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
                               .currentState! // pushReplacementNamed remplace la route, on ne peut pas back dessus
                               .pushNamed(createGameRoute)
                               .then((value) {
-                            refreshGameRoomList();
+                            // removeMeAsPlayer();
+                            print(
+                                'returning to game list: gameroomlist screen line 141');
+                            //refreshGameRoomList();
                           }) // pushNamed permet de pop()
-                          //  AJOUTER UNE NOUVELLE ROUTE POUR CREATE GAME
                         }),
                 PrimaryButton('Scoreboard', primary_blue,
                     onPressed: () => {
@@ -121,12 +158,12 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
 }
 
 class GameRoomListViewWidget extends StatelessWidget {
-  final Function refreshGameRoomList;
+  final Function removeMeAsPlayer;
   final List<GameRoom> gamerooms;
   final dynamic _listViewStateInstance;
 
   const GameRoomListViewWidget(
-      this.refreshGameRoomList, this.gamerooms, this._listViewStateInstance,
+      this.removeMeAsPlayer, this.gamerooms, this._listViewStateInstance,
       {Key? key})
       : super(key: key);
 
@@ -136,17 +173,16 @@ class GameRoomListViewWidget extends StatelessWidget {
       child: gamerooms.isEmpty
           ? emptyList()
           : //RefreshIndicator(   // Pour les scrollable, permet de tjrs avoir une liste à jour
-              //child: 
-              ListView.builder(
-                  itemCount: gamerooms.length,
-                  //itemBuilder: listBuilder,
-                  itemBuilder: (context, index) {
-                    return GameRoomListItem(
-                        refreshGameRoomList, gamerooms, index);
-                  }),
-              //onRefresh:
-              //refreshGameRoomList(), // called when the user pulls the list down enough to trigger this event
-            //),
+          //child:
+          ListView.builder(
+              itemCount: gamerooms.length,
+              //itemBuilder: listBuilder,
+              itemBuilder: (context, index) {
+                return GameRoomListItem(removeMeAsPlayer, gamerooms, index);
+              }),
+      //onRefresh:
+      //refreshGameRoomList(), // called when the user pulls the list down enough to trigger this event
+      //),
     );
   }
 
