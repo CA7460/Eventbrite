@@ -1,3 +1,4 @@
+import 'package:event_app/models/attendee_list.dart';
 import 'package:event_app/models/current_event.dart';
 import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/utils/utils.dart';
@@ -13,6 +14,7 @@ class EventListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CurrentEvent currentEvent = Provider.of<CurrentEvent>(context);
+    final AttendeeList attendees = Provider.of<AttendeeList>(context);
     return Card(
         margin: EdgeInsets.fromLTRB(48, 6, 42, 0),
         color: Colors.deepOrange,
@@ -27,6 +29,7 @@ class EventListItem extends StatelessWidget {
               );
               //Provider a maintenant l'evenement en cours
               currentEvent.makeCurrentEvent(events[index]);
+              attendees.loadAttendees(events[index].eventid);
               Utils.mainAppNav.currentState!.pushNamed(appFeaturesMainScreenRoute, arguments: events[index]);
             },
             child: Padding(

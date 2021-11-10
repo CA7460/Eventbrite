@@ -2,6 +2,7 @@ import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/create_game_screen.dart';
 import 'package:event_app/modules/app_features/discussion/models/chat_screen_argument.dart';
+import 'package:event_app/modules/app_features/discussion/models/new_message_screen_argrument.dart';
 import 'package:event_app/modules/app_features/discussion/screens/chat_screen.dart';
 import 'package:event_app/modules/app_features/discussion/screens/main_messenger_screen.dart';
 import 'package:event_app/modules/app_features/discussion/screens/new_message_screen.dart';
@@ -101,7 +102,12 @@ Route<dynamic> generateMessengerRoute(RouteSettings settings) {
     case messengerLandingScreenRoute:
       return MaterialPageRoute(builder: (context) => MainMessengerScreen());
     case newMessageRoute:
-      return MaterialPageRoute(builder: (context) => NewMessageScreen());
+      return MaterialPageRoute(builder: (context) {
+        NewMessageScreenArgument arguments = settings.arguments as NewMessageScreenArgument;
+        return NewMessageScreen(
+          socket: arguments.socket
+          );
+      });
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }

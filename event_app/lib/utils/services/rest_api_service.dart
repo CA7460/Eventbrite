@@ -23,6 +23,21 @@ Future<List> validateRequest(String email, String password) async {
   return data;
 }
 
+Future<List<User>> getAttendees(String eventId) async {
+  List<User> attendees =[];
+  var url = Uri.parse(messengerControlorUrl);
+  var response = await http.post(url, body: {'action': 'listAttendees', 'eventId': eventId});
+  final data = json.decode(response.body);
+  print(data);
+  if (data[0] == 'OK'){
+    for (var i = 1; i < data.length -1; i++) {
+      User user = User.fromJson(data[i]);
+      attendees.add(user);
+    }
+  }
+  return attendees;
+}
+
 Future<List> getUserDetailsFromDatabase(String userMail) async {
   var url = Uri.parse(eventControlorUrl);
   var response = await http
@@ -152,64 +167,58 @@ Future<List> getActionChallengesFromDatabase() async {
 
 //Messenger requests
 
-Future<List> getConversationsForUser(String userMail) async {
+Future<List<Conversation>> getConversations(String userMail, String eventId) async {
+  List<Conversation> conversations = [];
   var url = Uri.parse(messengerControlorUrl);
   var response = await http.post(url, body: {
-    'action': 'listEventConversationsForUser',
-    'mail': userMail});
+    'action': 'listConversations',
+    'mail': userMail,
+    'eventId': eventId});
   final data = json.decode(response.body);
-  return data;
+  if (data[0] == 'OK'){
+    for (var i = 1; i < data.length -1; i++) {
+      Conversation conversation = Conversation.fromJson(data[i]);
+      conversations.add(conversation);
+    }
+  }
+  return conversations;
 }
 
-Future<List> getMessage(String messageId) async {
+Future<List<Message>> getMessagesForConversation(String convoId) async {
+  List<Message> messages = [];
   var url = Uri.parse(messengerControlorUrl);
   var response = await http.post(url, body: {
-    'action': 'getMessage',
-    'mail': messageId});
-  final data = json.decode(response.body);
-  return data;
-}
-
-Future<List> getMessagesForConversation(String convoId) async {
-  var url = Uri.parse(messengerControlorUrl);
-  var response = await http.post(url, body: {
-    'action': 'listMessagesForConversation',
+    'action': 'listMessages',
     'convoid': convoId});
   final data = json.decode(response.body);
-  return data;
+  if (data[0] == 'OK'){
+    for (var i = 1; i < data.length -1; i++) {
+      Message message = Message.fromJson(data[i]);
+      messages.add(message);
+    }
+  }
+  return messages;
 }
 
-Future<List> addMessageToConversation(Message message, String convoId) async {
+Future<List> sendMessageToConversation(Message message, String convoId) async {
   var url = Uri.parse(messengerControlorUrl);
   var response = await http.post(url, body: {
-    'action': 'addMessage',
-    'convoid': convoId,
-    'sentby': message.sentBy,
-    'content': message.content,
-    'isseen': message.isSeen == true ? 1: 0});
+    'action': 'sendMessage',
+    'convoId': convoId,
+    'message': message.toJson()
+  });
   final data = json.decode(response.body);
   return data;
 }
 
-Future<List> addConversationToEvent(Conversation conversation, String eventId) async {
+Future<List> sendNewMessage(Message message,Conversation conversation, String eventId) async {
   var url = Uri.parse(messengerControlorUrl);
   var response = await http.post(url, body: {
-    'action': 'addConversation',
-    'eventid': eventId,
-    'title': conversation.title,
-    'type': conversation.type.toString(),
-    'lastmessageid': conversation.lastMessage});
-  final data = json.decode(response.body);
-  return data;
-}
-
-Future<List> addUserToConversation(Conversation conversation, List<User> usersToAdd) async {
-  var members = jsonEncode(usersToAdd);
-  var url = Uri.parse(messengerControlorUrl);
-  var response = await http.post(url, body: {
-    'action': 'setMembers',
-    'convoid': conversation.convoId,
-    'members': members,});
+    'action': 'sendNewMessage',
+    'eventIt': eventId,
+    'conversation': conversation.toJson(),
+    'message': message.toJson()
+  });
   final data = json.decode(response.body);
   return data;
 }

@@ -1,3 +1,4 @@
+import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/avatar_title.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/chat_input.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/chat_window.dart';
@@ -21,14 +22,12 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  //late io.Socket socket;
   late TextEditingController _textController;
   late ScrollController _scrollController;
   
 
   @override
   void initState() {
-    //_initSocket();
     _setSocket();
     _textController = TextEditingController();
     _scrollController = ScrollController();
@@ -38,8 +37,8 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
-  _send(){
-    var message = Message('Ian', _textController.text, DateTime.now(), false);
+  _send(LoggedUser loggedUser){
+    var message = Message.noId(loggedUser.user!, _textController.text, DateTime.now(), false);
     if(message.content != '') {
       widget.socket.emit('message', message.toJson());
       setState(() {
@@ -52,26 +51,6 @@ class _ChatScreenState extends State<ChatScreen> {
     widget.socket.on('message', (data) => print(data));
     widget.socket.on('message', (data) => _addToMessageList(data));
   }
-
-  // _initSocket() {
-  //   print('innit socket');
-  //   try {
-  //     // socket = io.io('http://192.168.1.159:5000', <String, dynamic>{
-  //     //   'transports': ['websocket'],
-  //     //   'autoConnect': false,
-  //     // });
-  //     socket = io.io('https://eventbrite-realtime.herokuapp.com/', <String, dynamic>{
-  //       'transports': ['websocket'],
-  //       'autoConnect': false,
-  //     });
-  //     socket.connect();
-  //     socket.onConnect((data) => print('Connected'));
-  //     socket.on('message', (data) => _addToMessageList(data));
-  //     print(socket.connected);
-  //   }catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
 
   _addToMessageList(data) {
     Message message = Message.fromJson(data);
@@ -96,6 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final LoggedUser loggedUser = Provider.of<LoggedUser>(context);
     return Scaffold(
       appBar: AppBar(
         title: const AvatarTitle(title: 'Dan', avatarLetter: 'D'),
@@ -111,7 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             ChatInput(
               controller: _textController,
-              onSubmit: _send)
+              onSubmit: () => _send(loggedUser))
           ],
         )
       ),

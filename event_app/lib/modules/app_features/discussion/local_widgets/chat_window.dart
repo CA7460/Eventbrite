@@ -1,3 +1,4 @@
+import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/public_chat_message.dart';
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
 import 'package:event_app/modules/app_features/discussion/models/message_list.dart';
@@ -44,6 +45,7 @@ class _ChatWindowState extends State<ChatWindow> {
   @override
   Widget build(BuildContext context) {
     MessageList messageList = Provider.of<MessageList>(context);
+    LoggedUser loggedUser = Provider.of<LoggedUser>(context);
     if (isFirstBuild) {
       messageList.loadMessages(widget.convoId);
       isFirstBuild = false;
@@ -56,9 +58,9 @@ class _ChatWindowState extends State<ChatWindow> {
         final difference = now.difference(messages[index].sentAt);
         return GestureDetector(
           child: PublicChatMessage(
-            senderName: messages[index].sentBy,
+            senderName: messages[index].sentBy.prenom,
             content: messages[index].content,
-            isSender: messages[index].sentBy == 'Ian'? true: false,
+            isSender: messages[index].sentBy.userid == loggedUser.user?.userid? true: false,
             isSeen: messages[index].isSeen,
             isExpanded: index == tappedIndex? true: false,
             sentAt: timeago.format(now.subtract(difference), locale: 'en_short'),

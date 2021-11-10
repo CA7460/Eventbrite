@@ -1,5 +1,5 @@
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
-import 'package:event_app/modules/app_features/discussion/repositories/messenger_helper.dart';
+import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:flutter/foundation.dart';
 
 class MessageList extends ChangeNotifier {
@@ -11,7 +11,9 @@ class MessageList extends ChangeNotifier {
   }
 
   Future<void> loadMessages(String? convoId) async {
-    messageList = await getMessagesForConversation('Dan');
+    if (convoId != null) {
+      messageList = await getMessagesForConversation(convoId);
+    }
     notifyListeners();
   }
 
