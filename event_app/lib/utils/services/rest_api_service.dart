@@ -262,6 +262,16 @@ Future<List> getPlayerScoresFromDatabase(String roomid) async {
   return data;
 }
 
+Future<List> getScoreboardFromDatabase() async {
+  var url = Uri.parse(gameControlorUrl);
+  String request =
+      "SELECT u.prenom, u.mail, s.score FROM users u JOIN scoreboard s USING (userid) ORDER BY s.score DESC;";
+  var response = await http
+      .post(url, body: {'action': 'getPlayerScores', 'request': request});
+  final data = json.decode(response.body);
+  return data;
+}
+
 Future<List> updateGlobalScoreboardInDatabase(
     int currentScore, String userMail) async {
   var url = Uri.parse(gameControlorUrl);

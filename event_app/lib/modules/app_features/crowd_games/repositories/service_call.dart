@@ -191,6 +191,16 @@ Future<List<GameScore>> getPlayerScores(String roomid) async {
   }
 }
 
+Future<List<GameScore>> getScoreboard() async {
+  var response = await getScoreboardFromDatabase();
+  if (response[0] == "OK" && response.length > 1) {
+    response.removeAt(0);
+    return response.map((e) => GameScore.fromJson(e)).toList();
+  } else {
+    return <GameScore>[];
+  }
+}
+
 // REMOVE PLAYER FROM ANY GAMES WHEN QUITTING OR BACKING UP
 Future<void> removeMeFromPlayerManager() async {
   final String userMail = await getUser();
