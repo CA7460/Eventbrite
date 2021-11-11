@@ -19,7 +19,7 @@ class AppFeaturesMainScreen extends StatefulWidget {
 
 class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
   // Changer pour 0
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +40,17 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
 
     return Scaffold(
       backgroundColor: primary_background,
-      body: WillPopScope(
-        onWillPop: () async {
-          if (Utils.appFeaturesNav.currentState!.canPop()) {
-            Utils.appFeaturesNav.currentState!.pop();
-            return false;
-          }
-          return true;
-        },
-        child: Row(
+      body: 
+      // WillPopScope(
+      //   onWillPop: () async {
+      //     if (Utils.appFeaturesNav.currentState!.canPop()) {
+      //       Utils.appFeaturesNav.currentState!.pop();
+      //       return false;
+      //     }
+      //     return true;
+      //   },
+      //   child: 
+        Row(
           children: <Widget>[
             // ==========================================
             // ============= MAIN CONTENT ===============
@@ -56,27 +58,27 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
             Expanded(
               child: IndexedStack(index: _selectedIndex, children: <Widget>[
                 Navigator(
-                  key: Utils.appFeaturesNav,
+                  key: Utils.mainWallNav,
                   initialRoute: mainWallRoute,
                   onGenerateRoute: router.generateMainWallRoute,
                 ),
                 Navigator(
-                  key: Utils.appFeaturesNav,
+                  key: Utils.messengerNav,
                   initialRoute: messengerLandingScreenRoute,
                   onGenerateRoute: router.generateMessengerRoute,
                 ),
                 Navigator(
-                  key: Utils.appFeaturesNav,
+                  key: Utils.lightEffectsNav,
                   initialRoute: lightEffectsRoute,
                   onGenerateRoute: router.generateLightEffectsRoute,
                 ),
                 Navigator(
-                  key: Utils.appFeaturesNav,
+                  key: Utils.crowdGameNav,
                   initialRoute: gameRoomListRoute,
                   onGenerateRoute: router.generateGameRoute,
                 ),
                 Navigator(
-                  key: Utils.appFeaturesNav,
+                  key: Utils.carpoolNav,
                   initialRoute: carPoolListRoute,
                   onGenerateRoute: router.generateCarpoolRoute,
                 ),
@@ -114,7 +116,7 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
             ),
           ],
         ),
-      ),
+      // ),   WillPopScore
     );
   }
 }

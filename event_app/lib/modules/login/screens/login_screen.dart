@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (_validateForm()) {
                     FocusScope.of(context).requestFocus(FocusNode());
                     await _checkLogin(
-                        emailController.text, passwordController.text);
+                        emailController.text, passwordController.text, loggedUser);
                     if (isLogged) {
                       Navigator.pushNamed(context, eventManagerScreenRoute);
                       // Code test pour Sam - crowd games

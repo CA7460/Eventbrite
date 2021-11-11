@@ -240,7 +240,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
-
   provider:
     dependency: "direct main"
     description:
@@ -248,7 +247,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.1"
-
   scroll_to_index:
     dependency: "direct main"
     description:
@@ -256,7 +254,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-
   shared_preferences:
     dependency: "direct main"
     description:

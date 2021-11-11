@@ -205,7 +205,7 @@ class _OngoingGameScreenState extends State<OngoingGameScreen> {
             height: topLayoutHeight,
             child: GestureDetector(
               onTap: () {
-                Utils.appFeaturesNav.currentState!.pop();
+                Utils.crowdGameNav.currentState!.pop();
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,

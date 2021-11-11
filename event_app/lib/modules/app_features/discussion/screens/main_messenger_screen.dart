@@ -62,7 +62,7 @@ class _ChatScreenState extends State<MainMessengerScreen> {
   // }
 
   _goToChatScreen(convoid) {
-    Utils.appFeaturesNav.currentState!.pushNamed(
+    Utils.messengerNav.currentState!.pushNamed(
       chatScreenRoute,
       arguments: ChatScreenArgument(
         convoid,
@@ -72,7 +72,7 @@ class _ChatScreenState extends State<MainMessengerScreen> {
   }
 
   _goToNewMessageScreen() {
-    Utils.appFeaturesNav.currentState!.pushNamed(
+    Utils.messengerNav.currentState!.pushNamed(
       newMessageRoute,
       arguments: NewMessageScreenArgument(
          socket,
