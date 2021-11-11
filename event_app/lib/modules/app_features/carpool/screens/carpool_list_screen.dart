@@ -1,5 +1,7 @@
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
 import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
+import 'package:event_app/modules/event_manager/local_widgets/event_list_item.dart';
+import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
@@ -10,18 +12,25 @@ Future navigerEcrans(context, ecran) async {
 }
 
 class CarPoolListScreen extends StatefulWidget {
-  const CarPoolListScreen({Key? key}) : super(key: key);
+  final EventMod event;
+  const CarPoolListScreen({Key? key, required this.event }) : super(key: key);
+
   @override
-  _CarPoolListScreenState createState() => _CarPoolListScreenState();
+  _CarPoolListScreenState createState() => _CarPoolListScreenState(this.event);
 }
 
 class _CarPoolListScreenState extends State<CarPoolListScreen> {
   late Future<List<CarPool>> _carPoolFuture;
 
+  final EventMod event;
+  _CarPoolListScreenState(this.event);
+
   @override
   void initState() {
     super.initState();
     _carPoolFuture = getCarPool();
+
+    print('Event itemid: ' + this.event.eventid);
   }
 
   void refreshCarPoolList() {

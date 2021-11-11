@@ -4,6 +4,7 @@ import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart'
 import 'package:event_app/modules/app_features/crowd_games/screens/create_game_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/loading_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/ongoing_game_screen.dart';
+import 'package:event_app/modules/event_manager/local_widgets/event_list_item.dart';
 import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
 import 'package:event_app/modules/login/screens/login_screen.dart';
@@ -26,6 +27,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => EventManagerScreen());
     case appFeaturesMainScreenRoute:
       return MaterialPageRoute(builder: (context) => AppFeaturesMainScreen(event: settings.arguments as EventMod));
+    case carPoolListRoute:
+      return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
 
     // Test pour Sam - crowdGames
     // case crowdGamesLandingScreenRoute:
@@ -45,7 +48,7 @@ Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => GameRoomListScreen());
     // carpool
     case carPoolListRoute:
-      return MaterialPageRoute(builder: (context) => CarPoolListScreen());
+      return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
     default: // PENSER À QQCHOSE POUR DEFAULT
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
@@ -65,18 +68,14 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
     //   return MaterialPageRoute(builder: (context) => GameScreen(roomid: settings.arguments as String));
     case startNewGameRoute:
       return MaterialPageRoute(builder: (context) => LoadingScreen(roomid: settings.arguments as String));
-
     case joinGameRoute:
-      return MaterialPageRoute(
-          builder: (context) =>
-              OngoingGameScreen(roomid: settings.arguments as String));
+      return MaterialPageRoute(builder: (context) => OngoingGameScreen(roomid: settings.arguments as String));
     case scoreboardRoute:
       return MaterialPageRoute(builder: (context) => ScoreboardScreen());
     case carPoolListRoute:
-      return MaterialPageRoute(builder: (context) => CarPoolListScreen());
+      return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
     // case joinGameRoute:
     //  return MaterialPageRoute(builder: (context) => OngoingGameScreen());
-
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
