@@ -57,10 +57,19 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
 
                 return Column(
                   children: [
+                    SizedBox(
+                      height: 80,
+                    ),
                     Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: eventbrite_red,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      width: 220,
+                      padding: EdgeInsets.all(12),
                       child: Column(
                         children: [
-                          SizedBox(height: 90),
                           Text("Personal score",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 24)),

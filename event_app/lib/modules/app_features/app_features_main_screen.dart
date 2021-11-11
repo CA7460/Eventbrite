@@ -76,32 +76,19 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
                 ),
                 Navigator(
                   key: Utils.appFeaturesNav,
-                  initialRoute: carpoolRoute,
+                  initialRoute: carPoolListRoute,
                   onGenerateRoute: router.generateCarpoolRoute,
                 ),
               ]),
-
 //
-//
-//
-
               // child: Navigator(
               //   key: Utils.appFeaturesNav,
               //   initialRoute: gameRoomListRoute,
               //   onGenerateRoute:
               //       navigationSwitcher, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
               // ),
-
-//
-//
 //
             ),
-            // initialRoute sera changée pour main_wall, premier feature, index 0
-            // La initialRoute menera vers une instance du Screen pour le main_wall
-            // Quand on veut changer le contenu ex. pour crowd games on utilise la commande
-            // Utils.appFeaturesNav.currentState!.pushNamed(enterGameRoomRoute)
-            // appFeaturesNav est une clé unique qui pointe vers ce nested navigator voir utils/utils.dart
-            // utiliser pushedNamed, car pushReplacementNamed remplace la route donc on ne peut pas back dessus
 
             // ==========================================
             // ============== NAVIGATION ================

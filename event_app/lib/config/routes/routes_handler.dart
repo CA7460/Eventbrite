@@ -49,7 +49,11 @@ Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
 }
 
 // Navigations individuelles pour chaque feature
-// Exemple pour crowd Games, génère plusieurs écrans, il faut back au bonnes places
+
+// generateMainWallRoute...
+// generateMessengerRoute...
+// generateLightEffectsRoute...
+
 Route<dynamic> generateGameRoute(RouteSettings settings) {
   switch (settings.name) {
     case gameRoomListRoute:
@@ -77,7 +81,6 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
   }
 }
 
-// CARPOOL exemple Navigation individuelle
 // Route<dynamic> generateCarpoolRoute(RouteSettings settings) {
 //   switch (settings.name) {
 //     case carpoolListRoute:
