@@ -62,7 +62,7 @@ class CarPoolListItem extends StatelessWidget {
                       ),
                       JoinGameButton(
                           onPressed: () => Utils.appFeaturesNav.currentState!
-                                  .pushNamed(enterGameRoomRoute,
+                                  .pushNamed(carPoolListRoute,
                                       arguments: carpools[index])
                                   .then((value) {
                                 refreshCarPoolList();

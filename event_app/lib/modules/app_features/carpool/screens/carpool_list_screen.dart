@@ -3,6 +3,14 @@ import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
+import 'package:event_app/widgets/primary_button_widget.dart';
+import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
+import 'package:event_app/modules/app_features/carpool/screens/carpool_passenger_screen.dart';
+import 'package:event_app/config/theme/styles.dart';
+
+Future navigerEcrans(context, ecran) async {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => ecran));
+}
 
 class CarPoolListScreen extends StatefulWidget {
   const CarPoolListScreen({Key? key}) : super(key: key);
@@ -40,42 +48,41 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
     final screenSize = MediaQuery.of(context).size;
     final topLayoutHeight = screenSize.height * 0.1;
     final centerLayoutHeight = screenSize.height * 0.55;
-    final bottomLayoutHeight = screenSize.height * 0.35;
+    final bottomLayoutHeight = screenSize.height * 0.8;
     return Center(
       child: Column(
         children: [
           Container(
-            alignment: Alignment.bottomCenter,
-            height: topLayoutHeight,
-            child: GestureDetector(
-                onTap: () {
-                  print("refresh btn pressed");
-                  refreshCarPoolList();
-                },
-                child: Text("Refresh list",
-                    style: TextStyle(color: primary_blue))),
-          ),
-          Container(
-            alignment: Alignment.topCenter,
-            height: centerLayoutHeight,
-            color: primary_background,
-            child: FutureBuilder<List<CarPool>>(
-                future: _carPoolFuture,
-                builder: (
-                  BuildContext context,
-                  AsyncSnapshot<List<CarPool>> snapshot,
-                ) {
-                  if (snapshot.hasData) {
-                    final items = snapshot.data!;
-                    return CarPoolListViewWidget(
-                        refreshCarPoolList, items, this);
-                    // List<GameRoom> gamerooms = snapshot.data!;
-                    // return GameRoomListViewWidget(gamerooms, this);
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                }),
-            // ),
+            height: bottomLayoutHeight,
+            padding: EdgeInsets.symmetric(vertical: 60, horizontal: 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                PrimaryButton2('I am a driver', Colors.black,
+                    onPressed: () =>
+
+                      //  navigerEcrans(context, CarpoolDriverScreen());
+                    // {Navigator.pushNamed(context, enterGameRoomRoute)}),
+                    {
+                    navigerEcrans(context, CarpoolDriverScreen())
+
+                     /* Utils.appFeaturesNav
+                          .currentState! // pushReplacementNamed remplace la route, on ne peut pas back dessus
+                          .pushNamed(createGameRoute)
+                          .then((value) {
+                        refreshGameRoomList();
+                      }) // pushNamed permet de pop()
+                      //  AJOUTER UNE NOUVELLE ROUTE POUR CREATE GAME*/
+                    }),
+
+                PrimaryButton3('I am a passenger', primary_green,
+                    onPressed: () => {
+                      navigerEcrans(context, CarpoolPassengerScreen())
+                     /* Utils.appFeaturesNav.currentState!
+                          .pushNamed(scoreboardRoute)  */
+                    }),
+              ],
+            ),
           ),
           /*Container(
             height: bottomLayoutHeight,
@@ -154,6 +161,113 @@ class CarPoolListViewWidget extends StatelessWidget {
     return Text(
       'No available routes',
       style: TextStyle(color: Colors.white),
+    );
+  }
+}
+
+class PrimaryButton2 extends StatelessWidget {
+
+  final String btnText;
+  final Color btnColor = Colors.black;
+  final GestureTapCallback onPressed;
+
+  const PrimaryButton2(this.btnText, btnColor, {required this.onPressed});
+
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final maxWidthForCard = screenWidth / 2;
+    final cardSize = maxWidthForCard - 20;
+    final labelWidth = cardSize - 26;
+    return ElevatedButton(
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              Container(
+                width: cardSize,
+                height: cardSize,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: Image(
+                    image: AssetImage("assets/images/eventbrite_welcome.jpg"),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 14,
+                left: (cardSize - labelWidth) / 2,
+                child: Container(
+// black box that wraps the white text
+                  width: labelWidth,
+                  color: Color(0xc53a4155),
+                  padding: EdgeInsets.all(10),
+                  child: Text("I am a driver",
+                      style: TextStyle(
+                          fontSize: 16, color: Color(0xffc8f1f1)),
+                      textAlign: TextAlign.center),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      onPressed: onPressed,
+    );
+  }
+}
+
+class PrimaryButton3 extends StatelessWidget {
+
+  final String btnText;
+  final Color btnColor;
+  final GestureTapCallback onPressed;
+
+  const PrimaryButton3(this.btnText, this.btnColor, {required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final maxWidthForCard = screenWidth / 2;
+    final cardSize = maxWidthForCard - 20;
+    final labelWidth = cardSize - 26;
+    return ElevatedButton(
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              Container(
+                width: cardSize,
+                height: cardSize,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: Image(
+                    image: AssetImage("assets/images/eventbrite_welcome.jpg"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 14,
+                left: (cardSize - labelWidth) / 2,
+                child: Container(
+// black box that wraps the white text
+                  width: labelWidth,
+                  color: Color(0xc53a4155),
+                  padding: EdgeInsets.all(10),
+                  child: Text("I am a passenger",
+                      style: TextStyle(
+                          fontSize: 16, color: Color(0xffc8f1f1)),
+                      textAlign: TextAlign.center),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      onPressed: onPressed,
     );
   }
 }
