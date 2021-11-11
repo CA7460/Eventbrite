@@ -18,6 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
+  print('generateRoute');
   switch (settings.name) {
     case welcomeScreenRoute:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
@@ -40,6 +41,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
 // NESTED NAVIGATOR pour le navigation Rail, landing screen de chaque feature
 Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
+  print('generateAppFeatureRoute');
   switch (settings.name) {
     // main wall
     // messenger
@@ -72,8 +74,6 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => OngoingGameScreen(roomid: settings.arguments as String));
     case scoreboardRoute:
       return MaterialPageRoute(builder: (context) => ScoreboardScreen());
-    case carPoolListRoute:
-      return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
     // case joinGameRoute:
     //  return MaterialPageRoute(builder: (context) => OngoingGameScreen());
     default:
@@ -81,16 +81,14 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
   }
 }
 
-// CARPOOL exemple Navigation individuelle
-// Route<dynamic> generateCarpoolRoute(RouteSettings settings) {
-//   switch (settings.name) {
-//     case carpoolListRoute:
-//       return MaterialPageRoute(builder: (context) => CarPoolListScreen());
-
-//   // Autres routes possible à l'intérieur du feature
-
-//     default:
-//   }
-// }
-
-// MESSENGER ...
+Route<dynamic> generateCarPoolRoute(RouteSettings settings) {
+  print('generateCarPoolRoute');
+  switch (settings.name) {
+    case gameRoomListRoute:
+      return MaterialPageRoute(builder: (context) => GameRoomListScreen());
+    case carPoolListRoute:
+      return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
+    default:
+      return MaterialPageRoute(builder: (context) => WelcomeScreen());
+  }
+}

@@ -32,7 +32,7 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
         // case 1 : router pour messenger
         // case 2 : router pour ligths
         case 3:
-          return router.generateGameRoute;
+          return router.generateCarPoolRoute;
         // case 4 : return router.generateCarpoolRoute;
         default:
           return router.generateAppFeatureRoute;

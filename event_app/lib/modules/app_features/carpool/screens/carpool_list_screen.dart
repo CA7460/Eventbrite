@@ -16,7 +16,7 @@ class CarPoolListScreen extends StatefulWidget {
   const CarPoolListScreen({Key? key, required this.event }) : super(key: key);
 
   @override
-  _CarPoolListScreenState createState() => _CarPoolListScreenState(this.event);
+  _CarPoolListScreenState createState() => _CarPoolListScreenState(event);
 }
 
 class _CarPoolListScreenState extends State<CarPoolListScreen> {
@@ -30,7 +30,7 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
     super.initState();
     _carPoolFuture = getCarPool();
 
-    print('Event itemid: ' + this.event.eventid);
+    print('Event itemid: ' + event.eventid);
   }
 
   void refreshCarPoolList() {
@@ -41,13 +41,13 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
   }
 
   Future<List<CarPool>> getCarPool() async {
-  var response = await getCarPoolListFromDatabase();
-  if (response[0] == "OK" && response.length > 1) {
-    response.removeAt(0);
-    return response.map((carpool) => CarPool.fromJson(carpool)).toList();
+    var response = await getCarPoolListFromDatabase();
+    if (response[0] == "OK" && response.length > 1) {
+      response.removeAt(0);
+      return response.map((carpool) => CarPool.fromJson(carpool)).toList();
+    }
+    return <CarPool>[];
   }
-  return <CarPool>[];
-}
 
   @override
   Widget build(BuildContext context) {
@@ -88,18 +88,13 @@ class CarPoolListViewWidget extends StatelessWidget {
   final List<CarPool> carpool;
   final dynamic _listViewStateInstance;
 
-  const CarPoolListViewWidget(
-      this.refreshCarPoolList, this.carpool, this._listViewStateInstance,
-      {Key? key})
-      : super(key: key);
+  const CarPoolListViewWidget(this.refreshCarPoolList, this.carpool, this._listViewStateInstance, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: carpool.isEmpty
-          ? emptyList()
-          : //RefreshIndicator(   // Pour les scrollable, permet de tjrs avoir une liste à jour
-              //child: 
+          ? emptyList() :
               ListView.builder(
                   itemCount: carpool.length,
                   //itemBuilder: listBuilder,
