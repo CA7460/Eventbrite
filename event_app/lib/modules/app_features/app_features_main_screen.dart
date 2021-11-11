@@ -20,8 +20,7 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
   _AppFeaturesMainScreenState(this.event);
 
   // Changer pour 0
-  //int _selectedIndex = 3;
-  int _selectedIndex = 4;
+  int _selectedIndex = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +59,7 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
                // initialRoute: gameRoomListRoute,
                 initialRoute: carPoolListRoute,
                 onGenerateRoute:
-                    navigationSwitcher, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
+                    router.generateCarPoolRoute, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
               ),
             ),
             // initialRoute sera changée pour main_wall, premier feature, index 0

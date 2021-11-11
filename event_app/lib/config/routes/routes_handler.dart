@@ -82,13 +82,5 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
 }
 
 Route<dynamic> generateCarPoolRoute(RouteSettings settings) {
-  print('generateCarPoolRoute');
-  switch (settings.name) {
-    case gameRoomListRoute:
-      return MaterialPageRoute(builder: (context) => GameRoomListScreen());
-    case carPoolListRoute:
-      return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
-    default:
-      return MaterialPageRoute(builder: (context) => WelcomeScreen());
-  }
+  return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
 }

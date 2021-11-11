@@ -23,7 +23,7 @@ class EventListItem extends StatelessWidget {
                   " à été cliquer. Id:" +
                   events[index].eventid);
               Utils.mainAppNav.currentState!
-                  .pushNamed(appFeaturesMainScreenRoute, arguments: events[index]);
+                  .pushNamed(carPoolListRoute, arguments: events[index]);
             },
             child: Padding(
               padding: EdgeInsets.all(4),
