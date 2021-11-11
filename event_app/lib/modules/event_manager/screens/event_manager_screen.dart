@@ -28,20 +28,10 @@ class _EventManagerScreenState extends State<EventManagerScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final topLayoutHeight = screenSize.height * 0.1;
-    final centerLayoutHeight = screenSize.height * 0.65;
+    final centerLayoutHeight = screenSize.height * 0.95;
     return Center(
         child: Column(
       children: [
-        Container(
-          alignment: Alignment.bottomCenter,
-          height: topLayoutHeight,
-          child: GestureDetector(
-              onTap: () {
-                print("refresh btn pressed in event");
-              },
-              child:
-                  Text("Ref Eventlist", style: TextStyle(color: primary_blue))),
-        ),
         Container(
           alignment: Alignment.topCenter,
           height: centerLayoutHeight,

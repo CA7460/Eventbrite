@@ -40,82 +40,82 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
 
     return Scaffold(
       backgroundColor: primary_background,
-      body: 
-      // WillPopScope(
-      //   onWillPop: () async {
-      //     if (Utils.appFeaturesNav.currentState!.canPop()) {
-      //       Utils.appFeaturesNav.currentState!.pop();
-      //       return false;
-      //     }
-      //     return true;
-      //   },
-      //   child: 
-        Row(
-          children: <Widget>[
-            // ==========================================
-            // ============= MAIN CONTENT ===============
-            // ==========================================
-            Expanded(
-              child: IndexedStack(index: _selectedIndex, children: <Widget>[
-                Navigator(
-                  key: Utils.mainWallNav,
-                  initialRoute: mainWallRoute,
-                  onGenerateRoute: router.generateMainWallRoute,
-                ),
-                Navigator(
-                  key: Utils.messengerNav,
-                  initialRoute: messengerLandingScreenRoute,
-                  onGenerateRoute: router.generateMessengerRoute,
-                ),
-                Navigator(
-                  key: Utils.lightEffectsNav,
-                  initialRoute: lightEffectsRoute,
-                  onGenerateRoute: router.generateLightEffectsRoute,
-                ),
-                Navigator(
-                  key: Utils.crowdGameNav,
-                  initialRoute: gameRoomListRoute,
-                  onGenerateRoute: router.generateGameRoute,
-                ),
-                Navigator(
+      body:
+          // WillPopScope(
+          //   onWillPop: () async {
+          //     if (Utils.appFeaturesNav.currentState!.canPop()) {
+          //       Utils.appFeaturesNav.currentState!.pop();
+          //       return false;
+          //     }
+          //     return true;
+          //   },
+          //   child:
+          Row(
+        children: <Widget>[
+          // ==========================================
+          // ============= MAIN CONTENT ===============
+          // ==========================================
+          Expanded(
+            child: IndexedStack(index: _selectedIndex, children: <Widget>[
+              Navigator(
+                key: Utils.mainWallNav,
+                initialRoute: mainWallRoute,
+                onGenerateRoute: router.generateMainWallRoute,
+              ),
+              Navigator(
+                key: Utils.messengerNav,
+                initialRoute: messengerLandingScreenRoute,
+                onGenerateRoute: router.generateMessengerRoute,
+              ),
+              Navigator(
+                key: Utils.lightEffectsNav,
+                initialRoute: lightEffectsRoute,
+                onGenerateRoute: router.generateLightEffectsRoute,
+              ),
+              Navigator(
+                key: Utils.crowdGameNav,
+                initialRoute: gameRoomListRoute,
+                onGenerateRoute: router.generateGameRoute,
+              ),
+/*                 Navigator(
                   key: Utils.carpoolNav,
                   initialRoute: carPoolListRoute,
                   onGenerateRoute: router.generateCarpoolRoute,
-                ),
-              ]),
+                ), */
+            ]),
 //
-              // child: Navigator(
-              //   key: Utils.appFeaturesNav,
-              //   initialRoute: gameRoomListRoute,
-              //   onGenerateRoute:
-              //       navigationSwitcher, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
-              // ),
+            // child: Navigator(
+            //   key: Utils.appFeaturesNav,
+            //   initialRoute: gameRoomListRoute,
+            //   onGenerateRoute:
+            //       navigationSwitcher, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
+            // ),
 //
-            ),
+          ),
 
-            // ==========================================
-            // ============== NAVIGATION ================
-            // ==========================================
-            NavigationRail(
-              groupAlignment: -0.5, // De -1.0=top à 1=bottom
-              backgroundColor: navigationrail_background,
-              selectedIndex: _selectedIndex,
-              onDestinationSelected: (int index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-              labelType: NavigationRailLabelType.selected,
-              destinations: [
-                navigationRailItem(AppFeature.mainWall),
-                navigationRailItem(AppFeature.messenger),
-                navigationRailItem(AppFeature.lights),
-                navigationRailItem(AppFeature.games),
-                navigationRailItem(AppFeature.carpool)
-              ],
-            ),
-          ],
-        ),
+          // ==========================================
+          // ============== NAVIGATION ================
+          // ==========================================
+          NavigationRail(
+            groupAlignment: -0.5, // De -1.0=top à 1=bottom
+            backgroundColor: navigationrail_background,
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: (int index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            labelType: NavigationRailLabelType.selected,
+            destinations: [
+              navigationRailItem(AppFeature.mainWall),
+              navigationRailItem(AppFeature.messenger),
+              navigationRailItem(AppFeature.lights),
+              navigationRailItem(AppFeature.games),
+              navigationRailItem(AppFeature.carpool)
+            ],
+          ),
+        ],
+      ),
       // ),   WillPopScore
     );
   }
