@@ -1,12 +1,9 @@
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
 import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
 import 'package:flutter/material.dart';
-import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
-import 'package:event_app/widgets/primary_button_widget.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_passenger_screen.dart';
-import 'package:event_app/config/theme/styles.dart';
 
 Future navigerEcrans(context, ecran) async {
   Navigator.push(context, MaterialPageRoute(builder: (context) => ecran));
@@ -60,67 +57,17 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
               children: [
                 PrimaryButton2('I am a driver', Colors.black,
                     onPressed: () =>
-
-                      //  navigerEcrans(context, CarpoolDriverScreen());
-                    // {Navigator.pushNamed(context, enterGameRoomRoute)}),
                     {
                     navigerEcrans(context, CarpoolDriverScreen())
-
-                     /* Utils.appFeaturesNav
-                          .currentState! // pushReplacementNamed remplace la route, on ne peut pas back dessus
-                          .pushNamed(createGameRoute)
-                          .then((value) {
-                        refreshGameRoomList();
-                      }) // pushNamed permet de pop()
-                      //  AJOUTER UNE NOUVELLE ROUTE POUR CREATE GAME*/
                     }),
 
-                PrimaryButton3('I am a passenger', primary_green,
+                PrimaryButton3('I am a passenger', Colors.black ,
                     onPressed: () => {
                       navigerEcrans(context, CarpoolPassengerScreen())
-                     /* Utils.appFeaturesNav.currentState!
-                          .pushNamed(scoreboardRoute)  */
                     }),
               ],
             ),
           ),
-          /*Container(
-            height: bottomLayoutHeight,
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                PrimaryButton('Create game', primary_blue,
-                    onPressed: () =>
-                        // {Navigator.pushNamed(context, enterGameRoomRoute)}),
-                        {
-                          Utils.appFeaturesNav
-                              .currentState! // pushReplacementNamed remplace la route, on ne peut pas back dessus
-                              .pushNamed(createGameRoute)
-                              .then((value) {
-                            refreshGameRoomList();
-                          }) // pushNamed permet de pop()
-                          //  AJOUTER UNE NOUVELLE ROUTE POUR CREATE GAME
-                        }),
-                PrimaryButton('Scoreboard', primary_blue,
-                    onPressed: () => {
-                          Utils.appFeaturesNav.currentState!
-                              .pushNamed(scoreboardRoute)
-                        }),
-                PrimaryButton('Car Pool', primary_blue,
-                    onPressed: () =>
-                    // {Navigator.pushNamed(context, enterCarPoolRoute)}),
-                    {
-                      Utils.appFeaturesNav
-                          .currentState! // pushReplacementNamed remplace la route, on ne peut pas back dessus
-                          .pushNamed(carPoolRoute)
-                          .then((value) {
-                        refreshGameRoomList();
-                      }) // pushNamed permet de pop()
-                    }),
-              ],
-            ),
-          ),*/
         ],
       ),
     );
@@ -191,7 +138,7 @@ class PrimaryButton2 extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: Image(
-                    image: AssetImage("assets/images/eventbrite_welcome.jpg"),
+                    image: AssetImage("assets/images/driver.png"),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -244,7 +191,7 @@ class PrimaryButton3 extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: Image(
-                    image: AssetImage("assets/images/eventbrite_welcome.jpg"),
+                    image: AssetImage("assets/images/passenger.jpeg"),
                     fit: BoxFit.cover,
                   ),
                 ),

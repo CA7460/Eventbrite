@@ -148,18 +148,6 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
                           Utils.appFeaturesNav.currentState!
                               .pushNamed(scoreboardRoute)
                         }),
-                PrimaryButton('Car Pool', primary_blue,
-                    onPressed: () =>
-                    //CarPoolListScreen
-                    // {Navigator.pushNamed(context, enterCarPoolRoute)}),
-                    {
-                      Utils.appFeaturesNav
-                          .currentState! // pushReplacementNamed remplace la route, on ne peut pas back dessus
-                          .pushNamed(carPoolListRoute)
-                          .then((value) {
-                        refreshGameRoomList();
-                      }) // pushNamed permet de pop()
-                    }),
               ],
             ),
           ),

@@ -19,7 +19,8 @@ class AppFeaturesMainScreen extends StatefulWidget {
 
 class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
   // Changer pour 0
-  int _selectedIndex = 3;
+  //int _selectedIndex = 3;
+  int _selectedIndex = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,8 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
             Expanded(
               child: Navigator(
                 key: Utils.appFeaturesNav,
-                initialRoute: gameRoomListRoute,
+               // initialRoute: gameRoomListRoute,
+                initialRoute: carPoolListRoute,
                 onGenerateRoute:
                     navigationSwitcher, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
               ),

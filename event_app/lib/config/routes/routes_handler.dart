@@ -44,6 +44,8 @@ Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
     case gameRoomListRoute:
       return MaterialPageRoute(builder: (context) => GameRoomListScreen());
     // carpool
+    case carPoolListRoute:
+      return MaterialPageRoute(builder: (context) => CarPoolListScreen());
     default: // PENSER À QQCHOSE POUR DEFAULT
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
@@ -79,3 +81,17 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
 }
+
+// CARPOOL exemple Navigation individuelle
+// Route<dynamic> generateCarpoolRoute(RouteSettings settings) {
+//   switch (settings.name) {
+//     case carpoolListRoute:
+//       return MaterialPageRoute(builder: (context) => CarPoolListScreen());
+
+//   // Autres routes possible à l'intérieur du feature
+
+//     default:
+//   }
+// }
+
+// MESSENGER ...
