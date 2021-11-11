@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'package:event_app/modules/app_features/crowd_games/local_widgets/gameroom.dart';
-import 'package:event_app/modules/app_features/crowd_games/models/game.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gamestatus.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/player.dart';
 import 'package:event_app/utils/services/local_storage_service.dart';
@@ -19,24 +19,28 @@ Future<List<Player>> createGameRoom() async {
   if (userResponse[0] == "OK" && userResponse.length > 1) {
     final User gameCreator = User.fromJson(userResponse[1]);
     // userResponse[1].map((user) => User.fromJson(user));
-
-    print(gameCreator.userid);
-
     final gameRoomResponse = await createGameRoomInDatabase(gameCreator.userid);
     if (gameRoomResponse[0] == "OK" && gameRoomResponse.length > 1) {
       gameRoomResponse.removeAt(0);
-      print(gameRoomResponse);
+
       return gameRoomResponse.map((player) => Player.fromJson(player)).toList();
     }
   }
   return <Player>[];
 }
 
+Future<List<Player>> getPlayers(String roomId) async {
+  var response = await getPlayersInGameRoomFromDatabase(roomId);
+  if (response[0] == "OK" && response.length > 1) {
+    response.removeAt(0);
+    return response.map((player) => Player.fromJson(player)).toList();
+  }
+  return <Player>[];
+}
+
 Future<void> deleteGameRoom(String roomid) async {
   final deleteResponse = await deleteGameRoomFromDatabase(roomid);
-  if (deleteResponse[0] == "OK") {
-    print(deleteResponse);
-  }
+  if (deleteResponse[0] == "OK") {}
 }
 
 class CreateGameScreen extends StatefulWidget {
@@ -47,14 +51,44 @@ class CreateGameScreen extends StatefulWidget {
 }
 
 class _CreateGameScreenState extends State<CreateGameScreen> {
+  late Future<List<Player>> _playerListFuture;
+  late String roomid = "";
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+    _playerListFuture = createGameRoom();
+  }
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 2);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        setState(() {
+          print('searching for players');
+          _playerListFuture = getPlayers(roomid);
+        });
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final topLayoutHeight = screenSize.height * 0.15;
-    final centerLayoutHeight = screenSize.height * 0.60;
+    final centerLayoutHeight = screenSize.height * 0.50;
+    final centerLayoutHeight2 = screenSize.height * 0.10;
     final bottomLayoutHeight = screenSize.height * 0.25;
 
-    String roomid = "";
     return Container(
       color: primary_background,
       child: Center(
@@ -67,7 +101,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
                 "New Game",
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 42,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -76,7 +110,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
               alignment: Alignment.topCenter,
               height: centerLayoutHeight,
               child: FutureBuilder<List<Player>>(
-                  future: createGameRoom(),
+                  future: _playerListFuture,
                   builder: (
                     BuildContext context,
                     AsyncSnapshot<List<Player>> snapshot,
@@ -90,10 +124,21 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
                         gameStatus: GameStatus.pending,
                       );
                     } else {
-                      return CircularProgressIndicator();
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: primary_blue,
+                        ),
+                      );
                     }
                   }),
             ),
+            Container(
+                height: centerLayoutHeight2,
+                child: Text("Wait for other players\n or start game NOW!",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold))),
             Container(
               height: bottomLayoutHeight,
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
@@ -102,14 +147,18 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
                 children: [
                   PrimaryButton('Start', primary_blue,
                       onPressed: () => {
+                            // changer le status de la room pour ongoing
+                            _timer?.cancel(),
                             Utils.appFeaturesNav.currentState!
-                                .pushNamed(startNewGameRoute, arguments: roomid)
+                                .pushReplacementNamed(startNewGameRoute,
+                                    arguments: roomid)
                           }),
                   PrimaryButton('Cancel', primary_blue,
                       onPressed: () =>
 
                           // AJOUTER UNE REQUETE SQL POUR DELETE LA ROW
                           {
+                            _timer?.cancel(),
                             deleteGameRoom(roomid),
                             Utils.appFeaturesNav.currentState!.pop('Test')
                           }),

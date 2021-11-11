@@ -7,6 +7,9 @@ import 'package:event_app/modules/app_features/discussion/screens/chat_screen.da
 import 'package:event_app/modules/app_features/discussion/screens/main_messenger_screen.dart';
 import 'package:event_app/modules/app_features/discussion/screens/new_message_screen.dart';
 import 'package:event_app/models/eventmod.dart';
+import 'package:event_app/modules/app_features/crowd_games/screens/loading_screen.dart';
+import 'package:event_app/modules/app_features/crowd_games/screens/ongoing_game_screen.dart';
+import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
 import 'package:event_app/modules/login/screens/login_screen.dart';
 import 'package:event_app/modules/login/screens/welcome_screen.dart';
@@ -54,7 +57,11 @@ Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
 }
 
 // Navigations individuelles pour chaque feature
-// Exemple pour crowd Games, génère plusieurs écrans, il faut back au bonnes places
+
+// generateMainWallRoute...
+// generateMessengerRoute...
+// generateLightEffectsRoute...
+
 Route<dynamic> generateGameRoute(RouteSettings settings) {
   switch (settings.name) {
     case gameRoomListRoute:
@@ -65,19 +72,23 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
               GameRoomScreen(gameroom: settings.arguments as GameRoom));
     case createGameRoute:
       return MaterialPageRoute(builder: (context) => CreateGameScreen());
+    // case startNewGameRoute:
+    //   return MaterialPageRoute(builder: (context) => GameScreen(roomid: settings.arguments as String));
     case startNewGameRoute:
-      return MaterialPageRoute(builder: (context) => GameScreen(roomid: settings.arguments as String));
+      return MaterialPageRoute(builder: (context) => LoadingScreen(roomid: settings.arguments as String));
+
+    case joinGameRoute:
+      return MaterialPageRoute(
+          builder: (context) => 
+              OngoingGameScreen(roomid: settings.arguments as String));
     case scoreboardRoute:
       return MaterialPageRoute(builder: (context) => ScoreboardScreen());
-    // case joinGameRoute:
-    //  return MaterialPageRoute(builder: (context) => OngoingGameScreen());
 
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
 }
 
-// CARPOOL exemple Navigation individuelle
 // Route<dynamic> generateCarpoolRoute(RouteSettings settings) {
 //   switch (settings.name) {
 //     case carpoolListRoute:

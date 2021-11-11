@@ -4,6 +4,7 @@ import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/login/widgets/rounded_input_field.dart';
 import 'package:event_app/modules/login/widgets/rounded_password_field.dart';
+import 'package:event_app/widgets/primary_button_widget.dart';
 import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:flutter/material.dart';
@@ -74,24 +75,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: 'Password',
                 ),
                 SizedBox(height: 30),
-                ElevatedButton(
-                    onPressed: () async {
-                      if (_validateForm()) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        await _checkLogin(
-                            emailController.text,
-                            passwordController.text,
-                            loggedUser
-                            );
-                        if (isLogged) {
-                          Navigator.pushNamed(context, eventManagerScreenRoute);
-
-                          // Code test pour Sam - crowd games
-                          // Navigator.pushNamed(context, appFeaturesMainScreenRoute);
-                        }
-                      }
-                    },
-                    child: Text('Login'))
+                PrimaryButton('Login', primary_blue, onPressed: () async {
+                  if (_validateForm()) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    await _checkLogin(
+                        emailController.text, passwordController.text);
+                    if (isLogged) {
+                      Navigator.pushNamed(context, eventManagerScreenRoute);
+                      // Code test pour Sam - crowd games
+                      // Navigator.pushNamed(context, appFeaturesMainScreenRoute);
+                    }
+                  }
+                }),
               ],
             ),
           ),
