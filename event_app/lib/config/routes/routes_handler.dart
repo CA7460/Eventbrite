@@ -9,6 +9,8 @@ import 'package:event_app/modules/app_features/discussion/screens/new_message_sc
 import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/loading_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/ongoing_game_screen.dart';
+import 'package:event_app/modules/app_features/light_effects/screens/light_effect_screen.dart';
+import 'package:event_app/modules/app_features/main_wall/screens/main_wall_screen.dart';
 // import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
 import 'package:event_app/modules/login/screens/login_screen.dart';
@@ -21,7 +23,6 @@ import 'package:event_app/modules/app_features/crowd_games/screens/scoreboard_sc
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case welcomeScreenRoute:
@@ -31,7 +32,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case eventManagerScreenRoute:
       return MaterialPageRoute(builder: (context) => EventManagerScreen());
     case appFeaturesMainScreenRoute:
-      return MaterialPageRoute(builder: (context) => AppFeaturesMainScreen(event: settings.arguments as EventMod));
+      return MaterialPageRoute(
+          builder: (context) =>
+              AppFeaturesMainScreen(event: settings.arguments as EventMod));
 
     // Test pour Sam - crowdGames
     // case crowdGamesLandingScreenRoute:
@@ -75,11 +78,13 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
     // case startNewGameRoute:
     //   return MaterialPageRoute(builder: (context) => GameScreen(roomid: settings.arguments as String));
     case startNewGameRoute:
-      return MaterialPageRoute(builder: (context) => LoadingScreen(roomid: settings.arguments as String));
+      return MaterialPageRoute(
+          builder: (context) =>
+              LoadingScreen(roomid: settings.arguments as String));
 
     case joinGameRoute:
       return MaterialPageRoute(
-          builder: (context) => 
+          builder: (context) =>
               OngoingGameScreen(roomid: settings.arguments as String));
     case scoreboardRoute:
       return MaterialPageRoute(builder: (context) => ScoreboardScreen());
@@ -106,19 +111,36 @@ Route<dynamic> generateMessengerRoute(RouteSettings settings) {
     case chatScreenRoute:
       return MaterialPageRoute(builder: (context) {
         ChatScreenArgument arguments = settings.arguments as ChatScreenArgument;
-        return ChatScreen(
-          socket: arguments.socket,
-          convoId: arguments.convoId);
-      });  
+        return ChatScreen(socket: arguments.socket, convoId: arguments.convoId);
+      });
     case messengerLandingScreenRoute:
       return MaterialPageRoute(builder: (context) => MainMessengerScreen());
     case newMessageRoute:
       return MaterialPageRoute(builder: (context) {
-        NewMessageScreenArgument arguments = settings.arguments as NewMessageScreenArgument;
-        return NewMessageScreen(
-          socket: arguments.socket
-          );
+        NewMessageScreenArgument arguments =
+            settings.arguments as NewMessageScreenArgument;
+        return NewMessageScreen(socket: arguments.socket);
       });
+    default:
+      return MaterialPageRoute(builder: (context) => WelcomeScreen());
+  }
+}
+
+//lightEffect route
+Route<dynamic> generateLightEffectsRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case lightEffectsRoute:
+      return MaterialPageRoute(builder: (context) => LightEffectScreen());
+    default:
+      return MaterialPageRoute(builder: (context) => WelcomeScreen());
+  }
+}
+
+//mainWall route
+Route<dynamic> generateMainWallRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case mainWallRoute:
+      return MaterialPageRoute(builder: (context) => MainWallScreen());
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }

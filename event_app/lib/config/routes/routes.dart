@@ -17,3 +17,11 @@ const String joinGameRoute = 'joinGame';
 const String messengerLandingScreenRoute = 'messenger';
 const String chatScreenRoute = 'chats';
 const String newMessageRoute = 'newMessage';
+
+//LIGHT EFFECT ROUTE
+
+const String lightEffectsRoute = "lightEffect";
+
+//MainWall
+
+const String mainWallRoute = "mainWall";
