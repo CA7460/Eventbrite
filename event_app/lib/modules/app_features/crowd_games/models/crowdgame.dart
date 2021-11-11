@@ -4,11 +4,13 @@ import 'package:event_app/modules/app_features/crowd_games/models/gamecount.dart
 import 'package:event_app/modules/app_features/crowd_games/models/gamemanager.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gamestatus.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gametype.dart';
+import 'package:flutter/material.dart';
 // import 'package:event_app/modules/app_features/crowd_games/models/photo_challenge.dart';
 // import 'package:event_app/modules/app_features/crowd_games/models/quiz.dart';
 // import 'package:event_app/modules/app_features/crowd_games/models/action_challenge.dart';
 
 class CrowdGame {
+  static GlobalKey<AnimatedListState> gameListKey = GlobalKey();
   static const int statementCount = 10;
 
   String _crowdGameId = "";
@@ -31,23 +33,26 @@ class CrowdGame {
   factory CrowdGame.composeCrowdGame(String id, List<GameCount> gameCounts) {
     List<GameManager> gameManagers = <GameManager>[];
 
-    for (int i = 0; i < statementCount; i++) {
+    for (int stmt = 1; stmt <= statementCount; stmt++) {
       int randomGameType = Random().nextInt(3);
 
       switch (randomGameType) {
         case GameType.quiz:
           gameManagers.add(GameManager(
+              statementNumber: stmt,
               gameCategory: GameType.quiz,
               gameId: 1 + Random().nextInt((gameCounts[0].quizCount))));
           break;
         case GameType.photoChallenge:
           gameManagers.add(GameManager(
+              statementNumber: stmt,
               gameCategory: GameType.photoChallenge,
               gameId:
                   1 + Random().nextInt((gameCounts[0].photoChallengeCount))));
           break;
         case GameType.actionChallenge:
           gameManagers.add(GameManager(
+              statementNumber: stmt,
               gameCategory: GameType.actionChallenge,
               gameId:
                   1 + Random().nextInt((gameCounts[0].actionChallengeCount))));

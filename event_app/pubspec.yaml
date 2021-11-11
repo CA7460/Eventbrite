@@ -32,6 +32,7 @@ dependencies:
   shared_preferences: ^2.0.8
   url_launcher: ^6.0.12
   http: ^0.13.4
+  scroll_to_index: ^2.1.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -43,6 +44,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   google_fonts: ^2.1.0
+  percent_indicator: ^3.4.0
+  
   
 
   # The "flutter_lints" package below contains a set of recommended lints to

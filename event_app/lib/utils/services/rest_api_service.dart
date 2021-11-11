@@ -31,7 +31,9 @@ Future<List> getUserDetailsFromDatabase(String userMail) async {
 //EventList
 Future<List> getEventsListFromDatabase(String mail) async {
   var url = Uri.parse(eventControlorUrl);
-  var response = await http.post(url, body: {'action': 'listEventsForUserMail', 'mail': mail});
+  var response = await http
+      .post(url, body: {'action': 'listEventsForUserMail', 'mail': mail});
+  print(response.body);
   final data = json.decode(response.body);
   return data;
 }
@@ -52,6 +54,14 @@ Future<List> getPlayersInGameRoomFromDatabase(String roomId) async {
   return data;
 }
 
+Future<List> getManagersFromDatabase(String roomId) async {
+  var url = Uri.parse(gameControlorUrl);
+  var response = await http.post(url,
+      body: {'action': 'getManagersForRoomId', 'gameroomid': roomId});
+  final data = json.decode(response.body);
+  return data;
+}
+
 Future<List> createGameRoomInDatabase(String creatorid) async {
   var url = Uri.parse(gameControlorUrl);
   var response = await http.post(url, body: {
@@ -62,9 +72,8 @@ Future<List> createGameRoomInDatabase(String creatorid) async {
     'capacity': GameRoom.playerCapacity.toString(),
     'playerCount': '1',
     'progress': '0',
-    'roomStatus': GameStatus.pending
+    'roomStatus': GameStatus.pending,
   });
-  print(response.body);
   final data = json.decode(response.body);
   return data;
 }
@@ -73,7 +82,6 @@ Future<List> deleteGameRoomFromDatabase(String roomId) async {
   var url = Uri.parse(gameControlorUrl);
   var response = await http
       .post(url, body: {'action': 'deleteGameRoom', 'gameroomid': roomId});
-  print(response.body);
   final data = json.decode(response.body);
   return data;
 }
@@ -97,31 +105,42 @@ Future<List> addCrowdGameInDatabase(CrowdGame crowdGame) async {
     'currentgamepos': crowdGame.currentGamePos.toString(),
     'status': crowdGame.crowdGameStatus
   });
-  print("Crowd game added: " + response.body);
   final data = json.decode(response.body);
   return data;
 }
 
 Future<List> addGameManagersInDatabase(
     String crowdGameId, List<GameManager> gameManagers) async {
-  String insertRequest = "";
-  //for (GameManager gm in gameManagers) {
-  //  print(gm.startTime);
-    insertRequest =
-        //"INSERT INTO gamemanager (crowdgameid, gamecategory, gameid, starttime, status) VALUES ((SELECT cr.crowdgameid FROM crowdgame cr WHERE LOWER(CONCAT('0x',HEX(cr.crowdgameid)))='$crowdGameId'), ${gm.gameCategory}, ${gm.gameId}, '${gm.startTime != null ? DateFormat('yyyy-MM-dd HH:mm:ss').format(gm.startTime!) : "NULL"}', '${gm.gameStatus}');";
-        "INSERT INTO gamemanager (crowdgameid, gamecategory, gameid, starttime, status) VALUES ((SELECT cr.crowdgameid FROM crowdgame cr WHERE LOWER(CONCAT('0x',HEX(cr.crowdgameid)))='0x945d03013bfe11ecbe130cc47ad3b416'), 2, 1, NULL, 'ongoing');";
-  //}
+  String insertRequest =
+      "INSERT INTO gamemanager (statementnumber, crowdgameid, gamecategory, gameid, starttime, status) VALUES ";
+  for (GameManager gm in gameManagers) {
+    insertRequest +=
+        "(${gm.statementNumber},(SELECT cr.crowdgameid FROM crowdgame cr WHERE LOWER(CONCAT('0x',HEX(cr.crowdgameid)))='$crowdGameId'), ${gm.gameCategory}, ${gm.gameId}, NULL, '${gm.gameStatus}'),";
+  }
+  insertRequest = insertRequest.substring(0, insertRequest.length - 1);
+  insertRequest += ";";
 
-  String selectRequest =
-      // "SELECT LOWER(CONCAT('0x',HEX(crowdgameid))) as crowdgameid, gamecategory, gameid, starttime, status FROM gamemanager WHERE LOWER(CONCAT('0x',HEX(crowdgameid)))=$crowdGameId;";
-      "SELECT LOWER(CONCAT('0x',HEX(crowdgameid))) as crowdgameid, gamecategory, gameid, starttime, status FROM gamemanager WHERE LOWER(CONCAT('0x',HEX(crowdgameid)))='0x945d03013bfe11ecbe130cc47ad3b416';";
+  // String selectRequest =
+  //    "SELECT statementnumber, LOWER(CONCAT('0x',HEX(crowdgameid))) as crowdgameid, gamecategory, gameid, starttime, status FROM gamemanager WHERE LOWER(CONCAT('0x',HEX(crowdgameid)))='$crowdGameId';";
   var url = Uri.parse(gameControlorUrl);
   var response = await http.post(url, body: {
     'action': 'createGameManagers',
     'insertRequest': insertRequest,
-    'selectRequest': selectRequest
+    //  'selectRequest': selectRequest
   });
-  print("Game managers added : " + response.body);
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> addPlayerToPlayerManagerInDatabase(
+    String userMail, String gameroomid,
+    {required score}) async {
+  var url = Uri.parse(gameControlorUrl);
+  String request =
+      "INSERT INTO playermanager (gameroomid, userid, score) VALUES ((SELECT gr.gameroomid FROM gameroom gr WHERE LOWER(CONCAT('0x',HEX(gr.gameroomid)))='$gameroomid'), (SELECT u.userid FROM users u WHERE u.mail ='$userMail'),$score);";
+  var response = await http
+      .post(url, body: {'action': 'addPlayerToManager', 'request': request});
+
   final data = json.decode(response.body);
   return data;
 }
@@ -151,6 +170,136 @@ Future<List> getActionChallengesFromDatabase() async {
 Future<List> getCarPoolListFromDatabase() async {
   var url = Uri.parse(carpoolControlorUrl);
   var response = await http.post(url, body: {'action': 'listCarPool'});
+  final data = json.decode(response.body);
+  return data;
+}
+Future<List> getGameStatusFromDatabase(String crowdGameId, int stmt) async {
+  var url = Uri.parse(gameControlorUrl);
+  var response = await http.post(url, body: {
+    'action': 'getGameStatus',
+    'crowdgameid': crowdGameId,
+    'statementnumber': stmt.toString()
+  });
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> getRoomStatusFromDatabase(String roomid) async {
+  var url = Uri.parse(gameControlorUrl);
+  var response = await http.post(url, body: {
+    'action': 'getRoomStatus',
+    'gameroomid': roomid,
+  });
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> updateGameStatusInDatabase(
+    String crowdGameId, String status) async {
+  var url = Uri.parse(gameControlorUrl);
+  String request =
+      "UPDATE gamemanager SET status = '$status' WHERE LOWER(CONCAT('0x',HEX(crowdgameid)))='$crowdGameId';";
+  var response = await http
+      .post(url, body: {'action': 'updateGameStatus', 'request': request});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> updateGameProgressInDatabase(String roomid, int progress) async {
+  var url = Uri.parse(gameControlorUrl);
+  String request =
+      "UPDATE gameroom SET progress = $progress WHERE LOWER(CONCAT('0x',HEX(gameroomid)))='$roomid';";
+  var response = await http.post(url,
+      body: {'action': 'updateSingleGameStatus', 'request': request});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> updateGameManagersStatusInDatabase(
+    String crowdGameId, String status) async {
+  var url = Uri.parse(gameControlorUrl);
+  String request =
+      "UPDATE gamemanager SET status = '$status' WHERE LOWER(CONCAT('0x',HEX(crowdgameid)))='$crowdGameId';";
+  var response = await http.post(url,
+      body: {'action': 'updateGameManagersStatus', 'request': request});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> updateSingleGameStatusInDatabase(
+    String roomid, int stmt, String status) async {
+  var url = Uri.parse(gameControlorUrl);
+  String request =
+      "UPDATE gamemanager gm JOIN crowdgame cg ON LOWER(CONCAT('0x',HEX(gm.crowdgameid))) = LOWER(CONCAT('0x',HEX(cg.crowdgameid))) SET gm.status = '$status' WHERE LOWER(CONCAT('0x',HEX(cg.gameroomid)))='$roomid' AND gm.statementnumber = $stmt;";
+  var response = await http.post(url,
+      body: {'action': 'updateSingleGameStatus', 'request': request});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> updateRoomStatusInDatabase(String roomid, String status) async {
+  var url = Uri.parse(gameControlorUrl);
+  String request =
+      "UPDATE gameroom SET roomStatus = '$status' WHERE LOWER(CONCAT('0x',HEX(gameroomid)))='$roomid';";
+  var response = await http
+      .post(url, body: {'action': 'updateRoomStatus', 'request': request});
+  print(response.body);
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> updatePlayerScoreInDatabase(
+    int currentScore, String userMail) async {
+  var url = Uri.parse(gameControlorUrl);
+  String request =
+      "UPDATE playermanager SET score = $currentScore WHERE LOWER(CONCAT('0x',HEX(userid))) = (SELECT LOWER(CONCAT('0x',HEX(u.userid))) FROM users u WHERE u.mail='$userMail');";
+  var response = await http
+      .post(url, body: {'action': 'updatePlayerScore', 'request': request});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> getPlayerScoresFromDatabase(String roomid) async {
+  var url = Uri.parse(gameControlorUrl);
+  String request =
+      "SELECT u.prenom, u.mail, pm.score FROM users u JOIN playermanager pm USING (userid) WHERE LOWER(CONCAT('0x',HEX(pm.gameroomid))) = '$roomid' ORDER BY pm.score DESC;";
+  var response = await http
+      .post(url, body: {'action': 'getPlayerScores', 'request': request});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> updateGlobalScoreboardInDatabase(
+    int currentScore, String userMail) async {
+  var url = Uri.parse(gameControlorUrl);
+  String request =
+      "INSERT INTO scoreboard SET userid = (SELECT u.userid FROM users u WHERE u.mail='$userMail'), score = $currentScore ON DUPLICATE KEY UPDATE score = (score + $currentScore);";
+  var response = await http.post(url,
+      body: {'action': 'updateGlobalScoreboard', 'request': request});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> removeUserFromPlayerManagerInDatabase(String userMail) async {
+  var url = Uri.parse(gameControlorUrl);
+
+  String request =
+      "DELETE FROM playermanager WHERE LOWER(CONCAT('0x',HEX(userid))) = (SELECT LOWER(CONCAT('0x',HEX(u.userid))) FROM users u WHERE u.mail='$userMail');";
+  var response = await http.post(url,
+      body: {'action': 'deletePlayerFromPlayerManager', 'request': request});
+  print(response.body);
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> removeGamesCreatedByUserInDatabase(String userMail) async {
+  var url = Uri.parse(gameControlorUrl);
+
+  String request =
+      "DELETE FROM gameroom WHERE LOWER(CONCAT('0x',HEX(userid))) = (SELECT LOWER(CONCAT('0x',HEX(u.userid))) FROM users u WHERE u.mail='$userMail');";
+  var response = await http.post(url,
+      body: {'action': 'deletePlayerFromPlayerManager', 'request': request});
+  print(response.body);
   final data = json.decode(response.body);
   return data;
 }

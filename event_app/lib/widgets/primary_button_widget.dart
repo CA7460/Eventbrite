@@ -13,7 +13,7 @@ class PrimaryButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         primary: btnColor,
-        fixedSize: Size(232, 52),
+        fixedSize: Size(208, 44),
         textStyle: buttonStyle,
       ),
       child: Text(
