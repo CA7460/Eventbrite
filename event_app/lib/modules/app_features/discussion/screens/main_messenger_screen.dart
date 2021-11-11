@@ -1,10 +1,12 @@
 import 'package:event_app/config/routes/routes.dart';
+import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/avatar_title.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/chat_list.dart';
 import 'package:event_app/modules/app_features/discussion/models/chat_screen_argument.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation_type.dart';
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
 import 'package:event_app/modules/app_features/discussion/models/message_list.dart';
+import 'package:event_app/modules/app_features/discussion/models/new_message_screen_argrument.dart';
 import 'package:event_app/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
@@ -63,7 +65,16 @@ class _ChatScreenState extends State<MainMessengerScreen> {
     Utils.appFeaturesNav.currentState!.pushNamed(
       chatScreenRoute,
       arguments: ChatScreenArgument(
-        'January Report',
+        convoid,
+         socket,
+      )
+    );
+  }
+
+  _goToNewMessageScreen() {
+    Utils.appFeaturesNav.currentState!.pushNamed(
+      newMessageRoute,
+      arguments: NewMessageScreenArgument(
          socket,
       )
     );
@@ -71,12 +82,25 @@ class _ChatScreenState extends State<MainMessengerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final LoggedUser loggedUser = Provider.of<LoggedUser>(context);
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(tabs: tabs),
-          title: const AvatarTitle(avatarLetter: 'I', title: 'Chats',),
+          title: AvatarTitle(avatarLetter: loggedUser.user!.prenom.substring(0,1), title: 'Chats',),
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: _goToNewMessageScreen,
+                child: Icon(
+                  Icons.add,
+                  size: 26.0,
+                ),
+              )
+            )
+          ],
         ),
         body:  TabBarView(children: [
           ChatList(conversationType: ConversationType.private, onTap: _goToChatScreen,),

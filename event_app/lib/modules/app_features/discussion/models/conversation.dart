@@ -33,7 +33,7 @@ class Conversation {
       "title": title,
       "members": members.map((e) => e.userid),
       "lastMessage": lastMessage?.messageId,
-      "type": type,
+      "type": type.toString().split('.').last,
       "updatedAt": updatedAt
     };  
   }  

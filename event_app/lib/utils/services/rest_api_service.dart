@@ -28,7 +28,6 @@ Future<List<User>> getAttendees(String eventId) async {
   var url = Uri.parse(messengerControlorUrl);
   var response = await http.post(url, body: {'action': 'listAttendees', 'eventId': eventId});
   final data = json.decode(response.body);
-  print(data);
   if (data[0] == 'OK'){
     for (var i = 1; i < data.length -1; i++) {
       User user = User.fromJson(data[i]);
