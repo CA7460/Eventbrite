@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/models/attendee_list.dart';
 import 'package:event_app/models/current_event.dart';
+import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation_type.dart';
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
+import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:event_app/widgets/primary_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,9 +31,12 @@ class NewMessageScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<NewMessageScreen> {
   final _messageFormKey = GlobalKey<FormState>();
-  final List<User> sendTo = [];
+  late ConversationType type;
   late TextEditingController _contentTextController;
   late TextEditingController _titleTextController;
+
+  List<User> sendTo = [];
+  late User currentUser;
   late AttendeeList attendees;
   late List<User> sendees;
   late User selectedSendee;
@@ -39,38 +46,72 @@ class _ChatScreenState extends State<NewMessageScreen> {
     return _messageFormKey.currentState!.validate();
   }
 
-  List<String> _getAttendeeNames(List<User> attendees) {
-    List<String> names = [];
-    for (var attendee in attendees) {
-      names.add(attendee.prenom + ' ' + attendee.nom);
+  _setType(){
+    switch(togglePosition){
+      case 0:
+        type = ConversationType.private;
+        break;
+      case 1:
+        type = ConversationType.carpool;
+        break;
+      case 2:
+        type = ConversationType.public;
+        break;
     }
-    return names;
   }
 
   Conversation _makeConversation(title, members, type) {
-    Conversation conversation =Conversation.fromNewMessage(title, members, type, DateTime.now());
+    Conversation conversation = Conversation.fromNewMessage(title, members, type, DateTime.now());
     return conversation;
   }
 
-  _send(){
-    //Send a message
-    //take receivers as argument, checks if group exists
-      //sends message to right conversation if it does
-    //else
-      //Creates a new conversation if it doesnt
-        //Sends message to new conversation
+  Message _makeMessage(sentBy, content,) {
+    Message message = Message.noId(sentBy, content, DateTime.now(), false);
+    return message;
   }
 
-  @override
-  void initState() {
+  _send(Conversation conversation, Message message, eventId) async {
+    final body = {
+      "action" : "sendNewMessage",
+      "conversation": {
+        "convoId": conversation.convoId ?? null,
+        "title": conversation.title ?? null,
+        "members": conversation.members.map((e) => e.toJson()).toList(),
+        "lastMessage": conversation.lastMessage ?? null,
+        "type": type.toString().split('.').last,
+        "updatedAt": conversation.updatedAt.toString()
+      },
+      "message": {
+        'messageId': message.messageId,
+        'sentby': message.sentBy.userid,
+        'content': message.content,
+        'isSeen': message.isSeen == true? 1: 0,
+        'sentAt': message.sentAt.toString()
+      },
+      "eventId": eventId};
+    widget.socket.emit('newMessage', body);
+  }
+
+  _loadLateFields(){
     LoggedUser loggedUser = Provider.of<LoggedUser>(context, listen:false);
+    currentUser = loggedUser.user!;
     attendees = Provider.of<AttendeeList>(context, listen:false);
     sendees = attendees.attendees.where((attendee) {
       return attendee.userid != loggedUser.user!.userid;
     }).toList();
+    if(sendees.isEmpty){
+      User placeholder = User('0', "Seems like you're", 'alone', 'fake@eventbrite');
+      sendees.add(placeholder);
+
+    }
     selectedSendee = sendees[0];
     _contentTextController = TextEditingController();
     _titleTextController = TextEditingController();
+  }
+
+  @override
+  void initState() {
+    _loadLateFields();
     super.initState();
   }
 
@@ -161,10 +202,19 @@ class _ChatScreenState extends State<NewMessageScreen> {
                   PrimaryButton(
                     'Send',
                     eventbrite_red,
-                    onPressed: () async {
-                        if (_validateForm()) {
+                    onPressed: () {
+                        if (_validateForm() && sendees[0].userid != '0') {
                           FocusScope.of(context).requestFocus(FocusNode());
-                          _send();
+                          _setType();
+                          if (type != ConversationType.public){
+                            sendTo = [];
+                            sendTo.add(selectedSendee);
+                          } else {
+                            sendTo = attendees.attendees;
+                          }
+                          Conversation newConvo = _makeConversation(_titleTextController.text, sendTo, type);
+                          Message newMessage = _makeMessage(currentUser, _contentTextController.text);
+                          _send(newConvo, newMessage, currentEvent.event!.eventid);
                         }
                       }
                   )

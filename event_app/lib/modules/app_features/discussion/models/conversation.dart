@@ -29,20 +29,12 @@ class Conversation {
 
   Map<String, dynamic> toJson(){
     return {
-      "convoId": convoId,
-      "title": title,
-      "members": members.map((e) => e.userid),
-      "lastMessage": lastMessage?.messageId,
+      "convoId": convoId ?? null,
+      "title": title ?? null,
+      "members": members.map((e) => e.toJson()).toList(),
+      "lastMessage": lastMessage ?? null,
       "type": type.toString().split('.').last,
-      "updatedAt": updatedAt
+      "updatedAt": updatedAt.toString()
     };  
   }  
 }
-
-
-
-// Message(
-//         json['lastmessage']['sentby'],
-//         json['lastmessage']['content'],
-//         DateTime.parse(json['lastmessage']['sentat']),
-//         json['lastmessage']['sentat'])

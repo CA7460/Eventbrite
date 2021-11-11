@@ -210,14 +210,15 @@ Future<List> sendMessageToConversation(Message message, String convoId) async {
   return data;
 }
 
-Future<List> sendNewMessage(Message message,Conversation conversation, String eventId) async {
+Future<List> sendNewMessage(Message message, Conversation conversation, String eventId) async {
   var url = Uri.parse(messengerControlorUrl);
-  var response = await http.post(url, body: {
+  var body = jsonEncode({
     'action': 'sendNewMessage',
     'eventIt': eventId,
-    'conversation': conversation.toJson(),
-    'message': message.toJson()
+    'conversation': conversation,
+    'message': message
   });
+  var response = await http.post(url, body: body);
   final data = json.decode(response.body);
   return data;
 }
