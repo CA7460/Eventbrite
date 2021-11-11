@@ -24,18 +24,18 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
   @override
   Widget build(BuildContext context) {
     // Déterminer le route_handler selon le current feature
-    var navigationSwitcher = () {
-      switch (_selectedIndex) {
-        // case 0 : router pour mailwall
-        // case 1 : router pour messenger
-        // case 2 : router pour ligths
-        case 3:
-          return router.generateGameRoute;
-        // case 4 : return router.generateCarpoolRoute;
-        default:
-          return router.generateAppFeatureRoute;
-      }
-    }();
+    // var navigationSwitcher = () {
+    //   switch (_selectedIndex) {
+    //     // case 0 : router pour mailwall
+    //     // case 1 : router pour messenger
+    //     // case 2 : router pour ligths
+    //     case 3:
+    //       return router.generateGameRoute;
+    //     // case 4 : return router.generateCarpoolRoute;
+    //     default:
+    //       return router.generateAppFeatureRoute;
+    //   }
+    // }();
 
     return Scaffold(
       backgroundColor: primary_background,
@@ -53,19 +53,42 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
             // ============= MAIN CONTENT ===============
             // ==========================================
             Expanded(
-              child: Navigator(
-                key: Utils.appFeaturesNav,
-                initialRoute: gameRoomListRoute,
-                onGenerateRoute:
-                    navigationSwitcher, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
-              ),
+              child: IndexedStack(index: _selectedIndex, children: <Widget>[
+                Navigator(
+                  key: Utils.appFeaturesNav,
+                  initialRoute: mainWallRoute,
+                  onGenerateRoute: router.generateMainWallRoute,
+                ),
+                Navigator(
+                  key: Utils.appFeaturesNav,
+                  initialRoute: messengerRoute,
+                  onGenerateRoute: router.generateMessengerRoute,
+                ),
+                Navigator(
+                  key: Utils.appFeaturesNav,
+                  initialRoute: lightEffectsRoute,
+                  onGenerateRoute: router.generateLightEffectsRoute,
+                ),
+                Navigator(
+                  key: Utils.appFeaturesNav,
+                  initialRoute: gameRoomListRoute,
+                  onGenerateRoute: router.generateGameRoute,
+                ),
+                Navigator(
+                  key: Utils.appFeaturesNav,
+                  initialRoute: carPoolListRoute,
+                  onGenerateRoute: router.generateCarpoolRoute,
+                ),
+              ]),
+//
+              // child: Navigator(
+              //   key: Utils.appFeaturesNav,
+              //   initialRoute: gameRoomListRoute,
+              //   onGenerateRoute:
+              //       navigationSwitcher, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
+              // ),
+//
             ),
-            // initialRoute sera changée pour main_wall, premier feature, index 0
-            // La initialRoute menera vers une instance du Screen pour le main_wall
-            // Quand on veut changer le contenu ex. pour crowd games on utilise la commande
-            // Utils.appFeaturesNav.currentState!.pushNamed(enterGameRoomRoute)
-            // appFeaturesNav est une clé unique qui pointe vers ce nested navigator voir utils/utils.dart
-            // utiliser pushedNamed, car pushReplacementNamed remplace la route donc on ne peut pas back dessus
 
             // ==========================================
             // ============== NAVIGATION ================
