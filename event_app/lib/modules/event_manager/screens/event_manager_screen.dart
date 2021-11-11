@@ -1,6 +1,6 @@
 import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/modules/event_manager/local_widgets/event_list_item.dart';
-import 'package:event_app/modules/event_manager/models/eventmod.dart';
+import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:flutter/material.dart';

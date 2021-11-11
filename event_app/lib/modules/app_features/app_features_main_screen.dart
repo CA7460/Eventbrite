@@ -1,4 +1,4 @@
-import 'package:event_app/modules/event_manager/models/eventmod.dart';
+import 'package:event_app/models/eventmod.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/widgets/navigationrail_item_widget.dart';
 import 'package:event_app/config/theme/colors.dart';
@@ -19,11 +19,12 @@ class AppFeaturesMainScreen extends StatefulWidget {
 
 class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
   // Changer pour 0
-  int _selectedIndex = 3;
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
     // Déterminer le route_handler selon le current feature
+
     // var navigationSwitcher = () {
     //   switch (_selectedIndex) {
     //     // case 0 : router pour mailwall
@@ -61,7 +62,7 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
                 ),
                 Navigator(
                   key: Utils.appFeaturesNav,
-                  initialRoute: messengerRoute,
+                  initialRoute: messengerLandingScreenRoute,
                   onGenerateRoute: router.generateMessengerRoute,
                 ),
                 Navigator(
