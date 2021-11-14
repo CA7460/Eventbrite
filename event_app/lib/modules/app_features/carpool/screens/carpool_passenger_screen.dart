@@ -145,7 +145,7 @@ class PrimaryButton3 extends StatelessWidget {
                   width: labelWidth,
                   color: Color(0xc53a4155),
                   padding: EdgeInsets.all(10),
-                  child: Text("I am a passenger",
+                  child: Text("I'am a passenger",
                       style: TextStyle(
                           fontSize: 16, color: Color(0xffc8f1f1)),
                       textAlign: TextAlign.center),

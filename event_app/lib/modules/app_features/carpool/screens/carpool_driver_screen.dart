@@ -56,10 +56,9 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                PrimaryButton2('I am a driver', Colors.black,
-                    onPressed: () =>
-                    {
-                      //navigerEcrans(context, CarpoolDriverScreen())
+                PrimaryButton3('I am a passenger', Colors.black ,
+                    onPressed: () => {
+                      //navigerEcrans(context, CarpoolPassengerScreen())
                     }),
               ],
             ),
@@ -108,14 +107,13 @@ class CarPoolListViewWidget extends StatelessWidget {
   }
 }
 
-class PrimaryButton2 extends StatelessWidget {
+class PrimaryButton3 extends StatelessWidget {
 
   final String btnText;
-  final Color btnColor = Colors.black;
+  final Color btnColor;
   final GestureTapCallback onPressed;
 
-  const PrimaryButton2(this.btnText, btnColor, {required this.onPressed});
-
+  const PrimaryButton3(this.btnText, this.btnColor, {required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +133,7 @@ class PrimaryButton2 extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.0),
                   child: Image(
                     image: AssetImage("assets/images/driver.png"),
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -147,7 +145,7 @@ class PrimaryButton2 extends StatelessWidget {
                   width: labelWidth,
                   color: Color(0xc53a4155),
                   padding: EdgeInsets.all(10),
-                  child: Text("I am a driver",
+                  child: Text("I'am a driver",
                       style: TextStyle(
                           fontSize: 16, color: Color(0xffc8f1f1)),
                       textAlign: TextAlign.center),
