@@ -131,9 +131,8 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
               children: [
                 PrimaryButton('Create game', primary_blue,
                     onPressed: () =>
-                        // {Navigator.pushNamed(context, enterGameRoomRoute)}),
                         {
-                          Utils.appFeaturesNav
+                          Utils.crowdGameNav
                               .currentState! // pushReplacementNamed remplace la route, on ne peut pas back dessus
                               .pushNamed(createGameRoute)
                               .then((value) {
@@ -145,7 +144,7 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
                         }),
                 PrimaryButton('Scoreboard', primary_blue,
                     onPressed: () => {
-                          Utils.appFeaturesNav.currentState!
+                          Utils.crowdGameNav.currentState!
                               .pushNamed(scoreboardRoute)
                         }),
               ],

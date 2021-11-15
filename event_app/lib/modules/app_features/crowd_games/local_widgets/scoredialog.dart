@@ -77,7 +77,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                 child: InGameButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Utils.appFeaturesNav.currentState!.pop();
+                    Utils.crowdGameNav.currentState!.pop();
                   },
                   btnText: widget.btn2text,
                   color: primary_blue,

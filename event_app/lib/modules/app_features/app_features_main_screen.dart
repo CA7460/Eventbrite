@@ -1,4 +1,4 @@
-import 'package:event_app/modules/event_manager/models/eventmod.dart';
+import 'package:event_app/models/eventmod.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/widgets/navigationrail_item_widget.dart';
 import 'package:event_app/config/theme/colors.dart';
@@ -20,79 +20,104 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
   _AppFeaturesMainScreenState(this.event);
 
   // Changer pour 0
-  int _selectedIndex = 3;
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     // Déterminer le route_handler selon le current feature
-    var navigationSwitcher = () {
-      switch (_selectedIndex) {
-        // case 0 : router pour mailwall
-        // case 1 : router pour messenger
-        // case 2 : router pour ligths
-        case 3:
-          return router.generateCarPoolRoute;
-        // case 4 : return router.generateCarpoolRoute;
-        default:
-          return router.generateAppFeatureRoute;
-      }
-    }();
+
+    // var navigationSwitcher = () {
+    //   switch (_selectedIndex) {
+    //     // case 0 : router pour mailwall
+    //     // case 1 : router pour messenger
+    //     // case 2 : router pour ligths
+    //     case 3:
+    //       return router.generateGameRoute;
+    //     // case 4 : return router.generateCarpoolRoute;
+    //     default:
+    //       return router.generateAppFeatureRoute;
+    //   }
+    // }();
 
     return Scaffold(
       backgroundColor: primary_background,
-      body: WillPopScope(
-        onWillPop: () async {
-          if (Utils.appFeaturesNav.currentState!.canPop()) {
-            Utils.appFeaturesNav.currentState!.pop();
-            return false;
-          }
-          return true;
-        },
-        child: Row(
-          children: <Widget>[
-            // ==========================================
-            // ============= MAIN CONTENT ===============
-            // ==========================================
-            Expanded(
-              child: Navigator(
-                key: Utils.appFeaturesNav,
-               // initialRoute: gameRoomListRoute,
-                initialRoute: carPoolListRoute,
-                onGenerateRoute:
-                    router.generateCarPoolRoute, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
+      body:
+          // WillPopScope(
+          //   onWillPop: () async {
+          //     if (Utils.appFeaturesNav.currentState!.canPop()) {
+          //       Utils.appFeaturesNav.currentState!.pop();
+          //       return false;
+          //     }
+          //     return true;
+          //   },
+          //   child:
+          Row(
+        children: <Widget>[
+          // ==========================================
+          // ============= MAIN CONTENT ===============
+          // ==========================================
+          Expanded(
+            child: IndexedStack(index: _selectedIndex, children: <Widget>[
+              Navigator(
+                key: Utils.mainWallNav,
+                initialRoute: mainWallRoute,
+                onGenerateRoute: router.generateMainWallRoute,
               ),
-            ),
-            // initialRoute sera changée pour main_wall, premier feature, index 0
-            // La initialRoute menera vers une instance du Screen pour le main_wall
-            // Quand on veut changer le contenu ex. pour crowd games on utilise la commande
-            // Utils.appFeaturesNav.currentState!.pushNamed(enterGameRoomRoute)
-            // appFeaturesNav est une clé unique qui pointe vers ce nested navigator voir utils/utils.dart
-            // utiliser pushedNamed, car pushReplacementNamed remplace la route donc on ne peut pas back dessus
+              Navigator(
+                key: Utils.messengerNav,
+                initialRoute: messengerLandingScreenRoute,
+                onGenerateRoute: router.generateMessengerRoute,
+              ),
+              Navigator(
+                key: Utils.lightEffectsNav,
+                initialRoute: lightEffectsRoute,
+                onGenerateRoute: router.generateLightEffectsRoute,
+              ),
+              Navigator(
+                key: Utils.crowdGameNav,
+                initialRoute: gameRoomListRoute,
+                onGenerateRoute: router.generateGameRoute,
+              ),
+/*                 Navigator(
+                  key: Utils.carpoolNav,
+                  initialRoute: carPoolListRoute,
+                  onGenerateRoute: router.generateCarpoolRoute,
+                ), */
+            ]),
+//
+            // child: Navigator(
+            //   key: Utils.appFeaturesNav,
+            //   initialRoute: gameRoomListRoute,
+            //   onGenerateRoute:
+            //       navigationSwitcher, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
+            // ),
+//
+          ),
 
-            // ==========================================
-            // ============== NAVIGATION ================
-            // ==========================================
-            NavigationRail(
-              groupAlignment: -0.5, // De -1.0=top à 1=bottom
-              backgroundColor: navigationrail_background,
-              selectedIndex: _selectedIndex,
-              onDestinationSelected: (int index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-              labelType: NavigationRailLabelType.selected,
-              destinations: [
-                navigationRailItem(AppFeature.mainWall),
-                navigationRailItem(AppFeature.messenger),
-                navigationRailItem(AppFeature.lights),
-                navigationRailItem(AppFeature.games),
-                navigationRailItem(AppFeature.carpool)
-              ],
-            ),
-          ],
-        ),
+          // ==========================================
+          // ============== NAVIGATION ================
+          // ==========================================
+          NavigationRail(
+            groupAlignment: -0.5, // De -1.0=top à 1=bottom
+            backgroundColor: navigationrail_background,
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: (int index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            labelType: NavigationRailLabelType.selected,
+            destinations: [
+              navigationRailItem(AppFeature.mainWall),
+              navigationRailItem(AppFeature.messenger),
+              navigationRailItem(AppFeature.lights),
+              navigationRailItem(AppFeature.games),
+              navigationRailItem(AppFeature.carpool)
+            ],
+          ),
+        ],
       ),
+      // ),   WillPopScore
     );
   }
 }

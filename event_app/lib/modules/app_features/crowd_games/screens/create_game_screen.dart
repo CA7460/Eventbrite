@@ -149,7 +149,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
                       onPressed: () => {
                             // changer le status de la room pour ongoing
                             _timer?.cancel(),
-                            Utils.appFeaturesNav.currentState!
+                            Utils.crowdGameNav.currentState!
                                 .pushReplacementNamed(startNewGameRoute,
                                     arguments: roomid)
                           }),
@@ -160,7 +160,7 @@ class _CreateGameScreenState extends State<CreateGameScreen> {
                           {
                             _timer?.cancel(),
                             deleteGameRoom(roomid),
-                            Utils.appFeaturesNav.currentState!.pop('Test')
+                            Utils.crowdGameNav.currentState!.pop('Test')
                           }),
                 ],
               ),

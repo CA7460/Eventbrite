@@ -30,7 +30,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   enterOngoingGame() {
-    Utils.appFeaturesNav.currentState!
+    Utils.crowdGameNav.currentState!
         .pushReplacementNamed(joinGameRoute, arguments: widget.roomid)
         .then((value) {
       removeMeAsPlayer();

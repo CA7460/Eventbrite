@@ -2,8 +2,17 @@ import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_list_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/create_game_screen.dart';
+import 'package:event_app/modules/app_features/discussion/models/chat_screen_argument.dart';
+import 'package:event_app/modules/app_features/discussion/models/new_message_screen_argrument.dart';
+import 'package:event_app/modules/app_features/discussion/screens/chat_screen.dart';
+import 'package:event_app/modules/app_features/discussion/screens/main_messenger_screen.dart';
+import 'package:event_app/modules/app_features/discussion/screens/new_message_screen.dart';
+import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/loading_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/ongoing_game_screen.dart';
+import 'package:event_app/modules/app_features/light_effects/screens/light_effect_screen.dart';
+import 'package:event_app/modules/app_features/main_wall/screens/main_wall_screen.dart';
+// import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:event_app/modules/event_manager/local_widgets/event_list_item.dart';
 import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
@@ -12,13 +21,12 @@ import 'package:event_app/modules/login/screens/welcome_screen.dart';
 import 'package:event_app/modules/app_features/app_features_main_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/gameroom_list_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/gameroom_screen.dart';
-import 'package:event_app/modules/app_features/crowd_games/screens/game_screen.dart';
+// import 'package:event_app/modules/app_features/crowd_games/screens/game_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/scoreboard_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
-  print('generateRoute');
   switch (settings.name) {
     case welcomeScreenRoute:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
@@ -30,6 +38,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => AppFeaturesMainScreen(event: settings.arguments as EventMod));
     case carPoolListRoute:
       return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
+      return MaterialPageRoute(
+          builder: (context) =>
+              AppFeaturesMainScreen(event: settings.arguments as EventMod));
 
     // Test pour Sam - crowdGames
     // case crowdGamesLandingScreenRoute:
@@ -41,10 +52,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
 // NESTED NAVIGATOR pour le navigation Rail, landing screen de chaque feature
 Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
-  print('generateAppFeatureRoute');
   switch (settings.name) {
     // main wall
-    // messenger
+    case messengerLandingScreenRoute:
+      return MaterialPageRoute(builder: (context) => MainMessengerScreen());
     // lights
     case gameRoomListRoute:
       return MaterialPageRoute(builder: (context) => GameRoomListScreen());
@@ -57,7 +68,11 @@ Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
 }
 
 // Navigations individuelles pour chaque feature
-// Exemple pour crowd Games, génère plusieurs écrans, il faut back au bonnes places
+
+// generateMainWallRoute...
+// generateMessengerRoute...
+// generateLightEffectsRoute...
+
 Route<dynamic> generateGameRoute(RouteSettings settings) {
   switch (settings.name) {
     case gameRoomListRoute:
@@ -69,9 +84,14 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
     // case startNewGameRoute:
     //   return MaterialPageRoute(builder: (context) => GameScreen(roomid: settings.arguments as String));
     case startNewGameRoute:
-      return MaterialPageRoute(builder: (context) => LoadingScreen(roomid: settings.arguments as String));
+      return MaterialPageRoute(
+          builder: (context) =>
+              LoadingScreen(roomid: settings.arguments as String));
+
     case joinGameRoute:
-      return MaterialPageRoute(builder: (context) => OngoingGameScreen(roomid: settings.arguments as String));
+      return MaterialPageRoute(
+          builder: (context) =>
+              OngoingGameScreen(roomid: settings.arguments as String));
     case scoreboardRoute:
       return MaterialPageRoute(builder: (context) => ScoreboardScreen());
     // case joinGameRoute:
@@ -83,4 +103,45 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
 
 Route<dynamic> generateCarPoolRoute(RouteSettings settings) {
   return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
+}
+
+// MESSENGER ...
+Route<dynamic> generateMessengerRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case chatScreenRoute:
+      return MaterialPageRoute(builder: (context) {
+        ChatScreenArgument arguments = settings.arguments as ChatScreenArgument;
+        return ChatScreen(socket: arguments.socket, convoId: arguments.convoId);
+      });
+    case messengerLandingScreenRoute:
+      return MaterialPageRoute(builder: (context) => MainMessengerScreen());
+    case newMessageRoute:
+      return MaterialPageRoute(builder: (context) {
+        NewMessageScreenArgument arguments =
+            settings.arguments as NewMessageScreenArgument;
+        return NewMessageScreen(socket: arguments.socket);
+      });
+    default:
+      return MaterialPageRoute(builder: (context) => WelcomeScreen());
+  }
+}
+
+//lightEffect route
+Route<dynamic> generateLightEffectsRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case lightEffectsRoute:
+      return MaterialPageRoute(builder: (context) => LightEffectScreen());
+    default:
+      return MaterialPageRoute(builder: (context) => WelcomeScreen());
+  }
+}
+
+//mainWall route
+Route<dynamic> generateMainWallRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case mainWallRoute:
+      return MaterialPageRoute(builder: (context) => MainWallScreen());
+    default:
+      return MaterialPageRoute(builder: (context) => WelcomeScreen());
+  }
 }

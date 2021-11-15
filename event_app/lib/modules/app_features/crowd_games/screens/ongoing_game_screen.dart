@@ -33,15 +33,17 @@ class _OngoingGameScreenState extends State<OngoingGameScreen> {
   late List<GameScore> scores;
   late int startingStatementIndex;
   late int alreadyPlayedGames;
+  List<Widget> inGameScoreWidgetList = <Widget>[];
   String inGameScoreboardTxt = "";
   int statementIndex = 0;
   int currentScore = 0;
   bool gameHasStarted = false;
 
+  Timer? _timer;
+
   Future<List<Game>> getGameSet(String roomid) async {
     List<GameManager> gameManagers = await getGameManagers(roomid);
     List<Game> gameSet = await composeGameSet(gameManagers);
-    updateInGameScoreboard();
     for (int i = 0; i < gameManagers.length; i++) {
       if (gameManagers[i].gameStatus == GameStatus.ongoing) {
         startingStatementIndex = i;
@@ -56,8 +58,25 @@ class _OngoingGameScreenState extends State<OngoingGameScreen> {
   @override
   void initState() {
     super.initState();
+    startTimer();
     _gameSetFuture = getGameSet(widget.roomid);
     scrollTheFuckDown();
+  }
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 2);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        updateInGameScoreboard();
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   Future<void> scrollTheFuckDown() async {
@@ -73,7 +92,7 @@ class _OngoingGameScreenState extends State<OngoingGameScreen> {
   }
 
   void advanceToNextGame() async {
-    updateInGameScoreboard();
+    // updateInGameScoreboard();
     updateGameProgress(widget.roomid, statementIndex);
     updateSingleGameStatusToEnded(widget.roomid, statementIndex);
     statementIndex++;
@@ -88,11 +107,15 @@ class _OngoingGameScreenState extends State<OngoingGameScreen> {
   }
 
   void updateInGameScoreboard() async {
-    inGameScoreboardTxt = "";
+    List<String> scoreList = <String>[];
     scores = await getPlayerScores(widget.roomid);
     for (GameScore s in scores) {
-      inGameScoreboardTxt += "${s.player}'s score ${s.score}\n";
+      scoreList.add("${s.player} ${s.score} pts");
     }
+    setState(() {
+      inGameScoreWidgetList = composeInGameScoreWidgetList(scoreList);
+      // inGameScoreboardTxt = buildStr;
+    });
   }
 
   scrollToCurrentStatement() {
@@ -115,9 +138,9 @@ class _OngoingGameScreenState extends State<OngoingGameScreen> {
   }
 
   void endGame() async {
+    _timer?.cancel();
     await updateGlobalScoreboard(currentScore);
     scores = await getPlayerScores(widget.roomid);
-
     showScoreDialog(scores);
   }
 
@@ -182,7 +205,7 @@ class _OngoingGameScreenState extends State<OngoingGameScreen> {
             height: topLayoutHeight,
             child: GestureDetector(
               onTap: () {
-                Utils.appFeaturesNav.currentState!.pop();
+                Utils.crowdGameNav.currentState!.pop();
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -271,33 +294,40 @@ class _OngoingGameScreenState extends State<OngoingGameScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Score",
-                        style: TextStyle(
-                            color: primary_pink,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold)),
-                    Text(currentScore.toString(),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 34,
-                            fontWeight: FontWeight.bold)),
-                  ],
+                Container(
+                  width: 80,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Score",
+                          style: TextStyle(
+                              color: primary_pink,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold)),
+                      Text(currentScore.toString(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 34,
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      inGameScoreboardTxt,
-                      style: TextStyle(
-                        color: primary_pink,
-                        fontSize: 13,
-                      ),
-                    )
+                SizedBox(width: 12),
+                Container(
+                  width: 130,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: inGameScoreWidgetList,
+                    // children: [
+                    //   Text(
+                    //     inGameScoreboardTxt,
+                    //     style: TextStyle(
+                    //       color: primary_pink,
+                    //       fontSize: 13,
+                    //     ),
+                    //   )
                     // Text("Player 1: 50 pts",
                     //     style: TextStyle(
                     //       color: primary_pink,
@@ -318,7 +348,8 @@ class _OngoingGameScreenState extends State<OngoingGameScreen> {
                     //       color: primary_pink,
                     //       fontSize: 13,
                     //     )),
-                  ],
+                    // ],
+                  ),
                 )
               ],
             ),
@@ -327,4 +358,25 @@ class _OngoingGameScreenState extends State<OngoingGameScreen> {
       ),
     );
   }
+}
+
+List<Widget> composeInGameScoreWidgetList(List<String> scoreList) {
+  List<Widget> scoreWidgetList = <Widget>[];
+  for (String score in scoreList) {
+    scoreWidgetList.add(Row(
+      children: [
+        Icon(Icons.person, color: primary_green, size: 12),
+        SizedBox(width: 4),
+        Text(
+          score,
+          style: TextStyle(
+            color: primary_green,
+            fontSize: 12,
+          ),
+        ),
+      ],
+    ));
+  }
+
+  return scoreWidgetList;
 }

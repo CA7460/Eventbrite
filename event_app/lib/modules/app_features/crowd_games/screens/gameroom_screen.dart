@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/modules/app_features/crowd_games/local_widgets/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gamestatus.dart';
@@ -150,7 +149,7 @@ class _GameRoomScreenState extends State<GameRoomScreen> {
                             if (roomStatus == GameStatus.ongoing)
                               {
                                 _timer?.cancel(),
-                                Utils.appFeaturesNav.currentState!
+                                Utils.crowdGameNav.currentState!
                                     .pushReplacementNamed(joinGameRoute,
                                         arguments: widget.gameroom.gameroomid)
                                     .then((value) {
@@ -164,7 +163,7 @@ class _GameRoomScreenState extends State<GameRoomScreen> {
                             // REMOVE USER FROM ROOM =================================================
                             // OU PLUTOT GERER CA AVEC LE THEN VALUE DE GAMELIST SCREEN POP
 
-                            Utils.appFeaturesNav.currentState!.pop()
+                            Utils.crowdGameNav.currentState!.pop()
                           }),
                 ],
               ),

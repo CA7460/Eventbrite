@@ -37,14 +37,14 @@ class _GameRoomListItemState extends State<GameRoomListItem> {
           // VÉRIFIER SI C'EST LE ROOM CREATOR
           addMeAsPlayer(gameRoom.gameroomid);
           gameRoom.roomStatus == GameStatus.pending
-              ? Utils.appFeaturesNav.currentState!
+              ? Utils.crowdGameNav.currentState!
                   .pushNamed(enterGameRoomRoute, arguments: gameRoom)
                   .then((value) {
                   print(
                       'returning to gamelist after room entering gameroom list item line 42');
                   //widget.removeMeAsPlayer();
                 })
-              : Utils.appFeaturesNav.currentState!
+              : Utils.crowdGameNav.currentState!
                   .pushNamed(joinGameRoute, arguments: gameRoom.gameroomid)
                   .then((value) {
                   print(

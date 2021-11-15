@@ -13,3 +13,17 @@ const String scoreboardRoute = 'scoreboard';
 const String joinGameRoute = 'joinGame';
 
 const String carPoolListRoute = 'carPoolList';
+
+// MESSENGER FEATURE ROUTES
+
+const String messengerLandingScreenRoute = 'messenger';
+const String chatScreenRoute = 'chats';
+const String newMessageRoute = 'newMessage';
+
+//LIGHT EFFECT ROUTE
+
+const String lightEffectsRoute = "lightEffect";
+
+//MainWall
+
+const String mainWallRoute = "mainWall";

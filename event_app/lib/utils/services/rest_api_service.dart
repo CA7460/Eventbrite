@@ -5,10 +5,13 @@
 
 import 'dart:convert';
 import 'package:event_app/constants/api_path.dart';
+import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/crowdgame.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gamemanager.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gamestatus.dart';
+import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
+import 'package:event_app/modules/app_features/discussion/models/message.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,6 +21,20 @@ Future<List> validateRequest(String email, String password) async {
       body: {'action': 'validate', 'mail': email, 'password': password});
   final data = json.decode(response.body);
   return data;
+}
+
+Future<List<User>> getAttendees(String eventId) async {
+  List<User> attendees =[];
+  var url = Uri.parse(messengerControlorUrl);
+  var response = await http.post(url, body: {'action': 'listAttendees', 'eventId': eventId});
+  final data = json.decode(response.body);
+  if (data[0] == 'OK'){
+    for (var i = 1; i < data.length -1; i++) {
+      User user = User.fromJson(data[i]);
+      attendees.add(user);
+    }
+  }
+  return attendees;
 }
 
 Future<List> getUserDetailsFromDatabase(String userMail) async {
@@ -38,7 +55,69 @@ Future<List> getEventsListFromDatabase(String mail) async {
   return data;
 }
 
+//
+// MESSENGER REQUESTS
+//
+Future<List<Conversation>> getConversations(String userMail, String eventId) async {
+  List<Conversation> conversations = [];
+  var url = Uri.parse(messengerControlorUrl);
+  var response = await http.post(url, body: {
+    'action': 'listConversations',
+    'mail': userMail,
+    'eventId': eventId});
+  final data = json.decode(response.body);
+  if (data[0] == 'OK'){
+    for (var i = 1; i < data.length -1; i++) {
+      Conversation conversation = Conversation.fromJson(data[i]);
+      conversations.add(conversation);
+    }
+  }
+  return conversations;
+}
+
+Future<List<Message>> getMessagesForConversation(String convoId) async {
+  List<Message> messages = [];
+  var url = Uri.parse(messengerControlorUrl);
+  var response = await http.post(url, body: {
+    'action': 'listMessages',
+    'convoid': convoId});
+  final data = json.decode(response.body);
+  if (data[0] == 'OK'){
+    for (var i = 1; i < data.length -1; i++) {
+      Message message = Message.fromJson(data[i]);
+      messages.add(message);
+    }
+  }
+  return messages;
+}
+
+Future<List> sendMessageToConversation(Message message, String convoId) async {
+  var url = Uri.parse(messengerControlorUrl);
+  var response = await http.post(url, body: {
+    'action': 'sendMessage',
+    'convoId': convoId,
+    'message': message.toJson()
+  });
+  final data = json.decode(response.body);
+  return data;
+}
+      
+Future<List> sendNewMessage(Message message, Conversation conversation, String eventId) async {
+  var url = Uri.parse(messengerControlorUrl);
+  var body = jsonEncode({
+    'action': 'sendNewMessage',
+    'eventIt': eventId,
+    'conversation': conversation,
+    'message': message
+  });
+  var response = await http.post(url, body: body);
+  final data = json.decode(response.body);
+  return data;
+}
+    
+//
 // CROWD GAMES REQUESTS
+//
 Future<List> getGameRoomListFromDatabase() async {
   var url = Uri.parse(gameControlorUrl);
   var response = await http.post(url, body: {'action': 'listGameRooms'});
@@ -263,6 +342,16 @@ Future<List> getPlayerScoresFromDatabase(String roomid) async {
   var url = Uri.parse(gameControlorUrl);
   String request =
       "SELECT u.prenom, u.mail, pm.score FROM users u JOIN playermanager pm USING (userid) WHERE LOWER(CONCAT('0x',HEX(pm.gameroomid))) = '$roomid' ORDER BY pm.score DESC;";
+  var response = await http
+      .post(url, body: {'action': 'getPlayerScores', 'request': request});
+  final data = json.decode(response.body);
+  return data;
+}
+
+Future<List> getScoreboardFromDatabase() async {
+  var url = Uri.parse(gameControlorUrl);
+  String request =
+      "SELECT u.prenom, u.mail, s.score FROM users u JOIN scoreboard s USING (userid) ORDER BY s.score DESC;";
   var response = await http
       .post(url, body: {'action': 'getPlayerScores', 'request': request});
   final data = json.decode(response.body);
