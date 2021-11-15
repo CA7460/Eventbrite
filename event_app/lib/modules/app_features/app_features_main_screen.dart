@@ -78,13 +78,12 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
                 initialRoute: gameRoomListRoute,
                 onGenerateRoute: router.generateGameRoute,
               ),
-/*                 Navigator(
+                 Navigator(
                   key: Utils.carpoolNav,
                   initialRoute: carPoolListRoute,
-                  onGenerateRoute: router.generateCarpoolRoute,
-                ), */
+                  onGenerateRoute: router.generateCarPoolRoute,
+                ),
             ]),
-//
             // child: Navigator(
             //   key: Utils.appFeaturesNav,
             //   initialRoute: gameRoomListRoute,
