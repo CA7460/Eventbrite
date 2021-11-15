@@ -31,37 +31,43 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case eventManagerScreenRoute:
       return MaterialPageRoute(builder: (context) => EventManagerScreen());
     case appFeaturesMainScreenRoute:
-      return MaterialPageRoute(builder: (context) => AppFeaturesMainScreen(event: settings.arguments as EventMod));
-    case carPoolListRoute:
-      return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
       return MaterialPageRoute(
           builder: (context) =>
               AppFeaturesMainScreen(event: settings.arguments as EventMod));
+    // case carPoolListRoute:
+    //   return MaterialPageRoute(
+    //       builder: (context) =>
+    //           CarPoolListScreen(event: settings.arguments as EventMod));
+    //   return MaterialPageRoute(
+    //       builder: (context) =>
+    //           AppFeaturesMainScreen(event: settings.arguments as EventMod));
 
-  // Test pour Sam - crowdGames
-  // case crowdGamesLandingScreenRoute:
-  //   return MaterialPageRoute(builder: (context) => CrowdGameLandingScreen());
+    // Test pour Sam - crowdGames
+    // case crowdGamesLandingScreenRoute:
+    //   return MaterialPageRoute(builder: (context) => CrowdGameLandingScreen());
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
 }
 
 // NESTED NAVIGATOR pour le navigation Rail, landing screen de chaque feature
-Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
-  switch (settings.name) {
-  // main wall
-    case messengerLandingScreenRoute:
-      return MaterialPageRoute(builder: (context) => MainMessengerScreen());
-  // lights
-    case gameRoomListRoute:
-      return MaterialPageRoute(builder: (context) => GameRoomListScreen());
-  // carpool
-    case carPoolListRoute:
-      return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
-    default: // PENSER À QQCHOSE POUR DEFAULT
-      return MaterialPageRoute(builder: (context) => WelcomeScreen());
-  }
-}
+// Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
+//   switch (settings.name) {
+//     // main wall
+//     case messengerLandingScreenRoute:
+//       return MaterialPageRoute(builder: (context) => MainMessengerScreen());
+//     // lights
+//     case gameRoomListRoute:
+//       return MaterialPageRoute(builder: (context) => GameRoomListScreen());
+//     // carpool
+//     case carPoolListRoute:
+//       return MaterialPageRoute(
+//           builder: (context) =>
+//               CarPoolListScreen(event: settings.arguments as EventMod));
+//     default: // PENSER À QQCHOSE POUR DEFAULT
+//       return MaterialPageRoute(builder: (context) => WelcomeScreen());
+//   }
+// }
 
 // Navigations individuelles pour chaque feature
 
@@ -74,7 +80,9 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
     case gameRoomListRoute:
       return MaterialPageRoute(builder: (context) => GameRoomListScreen());
     case enterGameRoomRoute:
-      return MaterialPageRoute(builder: (context) => GameRoomScreen(gameroom: settings.arguments as GameRoom));
+      return MaterialPageRoute(
+          builder: (context) =>
+              GameRoomScreen(gameroom: settings.arguments as GameRoom));
     case createGameRoute:
       return MaterialPageRoute(builder: (context) => CreateGameScreen());
   // case startNewGameRoute:
@@ -90,16 +98,27 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
               OngoingGameScreen(roomid: settings.arguments as String));
     case scoreboardRoute:
       return MaterialPageRoute(builder: (context) => ScoreboardScreen());
-  // case joinGameRoute:
-  //  return MaterialPageRoute(builder: (context) => OngoingGameScreen());
+    // case joinGameRoute:
+    //  return MaterialPageRoute(builder: (context) => OngoingGameScreen());
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
 }
 
-//CarPool route
+// CARPOOL
 Route<dynamic> generateCarPoolRoute(RouteSettings settings) {
-  return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
+  switch (settings.name) {
+    case carPoolListRoute:
+      return MaterialPageRoute(
+          builder: (context) =>
+              CarPoolListScreen(event: settings.arguments as EventMod));
+    case carPoolDriverRoute:
+      return MaterialPageRoute(builder: (context) => CarpoolDriverScreen());
+    case carPoolPassengerRoute:
+      return MaterialPageRoute(builder: (context) => CarpoolPassengerScreen());
+    default:
+      return MaterialPageRoute(builder: (context) => WelcomeScreen());
+  }
 }
 
 // MESSENGER ...
@@ -115,7 +134,7 @@ Route<dynamic> generateMessengerRoute(RouteSettings settings) {
     case newMessageRoute:
       return MaterialPageRoute(builder: (context) {
         NewMessageScreenArgument arguments =
-        settings.arguments as NewMessageScreenArgument;
+            settings.arguments as NewMessageScreenArgument;
         return NewMessageScreen(socket: arguments.socket);
       });
     default:

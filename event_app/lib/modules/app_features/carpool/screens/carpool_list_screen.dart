@@ -1,35 +1,37 @@
+import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
 import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
+import 'package:event_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_passenger_screen.dart';
 
-Future navigerEcrans(context, ecran) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => ecran));
-}
+// Future navigerEcrans(context, ecran) async {
+//   Navigator.push(context, MaterialPageRoute(builder: (context) => ecran));
+// }
 
 class CarPoolListScreen extends StatefulWidget {
   final EventMod event;
-  const CarPoolListScreen({Key? key, required this.event }) : super(key: key);
+  const CarPoolListScreen({Key? key, required this.event}) : super(key: key);
 
   @override
-  _CarPoolListScreenState createState() => _CarPoolListScreenState(event);
+  _CarPoolListScreenState createState() => _CarPoolListScreenState();
 }
 
 class _CarPoolListScreenState extends State<CarPoolListScreen> {
   late Future<List<CarPool>> _carPoolFuture;
 
-  final EventMod event;
-  _CarPoolListScreenState(this.event);
+  //final EventMod event;
+  //_CarPoolListScreenState(this.event);
 
   @override
   void initState() {
     super.initState();
     _carPoolFuture = getCarPool();
 
-    print('Event itemid: ' + event.eventid);
+    //print('Event itemid: ' + event.eventid);
   }
 
   void refreshCarPoolList() {
@@ -50,6 +52,12 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
+    // pour avoir le event , faire widget.event
+
+    print(widget.event.eventid);
+    print(widget.event.city);
+
     final screenSize = MediaQuery.of(context).size;
     final topLayoutHeight = screenSize.height * 0.1;
     final centerLayoutHeight = screenSize.height * 0.55;
@@ -64,15 +72,17 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 PrimaryButton2('I\'am a driver', Colors.black,
-                    onPressed: () =>
-                    {
-                    navigerEcrans(context, CarpoolDriverScreen())
-                    }),
-
-                PrimaryButton3('I\'am a passenger', Colors.black ,
                     onPressed: () => {
-                      navigerEcrans(context, CarpoolPassengerScreen())
-                    }),
+                          // navigerEcrans(context, CarpoolDriverScreen())
+                          Utils.carpoolNav.currentState!
+                              .pushNamed(carPoolDriverRoute)
+                        }),
+                PrimaryButton3('I\'am a passenger', Colors.black,
+                    onPressed: () => {
+                          // navigerEcrans(context, CarpoolPassengerScreen())
+                          Utils.carpoolNav.currentState!
+                              .pushNamed(carPoolPassengerRoute)
+                        }),
               ],
             ),
           ),
@@ -87,23 +97,25 @@ class CarPoolListViewWidget extends StatelessWidget {
   final List<CarPool> carpool;
   final dynamic _listViewStateInstance;
 
-  const CarPoolListViewWidget(this.refreshCarPoolList, this.carpool, this._listViewStateInstance, {Key? key}) : super(key: key);
+  const CarPoolListViewWidget(
+      this.refreshCarPoolList, this.carpool, this._listViewStateInstance,
+      {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: carpool.isEmpty
-          ? emptyList() :
-              ListView.builder(
-                  itemCount: carpool.length,
-                  //itemBuilder: listBuilder,
-                  itemBuilder: (context, index) {
-                    return CarPoolListItem(
-                        refreshCarPoolList, carpool, index);
-                  }),
-              //onRefresh:
-              //refreshGameRoomList(), // called when the user pulls the list down enough to trigger this event
-            //),
+          ? emptyList()
+          : ListView.builder(
+              itemCount: carpool.length,
+              //itemBuilder: listBuilder,
+              itemBuilder: (context, index) {
+                return CarPoolListItem(refreshCarPoolList, carpool, index);
+              }),
+      //onRefresh:
+      //refreshGameRoomList(), // called when the user pulls the list down enough to trigger this event
+      //),
     );
   }
 
@@ -116,13 +128,11 @@ class CarPoolListViewWidget extends StatelessWidget {
 }
 
 class PrimaryButton2 extends StatelessWidget {
-
   final String btnText;
   final Color btnColor = Colors.black;
   final GestureTapCallback onPressed;
 
   const PrimaryButton2(this.btnText, btnColor, {required this.onPressed});
-
 
   @override
   Widget build(BuildContext context) {
@@ -155,8 +165,7 @@ class PrimaryButton2 extends StatelessWidget {
                   color: Color(0xc53a4155),
                   padding: EdgeInsets.all(10),
                   child: Text("I am a driver",
-                      style: TextStyle(
-                          fontSize: 16, color: Color(0xffc8f1f1)),
+                      style: TextStyle(fontSize: 16, color: Color(0xffc8f1f1)),
                       textAlign: TextAlign.center),
                 ),
               ),
@@ -170,7 +179,6 @@ class PrimaryButton2 extends StatelessWidget {
 }
 
 class PrimaryButton3 extends StatelessWidget {
-
   final String btnText;
   final Color btnColor;
   final GestureTapCallback onPressed;
@@ -208,8 +216,7 @@ class PrimaryButton3 extends StatelessWidget {
                   color: Color(0xc53a4155),
                   padding: EdgeInsets.all(10),
                   child: Text("I am a passenger",
-                      style: TextStyle(
-                          fontSize: 16, color: Color(0xffc8f1f1)),
+                      style: TextStyle(fontSize: 16, color: Color(0xffc8f1f1)),
                       textAlign: TextAlign.center),
                 ),
               ),

@@ -9,88 +9,105 @@ import 'package:event_app/config/routes/routes_handler.dart' as router;
 class AppFeaturesMainScreen extends StatefulWidget {
   final EventMod event;
 
-  const AppFeaturesMainScreen({Key? key, required this.event}) : super(key: key);
+  const AppFeaturesMainScreen({Key? key, required this.event})
+      : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _AppFeaturesMainScreenState(this.event);
+  State<StatefulWidget> createState() => _AppFeaturesMainScreenState();
 }
 
 class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
-  final EventMod event;
-  _AppFeaturesMainScreenState(this.event);
-
-  // Changer pour 0
   int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    // Déterminer le route_handler selon le current feature
-
-    // var navigationSwitcher = () {
-    //   switch (_selectedIndex) {
-    //     // case 0 : router pour mailwall
-    //     // case 1 : router pour messenger
-    //     // case 2 : router pour ligths
-    //     case 3:
-    //       return router.generateGameRoute;
-    //     // case 4 : return router.generateCarpoolRoute;
-    //     default:
-    //       return router.generateAppFeatureRoute;
-    //   }
-    // }();
+    // POUR AVOIR ACCÈES À L'EVENT: widget.event
+    // POUR LE PASSER A VOTRR SCREEN: voir carpool lignes 70 à 76
 
     return Scaffold(
       backgroundColor: primary_background,
-      body:
-          // WillPopScope(
-          //   onWillPop: () async {
-          //     if (Utils.appFeaturesNav.currentState!.canPop()) {
-          //       Utils.appFeaturesNav.currentState!.pop();
-          //       return false;
-          //     }
-          //     return true;
-          //   },
-          //   child:
-          Row(
+      body: Row(
         children: <Widget>[
           // ==========================================
           // ============= MAIN CONTENT ===============
           // ==========================================
           Expanded(
             child: IndexedStack(index: _selectedIndex, children: <Widget>[
-              Navigator(
-                key: Utils.mainWallNav,
-                initialRoute: mainWallRoute,
-                onGenerateRoute: router.generateMainWallRoute,
+              WillPopScope(
+                onWillPop: () async {
+                  if (Utils.mainWallNav.currentState!.canPop()) {
+                    Utils.mainWallNav.currentState!.pop();
+                    return false;
+                  }
+                  return true;
+                },
+                child: Navigator(
+                  key: Utils.mainWallNav,
+                  initialRoute: mainWallRoute,
+                  onGenerateRoute: router.generateMainWallRoute,
+                ),
               ),
-              Navigator(
-                key: Utils.messengerNav,
-                initialRoute: messengerLandingScreenRoute,
-                onGenerateRoute: router.generateMessengerRoute,
+
+              // Le feature Messenger est en commentaire pcq il reste du code à faire
+              // Les icône du NavigationRail seront décallés
+
+              // Navigator(
+              //   key: Utils.messengerNav,
+              //   initialRoute: messengerLandingScreenRoute,
+              //   onGenerateRoute: router.generateMessengerRoute,
+              // ),
+
+              WillPopScope(
+                onWillPop: () async {
+                  if (Utils.lightEffectsNav.currentState!.canPop()) {
+                    Utils.lightEffectsNav.currentState!.pop();
+                    return false;
+                  }
+                  return true;
+                },
+                child: Navigator(
+                  key: Utils.lightEffectsNav,
+                  initialRoute: lightEffectsRoute,
+                  onGenerateRoute: router.generateLightEffectsRoute,
+                ),
               ),
-              Navigator(
-                key: Utils.lightEffectsNav,
-                initialRoute: lightEffectsRoute,
-                onGenerateRoute: router.generateLightEffectsRoute,
+              WillPopScope(
+                onWillPop: () async {
+                  if (Utils.crowdGameNav.currentState!.canPop()) {
+                    Utils.crowdGameNav.currentState!.pop();
+                    return false;
+                  }
+                  return true;
+                },
+                child: Navigator(
+                  key: Utils.crowdGameNav,
+                  initialRoute: gameRoomListRoute,
+                  onGenerateRoute: router.generateGameRoute,
+                ),
               ),
-              Navigator(
-                key: Utils.crowdGameNav,
-                initialRoute: gameRoomListRoute,
-                onGenerateRoute: router.generateGameRoute,
-              ),
-                 Navigator(
+
+              WillPopScope(
+                onWillPop: () async {
+                  if (Utils.carpoolNav.currentState!.canPop()) {
+                    Utils.carpoolNav.currentState!.pop();
+                    return false;
+                  }
+                  return true;
+                },
+                child: Navigator(
                   key: Utils.carpoolNav,
                   initialRoute: carPoolListRoute,
+                  onGenerateInitialRoutes:
+                      (NavigatorState navigator, String initialRouteName) {
+                    return [
+                      navigator.widget.onGenerateRoute!(RouteSettings(
+                          name: carPoolListRoute, arguments: widget.event))!,
+                    ];
+                  },
                   onGenerateRoute: router.generateCarPoolRoute,
                 ),
+              ),
             ]),
-            // child: Navigator(
-            //   key: Utils.appFeaturesNav,
-            //   initialRoute: gameRoomListRoute,
-            //   onGenerateRoute:
-            //       navigationSwitcher, // ou feature_router.generateAppFeatureRoute si on met toutes les routes à la meme place
-            // ),
-//
           ),
 
           // ==========================================
@@ -116,7 +133,6 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
           ),
         ],
       ),
-      // ),   WillPopScore
     );
   }
 }

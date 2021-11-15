@@ -245,13 +245,6 @@ Future<List> getActionChallengesFromDatabase() async {
   return data;
 }
 
-// CAR POOL REQUESTS
-Future<List> getCarPoolListFromDatabase() async {
-  var url = Uri.parse(carpoolControlorUrl);
-  var response = await http.post(url, body: {'action': 'listCarPool'});
-  final data = json.decode(response.body);
-  return data;
-}
 Future<List> getGameStatusFromDatabase(String crowdGameId, int stmt) async {
   var url = Uri.parse(gameControlorUrl);
   var response = await http.post(url, body: {
@@ -389,6 +382,14 @@ Future<List> removeGamesCreatedByUserInDatabase(String userMail) async {
   var response = await http.post(url,
       body: {'action': 'deletePlayerFromPlayerManager', 'request': request});
   print(response.body);
+  final data = json.decode(response.body);
+  return data;
+}
+
+// CAR POOL REQUESTS
+Future<List> getCarPoolListFromDatabase() async {
+  var url = Uri.parse(carpoolControlorUrl);
+  var response = await http.post(url, body: {'action': 'listCarPool'});
   final data = json.decode(response.body);
   return data;
 }
