@@ -12,16 +12,12 @@ import 'package:event_app/modules/app_features/crowd_games/screens/loading_scree
 import 'package:event_app/modules/app_features/crowd_games/screens/ongoing_game_screen.dart';
 import 'package:event_app/modules/app_features/light_effects/screens/light_effect_screen.dart';
 import 'package:event_app/modules/app_features/main_wall/screens/main_wall_screen.dart';
-// import 'package:event_app/modules/event_manager/models/eventmod.dart';
-import 'package:event_app/modules/event_manager/local_widgets/event_list_item.dart';
-import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
 import 'package:event_app/modules/login/screens/login_screen.dart';
 import 'package:event_app/modules/login/screens/welcome_screen.dart';
 import 'package:event_app/modules/app_features/app_features_main_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/gameroom_list_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/gameroom_screen.dart';
-// import 'package:event_app/modules/app_features/crowd_games/screens/game_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/scoreboard_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

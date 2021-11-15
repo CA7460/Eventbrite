@@ -4,7 +4,6 @@ import 'package:event_app/modules/app_features/crowd_games/local_widgets/join_ga
 import 'package:event_app/utils/utils.dart';
 import 'package:event_app/config/routes/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 
 class CarPoolListItem extends StatelessWidget {
   final Function refreshCarPoolList;
@@ -60,13 +59,13 @@ class CarPoolListItem extends StatelessWidget {
                       SizedBox(
                         height: 15,
                       ),
-                      JoinGameButton(
+                      /*JoinGameButton(
                           onPressed: () => Utils.appFeaturesNav.currentState!
                                   .pushNamed(carPoolListRoute,
                                       arguments: carpools[index])
                                   .then((value) {
                                 refreshCarPoolList();
-                              })),
+                              })),*/
                     ],
                   ),
                 ),
