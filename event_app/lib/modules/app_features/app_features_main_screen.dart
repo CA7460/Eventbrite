@@ -9,15 +9,16 @@ import 'package:event_app/config/routes/routes_handler.dart' as router;
 class AppFeaturesMainScreen extends StatefulWidget {
   final EventMod event;
 
-  const AppFeaturesMainScreen({Key? key, required this.event})
-      : super(key: key);
+  const AppFeaturesMainScreen({Key? key, required this.event}) : super(key: key);
+
   @override
-  State<StatefulWidget> createState() {
-    return _AppFeaturesMainScreenState();
-  }
+  State<StatefulWidget> createState() => _AppFeaturesMainScreenState(this.event);
 }
 
 class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
+  final EventMod event;
+  _AppFeaturesMainScreenState(this.event);
+
   // Changer pour 0
   int _selectedIndex = 0;
 

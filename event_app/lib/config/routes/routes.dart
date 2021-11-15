@@ -12,6 +12,8 @@ const String startNewGameRoute = 'startNewGame';
 const String scoreboardRoute = 'scoreboard';
 const String joinGameRoute = 'joinGame';
 
+const String carPoolListRoute = 'carPoolList';
+
 // MESSENGER FEATURE ROUTES
 
 const String messengerLandingScreenRoute = 'messenger';

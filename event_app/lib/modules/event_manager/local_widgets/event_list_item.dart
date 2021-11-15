@@ -31,6 +31,8 @@ class EventListItem extends StatelessWidget {
               currentEvent.makeCurrentEvent(events[index]);
               attendees.loadAttendees(events[index].eventid);
               Utils.mainAppNav.currentState!.pushNamed(appFeaturesMainScreenRoute, arguments: events[index]);
+              Utils.mainAppNav.currentState!
+                  .pushNamed(carPoolListRoute, arguments: events[index]);
             },
             child: Padding(
               padding: EdgeInsets.all(4),
