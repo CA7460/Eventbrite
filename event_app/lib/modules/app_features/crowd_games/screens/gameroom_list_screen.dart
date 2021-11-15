@@ -54,8 +54,8 @@ class _GameRoomListScreenState extends State<GameRoomListScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final topLayoutHeight = screenSize.height * 0.1;
-    final centerLayoutHeight = screenSize.height * 0.55;
-    final bottomLayoutHeight = screenSize.height * 0.35;
+    final centerLayoutHeight = screenSize.height * 0.65;
+    final bottomLayoutHeight = screenSize.height * 0.25;
     return Center(
       child: Column(
         children: [
