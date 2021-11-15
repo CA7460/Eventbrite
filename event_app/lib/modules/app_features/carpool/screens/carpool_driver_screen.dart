@@ -6,9 +6,9 @@ import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:event_app/widgets/primary_button_widget.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_passenger_screen.dart';
 
-Future navigerEcrans(context, ecran) async {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => ecran));
-}
+// Future navigerEcrans(context, ecran) async {
+//   Navigator.push(context, MaterialPageRoute(builder: (context) => ecran));
+// }
 
 class CarpoolDriverScreen extends StatefulWidget {
   const CarpoolDriverScreen({Key? key}) : super(key: key);
