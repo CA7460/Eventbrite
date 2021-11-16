@@ -1,5 +1,7 @@
 import 'package:event_app/config/routes/routes.dart';
+import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_list_screen.dart';
+import 'package:event_app/modules/app_features/carpool/screens/carpool_passenger_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/create_game_screen.dart';
 import 'package:event_app/modules/app_features/discussion/models/chat_screen_argument.dart';
@@ -31,9 +33,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case eventManagerScreenRoute:
       return MaterialPageRoute(builder: (context) => EventManagerScreen());
     case appFeaturesMainScreenRoute:
-      return MaterialPageRoute(
-          builder: (context) =>
-              AppFeaturesMainScreen(event: settings.arguments as EventMod));
+      return MaterialPageRoute(builder: (context) => AppFeaturesMainScreen(event: settings.arguments as EventMod));
     // case carPoolListRoute:
     //   return MaterialPageRoute(
     //       builder: (context) =>

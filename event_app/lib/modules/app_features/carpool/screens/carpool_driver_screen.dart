@@ -6,9 +6,9 @@ import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:event_app/widgets/primary_button_widget.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_passenger_screen.dart';
 
-// Future navigerEcrans(context, ecran) async {
-//   Navigator.push(context, MaterialPageRoute(builder: (context) => ecran));
-// }
+Future navigerEcrans(context, ecran) async {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => ecran));
+}
 
 class CarpoolDriverScreen extends StatefulWidget {
   const CarpoolDriverScreen({Key? key}) : super(key: key);
@@ -43,119 +43,186 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final topLayoutHeight = screenSize.height * 0.1;
-    final centerLayoutHeight = screenSize.height * 0.55;
-    final bottomLayoutHeight = screenSize.height * 0.5;
-    return Center(
-      child: Column(
-        children: [
-          Container(
-            height: bottomLayoutHeight,
-            padding: EdgeInsets.symmetric(vertical: 60, horizontal: 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                PrimaryButton3('I am a passenger', Colors.black ,
-                    onPressed: () => {
-                      //navigerEcrans(context, CarpoolPassengerScreen())
-                    }),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CarPoolListViewWidget extends StatelessWidget {
-  final Function refreshCarPoolList;
-  final List<CarPool> carpool;
-  final dynamic _listViewStateInstance;
-
-  const CarPoolListViewWidget(
-      this.refreshCarPoolList, this.carpool, this._listViewStateInstance,
-      {Key? key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: carpool.isEmpty
-          ? emptyList()
-          : //RefreshIndicator(   // Pour les scrollable, permet de tjrs avoir une liste à jour
-      //child:
-      ListView.builder(
-          itemCount: carpool.length,
-          //itemBuilder: listBuilder,
-          itemBuilder: (context, index) {
-            return CarPoolListItem(
-                refreshCarPoolList, carpool, index);
-          }),
-      //onRefresh:
-      //refreshGameRoomList(), // called when the user pulls the list down enough to trigger this event
-      //),
-    );
-  }
-
-  Widget emptyList() {
-    return Text(
-      'No available routes',
-      style: TextStyle(color: Colors.white),
-    );
-  }
-}
-
-class PrimaryButton3 extends StatelessWidget {
-
-  final String btnText;
-  final Color btnColor;
-  final GestureTapCallback onPressed;
-
-  const PrimaryButton3(this.btnText, this.btnColor, {required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     final maxWidthForCard = screenWidth / 2;
     final cardSize = maxWidthForCard - 20;
     final labelWidth = cardSize - 26;
-    return ElevatedButton(
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Container(
-                width: cardSize,
-                height: cardSize,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0),
-                  child: Image(
-                    image: AssetImage("assets/images/driver.png"),
-                    fit: BoxFit.cover,
+    final eventName = 'Event nane: "The Lumineers"';
+    final city = 'City: Montreal';
+    final place = 'Place: Centre Bell';
+    final address = 'Address: ';
+    final dateTime = 'Event\'s Date and time: ';
+
+    return SafeArea(
+      child: Scaffold(
+        // appBar: operationsAppBar,
+        body: Form(
+          // key: _formEnregKey,
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: ListView(
+              children: <Widget>[
+                SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  '$eventName',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-              Positioned(
-                bottom: 14,
-                left: (cardSize - labelWidth) / 2,
-                child: Container(
-// black box that wraps the white text
-                  width: labelWidth,
-                  color: Color(0xc53a4155),
-                  padding: EdgeInsets.all(10),
-                  child: Text("I'am a driver",
-                      style: TextStyle(
-                          fontSize: 16, color: Color(0xffc8f1f1)),
-                      textAlign: TextAlign.center),
+                SizedBox(
+                  height: 15,
                 ),
-              ),
-            ],
+                Text(
+                  '$city',
+                  style: TextStyle(
+                    fontSize: 18,
+                    //fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  '$place',
+                  style: TextStyle(
+                    fontSize: 18,
+                    //fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  '$address',
+                  style: TextStyle(
+                    fontSize: 18,
+                   // fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  '$dateTime',
+                  style: TextStyle(
+                    fontSize: 18,
+                    //fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 5, bottom: 5),
+                  child: TextFormField(
+                    //  controller: nameController,
+                    onChanged: (value) {
+                      // _exercice.name = nameController.text;
+                    },
+                    validator: (value) {
+                      if (value != "") {
+                        return value!.length < 30
+                            ? null
+                            : 'Maximum 30 caractères';
+                      } else if (value!.contains(RegExp(r'[0-9]'))) {
+                        return 'Le nom ne doit pas contenir de chiffre';
+                      } else {
+                        return 'Entrer un nom';
+                      }
+                    },
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      labelText: 'Pick up address: ',
+                      errorStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ),
+                ),
+                // ===========  =================
+                Padding(
+                  padding: EdgeInsets.only(top: 5, bottom: 5),
+                  child: TextFormField(
+                    //    controller: shortDescController,
+                    onChanged: (value) {
+                      //    _exercice.description = shortDescController.text;
+                    },
+                    validator: (value) {
+                      if (value == "") {
+                        return 'Entrer une courte description';
+                      }
+                    },
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      labelText: 'Pick up date and time: ',
+                      errorStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ),
+                ),
+                // ===========  =================
+                Padding(
+                  padding: EdgeInsets.only(top: 5, bottom: 5),
+                  child: TextFormField(
+                    // controller: longDescController,
+                    onChanged: (value) {
+                      //    _details.longDescription = longDescController.text;
+                    },
+                    validator: (value) {
+                      if (value == "") {
+                        return 'Entrer une description détaillée';
+                      }
+                    },
+                    // keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      labelText: 'Number of available seats: ',
+                      //   hintText: 'Maximum 300 caractères',
+                      errorStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ),
+                ),
+                // ===========  =================
+
+                Padding(
+                  padding: EdgeInsets.only(bottom: 5, top: 45),
+                  child: Row(
+                    children: <Widget>[
+                      Visibility(
+                        //      visible: _isModificationButtonVisible,
+                        child: Expanded(
+                          child: RaisedButton(
+                            color: Color(0xFF0033FF),
+                            textColor: Colors.white,
+                            child: Text(
+                              'Add route',
+                              textScaleFactor: 1.5,
+                            ),
+                            onPressed: () async {
+                              //     String reponse = await this
+                              //          ._enregistrerChangements('modifier');
+                              //     Navigator.pop(context, reponse);
+                            },
+                          ),
+                        ),
+                      ),
+                      // ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
-      onPressed: onPressed,
     );
   }
 }

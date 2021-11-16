@@ -1,5 +1,6 @@
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/models/eventmod.dart';
+import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
 import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
 import 'package:event_app/utils/utils.dart';
@@ -71,13 +72,13 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                PrimaryButton2('I\'am a driver', Colors.black,
+                PrimaryButton2("I'am a driver", Colors.black,
                     onPressed: () => {
                           // navigerEcrans(context, CarpoolDriverScreen())
                           Utils.carpoolNav.currentState!
                               .pushNamed(carPoolDriverRoute)
                         }),
-                PrimaryButton3('I\'am a passenger', Colors.black,
+                PrimaryButton3("I'am a passenger", Colors.black,
                     onPressed: () => {
                           // navigerEcrans(context, CarpoolPassengerScreen())
                           Utils.carpoolNav.currentState!
@@ -164,7 +165,7 @@ class PrimaryButton2 extends StatelessWidget {
                   width: labelWidth,
                   color: Color(0xc53a4155),
                   padding: EdgeInsets.all(10),
-                  child: Text("I am a driver",
+                  child: Text("I\'am a driver",
                       style: TextStyle(fontSize: 16, color: Color(0xffc8f1f1)),
                       textAlign: TextAlign.center),
                 ),
@@ -215,7 +216,7 @@ class PrimaryButton3 extends StatelessWidget {
                   width: labelWidth,
                   color: Color(0xc53a4155),
                   padding: EdgeInsets.all(10),
-                  child: Text("I am a passenger",
+                  child: Text("I\'am a passenger",
                       style: TextStyle(fontSize: 16, color: Color(0xffc8f1f1)),
                       textAlign: TextAlign.center),
                 ),
