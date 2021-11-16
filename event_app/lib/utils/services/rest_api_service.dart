@@ -10,8 +10,10 @@ import 'package:event_app/modules/app_features/crowd_games/models/crowdgame.dart
 import 'package:event_app/modules/app_features/crowd_games/models/gamemanager.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gamestatus.dart';
+import 'package:event_app/modules/app_features/crowd_games/screens/scoreboard_screen.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
+import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -387,7 +389,14 @@ Future<List> removeGamesCreatedByUserInDatabase(String userMail) async {
 }
 
 // CAR POOL REQUESTS
-Future<List> getCarPoolListFromDatabase() async {
+Future<List> getCarPoolDriverByIdFromDatabase() async {
+  /*getUserMail().then((value) => {
+    print('USERMAIL: ' + value.toString())
+  });*/
+
+  var user = await getUser();
+  print('USERMAIL: ' + user.toString());
+
   var url = Uri.parse(carpoolControlorUrl);
   var response = await http.post(url, body: {'action': 'listCarPool'});
   final data = json.decode(response.body);

@@ -43,7 +43,7 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
   }
 
   Future<List<CarPool>> getCarPool() async {
-    var response = await getCarPoolListFromDatabase();
+    var response = await getCarPoolDriverByIdFromDatabase();
     if (response[0] == "OK" && response.length > 1) {
       response.removeAt(0);
       return response.map((carpool) => CarPool.fromJson(carpool)).toList();
