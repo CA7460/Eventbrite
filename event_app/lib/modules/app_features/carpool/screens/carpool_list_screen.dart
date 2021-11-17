@@ -2,7 +2,7 @@ import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
-import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
+import 'package:event_app/modules/app_features/carpool/models/car_pool.dart';
 import 'package:event_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';

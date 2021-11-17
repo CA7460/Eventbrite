@@ -1,5 +1,5 @@
 import 'package:event_app/config/theme/colors.dart';
-import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
+import 'package:event_app/modules/app_features/carpool/models/car_pool.dart';
 import 'package:event_app/modules/app_features/crowd_games/local_widgets/join_game_button.dart';
 import 'package:event_app/utils/utils.dart';
 import 'package:event_app/config/routes/routes.dart';

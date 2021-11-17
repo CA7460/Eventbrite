@@ -1,7 +1,7 @@
 //class CarpoolPassengerScreen extends StatelessWidget {
 
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
-import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
+import 'package:event_app/modules/app_features/carpool/models/car_pool.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
