@@ -26,14 +26,13 @@ class _CarpoolPassengerScreenState extends State<CarpoolPassengerScreen> {
   }
 
   void refreshCarPoolList() {
-    print('refreshing list');
     setState(() {
       _carPoolFuture = getCarPool();
     });
   }
 
   Future<List<CarPool>> getCarPool() async {
-    var response = await getCarPoolDriverByIdFromDatabase();
+    var response = await getCarPoolUserFromDatabase();
     if (response[0] == "OK" && response.length > 1) {
       response.removeAt(0);
       return response.map((carpool) => CarPool.fromJson(carpool)).toList();

@@ -31,19 +31,16 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
   void initState() {
     super.initState();
     _carPoolFuture = getCarPool();
-
-    //print('Event itemid: ' + event.eventid);
   }
 
   void refreshCarPoolList() {
-    print('refreshing list');
     setState(() {
       _carPoolFuture = getCarPool();
     });
   }
 
   Future<List<CarPool>> getCarPool() async {
-    var response = await getCarPoolDriverByIdFromDatabase();
+    var response = await getCarPoolUserFromDatabase();
     if (response[0] == "OK" && response.length > 1) {
       response.removeAt(0);
       return response.map((carpool) => CarPool.fromJson(carpool)).toList();
@@ -55,9 +52,6 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
   Widget build(BuildContext context) {
     
     // pour avoir le event , faire widget.event
-
-    print(widget.event.eventid);
-    print(widget.event.city);
 
     final screenSize = MediaQuery.of(context).size;
     final topLayoutHeight = screenSize.height * 0.1;

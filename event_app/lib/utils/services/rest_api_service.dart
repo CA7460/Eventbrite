@@ -52,7 +52,6 @@ Future<List> getEventsListFromDatabase(String mail) async {
   var url = Uri.parse(eventControlorUrl);
   var response = await http
       .post(url, body: {'action': 'listEventsForUserMail', 'mail': mail});
-  print(response.body);
   final data = json.decode(response.body);
   return data;
 }
@@ -317,7 +316,6 @@ Future<List> updateRoomStatusInDatabase(String roomid, String status) async {
       "UPDATE gameroom SET roomStatus = '$status' WHERE LOWER(CONCAT('0x',HEX(gameroomid)))='$roomid';";
   var response = await http
       .post(url, body: {'action': 'updateRoomStatus', 'request': request});
-  print(response.body);
   final data = json.decode(response.body);
   return data;
 }
@@ -371,7 +369,6 @@ Future<List> removeUserFromPlayerManagerInDatabase(String userMail) async {
       "DELETE FROM playermanager WHERE LOWER(CONCAT('0x',HEX(userid))) = (SELECT LOWER(CONCAT('0x',HEX(u.userid))) FROM users u WHERE u.mail='$userMail');";
   var response = await http.post(url,
       body: {'action': 'deletePlayerFromPlayerManager', 'request': request});
-  print(response.body);
   final data = json.decode(response.body);
   return data;
 }
@@ -383,22 +380,20 @@ Future<List> removeGamesCreatedByUserInDatabase(String userMail) async {
       "DELETE FROM gameroom WHERE LOWER(CONCAT('0x',HEX(userid))) = (SELECT LOWER(CONCAT('0x',HEX(u.userid))) FROM users u WHERE u.mail='$userMail');";
   var response = await http.post(url,
       body: {'action': 'deletePlayerFromPlayerManager', 'request': request});
-  print(response.body);
   final data = json.decode(response.body);
   return data;
 }
 
 // CAR POOL REQUESTS
-Future<List> getCarPoolDriverByIdFromDatabase() async {
-  /*getUserMail().then((value) => {
-    print('USERMAIL: ' + value.toString())
-  });*/
-
+Future<List> getCarPoolUserFromDatabase() async {
   var user = await getUser();
-  print('USERMAIL: ' + user.toString());
+  return getCarPoolUserByEmailFromDatabase(user);
+}
 
+Future<List> getCarPoolUserByEmailFromDatabase(String email) async {
   var url = Uri.parse(carpoolControlorUrl);
-  var response = await http.post(url, body: {'action': 'listCarPool'});
+  var response = await http.post(url, body: {'action': 'getUserByMail', 'email': email});
   final data = json.decode(response.body);
+
   return data;
 }

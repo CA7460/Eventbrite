@@ -1,10 +1,14 @@
+import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
 import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
+import 'package:event_app/modules/app_features/carpool/models/userPerson.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:event_app/widgets/primary_button_widget.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_passenger_screen.dart';
+
+import 'carpool_list_screen.dart';
 
 Future navigerEcrans(context, ecran) async {
   Navigator.push(context, MaterialPageRoute(builder: (context) => ecran));
@@ -17,29 +21,31 @@ class CarpoolDriverScreen extends StatefulWidget {
 }
 
 class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
-  late Future<List<CarPool>> _carPoolFuture;
+  late UserPerson _userPerson;
+
+  Future _getUserPerson() async {
+    await Future.delayed(Duration(seconds: 2));
+  }
 
   @override
   void initState() {
     super.initState();
-    _carPoolFuture = getCarPool();
+    //todo
   }
 
   void refreshCarPoolList() {
-    print('refreshing list');
-    setState(() {
-      _carPoolFuture = getCarPool();
+    setState(() async {
+      //todo
     });
   }
 
-  Future<List<CarPool>> getCarPool() async {
-    var response = await getCarPoolDriverByIdFromDatabase();
-    print('RESPONSE: ' + response.toString());
+  Future<UserPerson> getCarPoolUser() async {
+    var response = await getCarPoolUserFromDatabase();
     if (response[0] == "OK" && response.length > 1) {
-      response.removeAt(0);
-      return response.map((carpool) => CarPool.fromJson(carpool)).toList();
+      //response.removeAt(0);
+      return response[1].map((user) => UserPerson.fromJson(user));
     }
-    return <CarPool>[];
+    return UserPerson('','','','','');
   }
 
   @override
@@ -51,8 +57,9 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
     final maxWidthForCard = screenWidth / 2;
     final cardSize = maxWidthForCard - 20;
     final labelWidth = cardSize - 26;
-    final eventName = 'Event nane: "The Lumineers"';
-    final city = 'City: Montreal';
+    final eventName = 'Event name: "The Lumineers"';
+    //final city = 'City: ' +
+    final city = 'Montreal';
     final place = 'Place: Centre Bell';
     final address = 'Address: ';
     final dateTime = 'Event\'s Date and time: ';
@@ -66,6 +73,17 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
             padding: EdgeInsets.all(10),
             child: ListView(
               children: <Widget>[
+
+            Padding(
+            padding: EdgeInsets.only(bottom: 5, top: 5),
+            child: PrimaryButton2("",primary_blue,
+                onPressed: () => {
+                  // navigerEcrans(context, CarpoolPassengerScreen())
+                 // Utils.carpoolNav.currentState!
+                 //     .pushNamed(carPoolPassengerRoute)
+                }),
+          ),
+
                 SizedBox(
                   height: 25,
                 ),
@@ -194,14 +212,14 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
                 // ===========  =================
 
                 Padding(
-                  padding: EdgeInsets.only(bottom: 5, top: 45),
+                  padding: EdgeInsets.only(bottom: 5, top: 35),
                   child: Row(
                     children: <Widget>[
                       Visibility(
                         //      visible: _isModificationButtonVisible,
                         child: Expanded(
                           child: RaisedButton(
-                            color: Color(0xFF0033FF),
+                            color: Color(0xFF2195F2),
                             textColor: Colors.white,
                             child: Text(
                               'Add route',
