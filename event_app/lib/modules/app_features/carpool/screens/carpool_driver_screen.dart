@@ -85,69 +85,64 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
                                 }),
                           ),
 
-                          SizedBox(
-                            height: 25,
+                           SizedBox(
+                            height: 0,
                           ),
-                          Text(
-                            user.firstName + " " + user.lastName,
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            event.name,
-                            style: TextStyle(
+                          ListTile(
+                            leading: const Icon(Icons.person),
+                            title:  Text(user.firstName + " " + user.lastName,
+                              style: TextStyle(
                               fontSize: 18,
+                                color: Color(0xFF1E84D5),
                               //fontWeight: FontWeight.w600,
-                            ),
+                            ),),
+                            subtitle: const Text("driver's name"),
                           ),
-                          SizedBox(
-                            height: 15,
+                          SizedBox(height: 0,
                           ),
-                          Text(
-                            event.city,
-                            style: TextStyle(
-                              fontSize: 18,
-                              //fontWeight: FontWeight.w600,
-                            ),
+                          ListTile(
+                            leading: const Icon(Icons.label),
+                            title:  Text(event.name,
+                              style: TextStyle(
+                                fontSize: 18,
+                                //color: Color(0xFF6B6FB6),
+                                color: Color(0xFF1E84D5),
+                                //fontWeight: FontWeight.w600,
+                              ),),
+                            subtitle: const Text("event's name"),
                           ),
-                          SizedBox(
-                            height: 15,
+                          ListTile(
+                            leading: const Icon(Icons.location_city),
+                            title:  Text(event.city + ",\n" + event.location,
+                              style: TextStyle(
+                                fontSize: 18,
+                                //color: Color(0xFF6B6FB6),
+                                color: Color(0xFF1E84D5),
+                                //fontWeight: FontWeight.w600,
+                              ),),
+                           // subtitle: const Text("city"),
+                            subtitle: Text(event.streetNumber.toString() + ' ' + event.streetName),
                           ),
-                          Text(
-                            event.location,
-                            style: TextStyle(
-                              fontSize: 18,
-                              //fontWeight: FontWeight.w600,
-                            ),
+                          ListTile(
+                            //leading: const Icon(Icons.access_time_filled),
+                              leading: const Icon(  Icons.today),
+                            title:  Text(event.startTime.year.toString() + "-" +
+                                event.startTime.month.toString() + "-" +
+                                event.startTime.day.toString() + "\n" +
+                                event.startTime.hour.toString() + ":" +
+                                event.startTime.minute.toString(),
+                              style: TextStyle(
+                                fontSize: 18,
+                                //color: Color(0xFF6B6FB6),
+                                color: Color(0xFF1E84D5),
+                                //fontWeight: FontWeight.w600,
+                              ),),
+                            subtitle: const Text("event's date & time"),
                           ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            event.streetNumber.toString() + ' ' + event.streetName + ', ' + event.city,
-                            style: TextStyle(
-                              fontSize: 18,
-                              // fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            event.startTime.toString(),
-                            style: TextStyle(
-                              fontSize: 18,
-                              //fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: TextFormField(
+
+                          ListTile(
+                            leading: const Icon(Icons.add_location_alt),
+                            title: TextFormField(
                               //  controller: nameController,
                               onChanged: (value) {
                                 // _exercice.name = nameController.text;
@@ -165,63 +160,78 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
                               },
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
-                                labelText: 'Pick up address: ',
+                                hintText: "Pick up address:",
+                             //   labelText: 'Pick up address: ',
                                 errorStyle: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16.0,
+                                  color: Color(0xFF2195F2),
+                                  fontSize: 18.0,
                                 ),
                               ),
                             ),
                           ),
                           // ===========  =================
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: TextFormField(
-                              //    controller: shortDescController,
+                          ListTile(
+                            leading: const Icon(Icons.access_time_outlined),
+                            title: TextFormField(
+                              //  controller: nameController,
                               onChanged: (value) {
-                                //    _exercice.description = shortDescController.text;
+                                // _exercice.name = nameController.text;
                               },
                               validator: (value) {
-                                if (value == "") {
-                                  return 'Entrer une courte description';
+                                if (value != "") {
+                                  return value!.length < 30
+                                      ? null
+                                      : 'Maximum 30 caractères';
+                                } else if (value!.contains(RegExp(r'[0-9]'))) {
+                                  return 'Le nom ne doit pas contenir de chiffre';
+                                } else {
+                                  return 'Entrer un nom';
                                 }
                               },
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
-                                labelText: 'Pick up date and time: ',
+                                hintText: "Pick up time:",
+                                //   labelText: 'Pick up address: ',
                                 errorStyle: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16.0,
+                                  color: Color(0xFF2195F2),
+                                  fontSize: 18.0,
                                 ),
                               ),
                             ),
                           ),
+
                           // ===========  =================
-                          Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
-                            child: TextFormField(
-                              // controller: longDescController,
+                          ListTile(
+                            leading: const Icon(Icons.add_reaction),
+                            title: TextFormField(
+                              //  controller: nameController,
                               onChanged: (value) {
-                                //    _details.longDescription = longDescController.text;
+                                // _exercice.name = nameController.text;
                               },
                               validator: (value) {
-                                if (value == "") {
-                                  return 'Entrer une description détaillée';
+                                if (value != "") {
+                                  return value!.length < 30
+                                      ? null
+                                      : 'Maximum 30 caractères';
+                                } else if (value!.contains(RegExp(r'[0-9]'))) {
+                                  return 'Le nom ne doit pas contenir de chiffre';
+                                } else {
+                                  return 'Entrer un nom';
                                 }
                               },
-                              // keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.text,
                               decoration: InputDecoration(
-                                labelText: 'Number of available seats: ',
-                                //   hintText: 'Maximum 300 caractères',
+                                hintText: "Number of available seats: ",
+                                //   labelText: 'Pick up address: ',
                                 errorStyle: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16.0,
+                                  color: Color(0xFF2195F2),
+                                  fontSize: 18.0,
                                 ),
                               ),
                             ),
                           ),
-                          // ===========  =================
 
+                          // ===========  =================
                           Padding(
                             padding: EdgeInsets.only(bottom: 5, top: 35),
                             child: Row(
