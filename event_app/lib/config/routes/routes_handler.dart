@@ -113,7 +113,7 @@ Route<dynamic> generateCarPoolRoute(RouteSettings settings) {
     case carPoolDriverRoute:
       return MaterialPageRoute(builder: (context) => CarpoolDriverScreen(event: settings.arguments as EventMod));
     case carPoolPassengerRoute:
-      return MaterialPageRoute(builder: (context) => CarpoolPassengerScreen());
+      return MaterialPageRoute(builder: (context) => CarpoolPassengerScreen(event: settings.arguments as EventMod));
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }

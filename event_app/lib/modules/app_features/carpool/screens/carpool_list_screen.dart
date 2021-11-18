@@ -63,12 +63,12 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
                 PrimaryButton2("I'am a driver", Colors.black,
                     onPressed: () => {
                           //navigerEcrans(context, CarpoolDriverScreen(event))
-                          Utils.carpoolNav.currentState!.pushNamed(carPoolDriverRoute, arguments: this.event)
+                          Utils.carpoolNav.currentState!.pushNamed(carPoolDriverRoute, arguments: event)
                         }),
                 PrimaryButton3("I'am a passenger", Colors.black,
                     onPressed: () => {
                           //navigerEcrans(context, CarpoolPassengerScreen())
-                          Utils.carpoolNav.currentState!.pushNamed(carPoolPassengerRoute)
+                          Utils.carpoolNav.currentState!.pushNamed(carPoolPassengerRoute, arguments: event)
                         }),
               ],
             ),
