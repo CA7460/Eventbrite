@@ -1,6 +1,9 @@
+import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
 import 'package:event_app/modules/app_features/carpool/models/user_person.dart';
+import 'package:event_app/modules/app_features/crowd_games/screens/scoreboard_screen.dart';
+import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
@@ -14,13 +17,18 @@ Future navigerEcrans(context, ecran) async {
 }
 
 class CarpoolDriverScreen extends StatefulWidget {
-  const CarpoolDriverScreen({Key? key}) : super(key: key);
+  final EventMod event;
+  const CarpoolDriverScreen({Key? key, required this.event}) : super(key: key);
+
   @override
-  _CarpoolDriverScreenState createState() => _CarpoolDriverScreenState();
+  _CarpoolDriverScreenState createState() => _CarpoolDriverScreenState(event);
 }
 
 class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
+  final EventMod event;
   late Future<UserPerson> _userPerson;
+
+  _CarpoolDriverScreenState(this.event);
 
   @override
   void initState() {
@@ -49,13 +57,6 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
     final maxWidthForCard = screenWidth / 2;
     final cardSize = maxWidthForCard - 20;
     final labelWidth = cardSize - 26;
-    var eventName = 'Event name: "The Lumineers"';
-    _userPerson.then((value) => eventName = value.lastName);
-    final city = 'City: Montreal';
-
-    final place = 'Place: Centre Bell';
-    final address = 'Address: ';
-    final dateTime = 'Event\'s Date and time: ';
 
     return Container(
       child: FutureBuilder<UserPerson>(
@@ -88,7 +89,7 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
                             height: 25,
                           ),
                           Text(
-                            user.lastName,
+                            user.firstName + " " + user.lastName,
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.w600,
@@ -98,7 +99,7 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
                             height: 15,
                           ),
                           Text(
-                            '$city',
+                            event.name,
                             style: TextStyle(
                               fontSize: 18,
                               //fontWeight: FontWeight.w600,
@@ -108,7 +109,7 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
                             height: 15,
                           ),
                           Text(
-                            '$place',
+                            event.city,
                             style: TextStyle(
                               fontSize: 18,
                               //fontWeight: FontWeight.w600,
@@ -118,7 +119,17 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
                             height: 15,
                           ),
                           Text(
-                            '$address',
+                            event.location,
+                            style: TextStyle(
+                              fontSize: 18,
+                              //fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            event.streetNumber.toString() + ' ' + event.streetName + ', ' + event.city,
                             style: TextStyle(
                               fontSize: 18,
                               // fontWeight: FontWeight.w600,
@@ -128,7 +139,7 @@ class _CarpoolDriverScreenState extends State<CarpoolDriverScreen> {
                             height: 15,
                           ),
                           Text(
-                            '$dateTime',
+                            event.startTime.toString(),
                             style: TextStyle(
                               fontSize: 18,
                               //fontWeight: FontWeight.w600,

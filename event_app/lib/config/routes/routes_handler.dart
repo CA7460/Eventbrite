@@ -109,11 +109,9 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
 Route<dynamic> generateCarPoolRoute(RouteSettings settings) {
   switch (settings.name) {
     case carPoolListRoute:
-      return MaterialPageRoute(
-          builder: (context) =>
-              CarPoolListScreen(event: settings.arguments as EventMod));
+      return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
     case carPoolDriverRoute:
-      return MaterialPageRoute(builder: (context) => CarpoolDriverScreen());
+      return MaterialPageRoute(builder: (context) => CarpoolDriverScreen(event: settings.arguments as EventMod));
     case carPoolPassengerRoute:
       return MaterialPageRoute(builder: (context) => CarpoolPassengerScreen());
     default:

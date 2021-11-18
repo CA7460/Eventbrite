@@ -1,32 +1,29 @@
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/models/eventmod.dart';
-import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
 import 'package:event_app/modules/app_features/carpool/models/car_pool.dart';
+import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
 import 'package:event_app/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:event_app/utils/services/rest_api_service.dart';
-import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
-import 'package:event_app/modules/app_features/carpool/screens/carpool_passenger_screen.dart';
-
-// Future navigerEcrans(context, ecran) async {
-//   Navigator.push(context, MaterialPageRoute(builder: (context) => ecran));
-// }
 
 class CarPoolListScreen extends StatefulWidget {
   final EventMod event;
   const CarPoolListScreen({Key? key, required this.event}) : super(key: key);
 
   @override
-  _CarPoolListScreenState createState() => _CarPoolListScreenState();
+  _CarPoolListScreenState createState() => _CarPoolListScreenState(event);
 }
 
 class _CarPoolListScreenState extends State<CarPoolListScreen> {
+  final EventMod event;
+
+  _CarPoolListScreenState(this.event);
+
   late Future<List<CarPool>> _carPoolFuture;
 
   //final EventMod event;
   //_CarPoolListScreenState(this.event);
-
+/*
   @override
   void initState() {
     super.initState();
@@ -46,13 +43,10 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
       return response.map((carpool) => CarPool.fromJson(carpool)).toList();
     }
     return <CarPool>[];
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    
-    // pour avoir le event , faire widget.event
-
     final screenSize = MediaQuery.of(context).size;
     final topLayoutHeight = screenSize.height * 0.1;
     final centerLayoutHeight = screenSize.height * 0.55;
@@ -68,15 +62,13 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
               children: [
                 PrimaryButton2("I'am a driver", Colors.black,
                     onPressed: () => {
-                          // navigerEcrans(context, CarpoolDriverScreen())
-                          Utils.carpoolNav.currentState!
-                              .pushNamed(carPoolDriverRoute)
+                          //navigerEcrans(context, CarpoolDriverScreen(event))
+                          Utils.carpoolNav.currentState!.pushNamed(carPoolDriverRoute, arguments: this.event)
                         }),
                 PrimaryButton3("I'am a passenger", Colors.black,
                     onPressed: () => {
-                          // navigerEcrans(context, CarpoolPassengerScreen())
-                          Utils.carpoolNav.currentState!
-                              .pushNamed(carPoolPassengerRoute)
+                          //navigerEcrans(context, CarpoolPassengerScreen())
+                          Utils.carpoolNav.currentState!.pushNamed(carPoolPassengerRoute)
                         }),
               ],
             ),
