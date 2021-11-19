@@ -47,16 +47,20 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
                   onGenerateRoute: router.generateMainWallRoute,
                 ),
               ),
-
-              // Le feature Messenger est en commentaire pcq il reste du code à faire
-              // Les icône du NavigationRail seront décallés
-
-              // Navigator(
-              //   key: Utils.messengerNav,
-              //   initialRoute: messengerLandingScreenRoute,
-              //   onGenerateRoute: router.generateMessengerRoute,
-              // ),
-
+              WillPopScope(
+                onWillPop: () async {
+                  if (Utils.messengerNav.currentState!.canPop()) {
+                    Utils.messengerNav.currentState!.pop();
+                    return false;
+                  }
+                  return true;
+                },
+                child: Navigator(
+                  key: Utils.messengerNav,
+                  initialRoute: messengerLandingScreenRoute,
+                  onGenerateRoute: router.generateMessengerRoute,
+                ),
+              ),
               WillPopScope(
                 onWillPop: () async {
                   if (Utils.lightEffectsNav.currentState!.canPop()) {
@@ -85,7 +89,6 @@ class _AppFeaturesMainScreenState extends State<AppFeaturesMainScreen> {
                   onGenerateRoute: router.generateGameRoute,
                 ),
               ),
-
               WillPopScope(
                 onWillPop: () async {
                   if (Utils.carpoolNav.currentState!.canPop()) {
