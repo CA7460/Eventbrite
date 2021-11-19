@@ -1,3 +1,4 @@
+import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/models/attendee_list.dart';
 import 'package:event_app/models/current_event.dart';
 import 'package:event_app/models/eventmod.dart';
@@ -16,23 +17,23 @@ class EventListItem extends StatelessWidget {
     final CurrentEvent currentEvent = Provider.of<CurrentEvent>(context);
     final AttendeeList attendees = Provider.of<AttendeeList>(context);
     return Card(
-        margin: EdgeInsets.fromLTRB(48, 6, 42, 0),
-        color: Colors.deepOrange,
+        //margin: EdgeInsets.fromLTRB(48, 6, 42, 0),
+        color: eventbrite_red,
         borderOnForeground: true,
         child: InkWell(
             splashColor: Colors.red.withAlpha(30),
             onTap: () {
-
-               print("L'event " +
-                   events[index].name +
-                   " à été cliquer. Id:" +
-                   events[index].eventid
-               );
+              print("L'event " +
+                  events[index].name +
+                  " à été cliquer. Id:" +
+                  events[index].eventid);
 
               //Provider a maintenant l'evenement en cours
               currentEvent.makeCurrentEvent(events[index]);
               attendees.loadAttendees(events[index].eventid);
-              Utils.mainAppNav.currentState!.pushNamed(appFeaturesMainScreenRoute, arguments: events[index]);
+              Utils.mainAppNav.currentState!.pushNamed(
+                  appFeaturesMainScreenRoute,
+                  arguments: events[index]);
               // Utils.mainAppNav.currentState!
               //     .pushNamed(carPoolListRoute, arguments: events[index]);
             },
