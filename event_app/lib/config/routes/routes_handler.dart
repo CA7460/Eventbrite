@@ -1,4 +1,7 @@
 import 'package:event_app/config/routes/routes.dart';
+import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
+import 'package:event_app/modules/app_features/carpool/screens/carpool_passenger_screen.dart';
+import 'package:event_app/modules/app_features/carpool/screens/carpool_list_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/create_game_screen.dart';
 import 'package:event_app/modules/app_features/discussion/models/chat_screen_argument.dart';
@@ -11,14 +14,12 @@ import 'package:event_app/modules/app_features/crowd_games/screens/loading_scree
 import 'package:event_app/modules/app_features/crowd_games/screens/ongoing_game_screen.dart';
 import 'package:event_app/modules/app_features/light_effects/screens/light_effect_screen.dart';
 import 'package:event_app/modules/app_features/main_wall/screens/main_wall_screen.dart';
-// import 'package:event_app/modules/event_manager/models/eventmod.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
 import 'package:event_app/modules/login/screens/login_screen.dart';
 import 'package:event_app/modules/login/screens/welcome_screen.dart';
 import 'package:event_app/modules/app_features/app_features_main_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/gameroom_list_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/gameroom_screen.dart';
-// import 'package:event_app/modules/app_features/crowd_games/screens/game_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/scoreboard_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) =>
               AppFeaturesMainScreen(event: settings.arguments as EventMod));
+    // case carPoolListRoute:
+    //   return MaterialPageRoute(
+    //       builder: (context) =>
+    //           CarPoolListScreen(event: settings.arguments as EventMod));
+    //   return MaterialPageRoute(
+    //       builder: (context) =>
+    //           AppFeaturesMainScreen(event: settings.arguments as EventMod));
 
     // Test pour Sam - crowdGames
     // case crowdGamesLandingScreenRoute:
@@ -45,19 +53,23 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 }
 
 // NESTED NAVIGATOR pour le navigation Rail, landing screen de chaque feature
-Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
-  switch (settings.name) {
-    // main wall
-    case messengerLandingScreenRoute:
-      return MaterialPageRoute(builder: (context) => MainMessengerScreen());
-    // lights
-    case gameRoomListRoute:
-      return MaterialPageRoute(builder: (context) => GameRoomListScreen());
-    // carpool
-    default: // PENSER À QQCHOSE POUR DEFAULT
-      return MaterialPageRoute(builder: (context) => WelcomeScreen());
-  }
-}
+// Route<dynamic> generateAppFeatureRoute(RouteSettings settings) {
+//   switch (settings.name) {
+//     // main wall
+//     case messengerLandingScreenRoute:
+//       return MaterialPageRoute(builder: (context) => MainMessengerScreen());
+//     // lights
+//     case gameRoomListRoute:
+//       return MaterialPageRoute(builder: (context) => GameRoomListScreen());
+//     // carpool
+//     case carPoolListRoute:
+//       return MaterialPageRoute(
+//           builder: (context) =>
+//               CarPoolListScreen(event: settings.arguments as EventMod));
+//     default: // PENSER À QQCHOSE POUR DEFAULT
+//       return MaterialPageRoute(builder: (context) => WelcomeScreen());
+//   }
+// }
 
 // Navigations individuelles pour chaque feature
 
@@ -88,22 +100,28 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
               OngoingGameScreen(roomid: settings.arguments as String));
     case scoreboardRoute:
       return MaterialPageRoute(builder: (context) => ScoreboardScreen());
-
+    // case joinGameRoute:
+    //  return MaterialPageRoute(builder: (context) => OngoingGameScreen());
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
 }
 
-// Route<dynamic> generateCarpoolRoute(RouteSettings settings) {
-//   switch (settings.name) {
-//     case carpoolListRoute:
-//       return MaterialPageRoute(builder: (context) => CarPoolListScreen());
-
-//   // Autres routes possible à l'intérieur du feature
-
-//     default:
-//   }
-// }
+// CARPOOL
+Route<dynamic> generateCarPoolRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case carPoolListRoute:
+      return MaterialPageRoute(
+          builder: (context) =>
+              CarPoolListScreen(event: settings.arguments as EventMod));
+    case carPoolDriverRoute:
+      return MaterialPageRoute(builder: (context) => CarpoolDriverScreen());
+    case carPoolPassengerRoute:
+      return MaterialPageRoute(builder: (context) => CarpoolPassengerScreen());
+    default:
+      return MaterialPageRoute(builder: (context) => WelcomeScreen());
+  }
+}
 
 // MESSENGER ...
 Route<dynamic> generateMessengerRoute(RouteSettings settings) {
