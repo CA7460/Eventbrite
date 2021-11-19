@@ -26,10 +26,19 @@ class _MainWallState extends State<MainWallScreen> {
     final CurrentEvent currentEvent = Provider.of<CurrentEvent>(context);
     final screenSize = MediaQuery.of(context).size;
     final topLayoutHeight = screenSize.height * 0.1;
-    final centerLayoutHeight = screenSize.height * 0.95;
-    return Center(
-        child: Column(
+    final centerLayoutHeight = screenSize.height * 0.85;
+    return SafeArea(
+        child: Center(
+            child: Column(
       children: [
+        Padding(
+          padding: EdgeInsets.all(5),
+          child: Text("Mur de " + currentEvent.event!.name,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold)),
+        ),
         Container(
           alignment: Alignment.topCenter,
           height: centerLayoutHeight,
@@ -49,7 +58,7 @@ class _MainWallState extends State<MainWallScreen> {
               }),
         ),
       ],
-    ));
+    )));
   }
 }
 

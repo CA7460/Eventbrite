@@ -26,7 +26,7 @@ class PostListItem extends StatelessWidget {
               //     .pushNamed(carPoolListRoute, arguments: events[index]);
             },
             child: Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.fromLTRB(4, 4, 4, 0),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -37,7 +37,7 @@ class PostListItem extends StatelessWidget {
                             fontWeight: FontWeight.w600)),
                     Text(getnumcomment(event.postid),
                         style: TextStyle(
-                            color: Colors.black,
+                            color: primary_blue,
                             fontSize: 15,
                             fontWeight: FontWeight.w600)),
                   ]),

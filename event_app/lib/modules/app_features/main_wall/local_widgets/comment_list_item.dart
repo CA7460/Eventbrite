@@ -12,7 +12,7 @@ class CommentListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         //margin: EdgeInsets.fromLTRB(48, 6, 42, 0),
-        color: eventbrite_red,
+        color: textbox_background,
         borderOnForeground: true,
         child: InkWell(
             splashColor: Colors.red.withAlpha(30),
