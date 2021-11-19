@@ -13,6 +13,8 @@ import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/loading_screen.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/ongoing_game_screen.dart';
 import 'package:event_app/modules/app_features/light_effects/screens/light_effect_screen.dart';
+import 'package:event_app/modules/app_features/main_wall/models/post_model.dart';
+import 'package:event_app/modules/app_features/main_wall/screens/comments_screen.dart';
 import 'package:event_app/modules/app_features/main_wall/screens/main_wall_screen.dart';
 import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
 import 'package:event_app/modules/login/screens/login_screen.dart';
@@ -33,7 +35,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case eventManagerScreenRoute:
       return MaterialPageRoute(builder: (context) => EventManagerScreen());
     case appFeaturesMainScreenRoute:
-      return MaterialPageRoute(builder: (context) => AppFeaturesMainScreen(event: settings.arguments as EventMod));
+      return MaterialPageRoute(
+          builder: (context) =>
+              AppFeaturesMainScreen(event: settings.arguments as EventMod));
     // case carPoolListRoute:
     //   return MaterialPageRoute(
     //       builder: (context) =>
@@ -85,8 +89,8 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
               GameRoomScreen(gameroom: settings.arguments as GameRoom));
     case createGameRoute:
       return MaterialPageRoute(builder: (context) => CreateGameScreen());
-  // case startNewGameRoute:
-  //   return MaterialPageRoute(builder: (context) => GameScreen(roomid: settings.arguments as String));
+    // case startNewGameRoute:
+    //   return MaterialPageRoute(builder: (context) => GameScreen(roomid: settings.arguments as String));
     case startNewGameRoute:
       return MaterialPageRoute(
           builder: (context) =>
@@ -109,11 +113,17 @@ Route<dynamic> generateGameRoute(RouteSettings settings) {
 Route<dynamic> generateCarPoolRoute(RouteSettings settings) {
   switch (settings.name) {
     case carPoolListRoute:
-      return MaterialPageRoute(builder: (context) => CarPoolListScreen(event: settings.arguments as EventMod));
+      return MaterialPageRoute(
+          builder: (context) =>
+              CarPoolListScreen(event: settings.arguments as EventMod));
     case carPoolDriverRoute:
-      return MaterialPageRoute(builder: (context) => CarpoolDriverScreen(event: settings.arguments as EventMod));
+      return MaterialPageRoute(
+          builder: (context) =>
+              CarpoolDriverScreen(event: settings.arguments as EventMod));
     case carPoolPassengerRoute:
-      return MaterialPageRoute(builder: (context) => CarpoolPassengerScreen(event: settings.arguments as EventMod));
+      return MaterialPageRoute(
+          builder: (context) =>
+              CarpoolPassengerScreen(event: settings.arguments as EventMod));
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
@@ -125,7 +135,8 @@ Route<dynamic> generateMessengerRoute(RouteSettings settings) {
     case chatScreenRoute:
       return MaterialPageRoute(builder: (context) {
         ChatScreenArgument arguments = settings.arguments as ChatScreenArgument;
-        return ChatScreen(socket: arguments.socket, conversation: arguments.conversation);
+        return ChatScreen(
+            socket: arguments.socket, conversation: arguments.conversation);
       });
     case messengerLandingScreenRoute:
       return MaterialPageRoute(builder: (context) => MainMessengerScreen());
@@ -155,6 +166,10 @@ Route<dynamic> generateMainWallRoute(RouteSettings settings) {
   switch (settings.name) {
     case mainWallRoute:
       return MaterialPageRoute(builder: (context) => MainWallScreen());
+    case commentWallRoute:
+      return MaterialPageRoute(
+          builder: (context) =>
+              CommentWallScreen(post: settings.arguments as PostModel));
     default:
       return MaterialPageRoute(builder: (context) => WelcomeScreen());
   }
