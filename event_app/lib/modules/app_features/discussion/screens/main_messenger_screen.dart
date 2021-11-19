@@ -40,14 +40,14 @@ class _ChatScreenState extends State<MainMessengerScreen> {
 
   _initSocket() {
     try {
-      socket = io.io('http://192.168.1.159:5000', <String, dynamic>{
-        'transports': ['websocket'],
-        'autoConnect': false,
-      });
-      // socket = io.io('https://eventbrite-realtime.herokuapp.com/', <String, dynamic>{
+      // socket = io.io('http://192.168.1.159:5000', <String, dynamic>{
       //   'transports': ['websocket'],
       //   'autoConnect': false,
       // });
+      socket = io.io('https://eventbrite-realtime.herokuapp.com/', <String, dynamic>{
+        'transports': ['websocket'],
+        'autoConnect': false,
+      });
       socket.connect();
       socket.onConnect((data) => print('Connected'));
       socket.onDisconnect((data) => print('Disconnected'));
