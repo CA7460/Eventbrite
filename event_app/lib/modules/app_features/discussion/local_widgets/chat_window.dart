@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/public_chat_message.dart';
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
@@ -50,25 +53,28 @@ class _ChatWindowState extends State<ChatWindow> {
       messageList.loadMessages(widget.convoId);
       isFirstBuild = false;
     }          
-    List<Message> messages = messageList.messageList;
-    return ListView.builder(
-      controller: widget.controller,
-      itemBuilder: (context, index) {
-        final now = DateTime.now();
-        final difference = now.difference(messages[index].sentAt);
-        return GestureDetector(
-          child: PublicChatMessage(
-            senderName: messages[index].sentBy.prenom,
-            content: messages[index].content,
-            isSender: messages[index].sentBy.userid == loggedUser.user?.userid? true: false,
-            isSeen: messages[index].isSeen,
-            isExpanded: index == tappedIndex? true: false,
-            sentAt: timeago.format(now.subtract(difference), locale: 'en_short'),
-          ),
-          onTap: () => _expandChat(index),
-        );
-      },
-      itemCount: messages.length,
+    // List<Message> messages = messageList.messageList;
+    return Container(
+      color: primary_background,
+      child: ListView.builder(
+        controller: widget.controller,
+        itemBuilder: (context, index) {
+          final now = DateTime.now();
+          final difference = now.difference(messageList.messageList[index].sentAt);
+          return GestureDetector(
+            child: PublicChatMessage(
+              senderName: messageList.messageList[index].sentBy.prenom,
+              content: messageList.messageList[index].content,
+              isSender: messageList.messageList[index].sentBy.userid == loggedUser.user!.userid? true: false,
+              isSeen: messageList.messageList[index].isSeen,
+              isExpanded: index == tappedIndex? true: false,
+              sentAt: timeago.format(now.subtract(difference), locale: 'en_short'),
+            ),
+            onTap: () => _expandChat(index),
+          );
+        },
+        itemCount: messageList.messageList.length,
+      ),
     );
   }
 }

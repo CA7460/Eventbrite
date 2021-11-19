@@ -1,8 +1,10 @@
 import 'package:event_app/config/routes/routes.dart';
+import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/avatar_title.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/chat_list.dart';
 import 'package:event_app/modules/app_features/discussion/models/chat_screen_argument.dart';
+import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation_type.dart';
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
 import 'package:event_app/modules/app_features/discussion/models/message_list.dart';
@@ -25,7 +27,7 @@ class MainMessengerScreen extends StatefulWidget {
 class _ChatScreenState extends State<MainMessengerScreen> {
   late io.Socket socket;
   final List<Tab> tabs = const <Tab>[
-    Tab(text: 'Inbox'),
+    Tab(text: 'Inbox',),
     Tab(text: 'Chatrooms'),
     Tab(text: 'Carpool'),
   ];
@@ -38,14 +40,14 @@ class _ChatScreenState extends State<MainMessengerScreen> {
 
   _initSocket() {
     try {
-      socket = io.io('http://192.168.1.159:5000', <String, dynamic>{
-        'transports': ['websocket'],
-        'autoConnect': false,
-      });
-      // socket = io.io('https://eventbrite-realtime.herokuapp.com/', <String, dynamic>{
+      // socket = io.io('http://192.168.1.159:5000', <String, dynamic>{
       //   'transports': ['websocket'],
       //   'autoConnect': false,
       // });
+      socket = io.io('https://eventbrite-realtime.herokuapp.com/', <String, dynamic>{
+        'transports': ['websocket'],
+        'autoConnect': false,
+      });
       socket.connect();
       socket.onConnect((data) => print('Connected'));
       socket.onDisconnect((data) => print('Disconnected'));
@@ -61,11 +63,11 @@ class _ChatScreenState extends State<MainMessengerScreen> {
   //   messages.addMessage(message);
   // }
 
-  _goToChatScreen(convoid) {
+  _goToChatScreen(conversation) {
     Utils.messengerNav.currentState!.pushNamed(
       chatScreenRoute,
       arguments: ChatScreenArgument(
-        convoid,
+         conversation,
          socket,
       )
     );
@@ -87,7 +89,8 @@ class _ChatScreenState extends State<MainMessengerScreen> {
       length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
-          bottom: TabBar(tabs: tabs),
+          backgroundColor: primary_background,
+          bottom: TabBar(tabs: tabs, labelColor: primary_pink, indicatorColor: primary_pink,),
           title: AvatarTitle(avatarLetter: loggedUser.user!.prenom.substring(0,1), title: 'Chats',),
           actions: [
             Padding(
@@ -97,6 +100,7 @@ class _ChatScreenState extends State<MainMessengerScreen> {
                 child: Icon(
                   Icons.add,
                   size: 26.0,
+                  color: primary_green,
                 ),
               )
             )

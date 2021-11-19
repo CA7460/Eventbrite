@@ -1,3 +1,4 @@
+import 'package:event_app/config/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 class PublicChatMessage extends StatelessWidget {
@@ -68,13 +69,13 @@ class PublicChatMessage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(22),
-                     color: !isSender? Colors.green: Colors.grey
+                     color: !isSender? primary_blue: Colors.grey.shade800
                     ),
                     child: Text(
                       content,
                       style: const TextStyle(
                       fontSize: 16,
-                      color: Colors.black
+                      color: Colors.white
                       )
                     )
                   ),

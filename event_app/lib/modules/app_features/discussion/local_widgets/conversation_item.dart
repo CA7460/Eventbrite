@@ -1,3 +1,4 @@
+import 'package:event_app/config/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 class ConversationItem extends StatelessWidget {
@@ -23,8 +24,9 @@ class ConversationItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(8,0,12,0),
             child: CircleAvatar(
+              backgroundColor: primary_blue,
               radius: 16,
-              child: Text(title.substring(0, 1)),
+              child: Text(title == ''? '': title.substring(0, 1)),
             ),
           ),
           SizedBox(
@@ -38,7 +40,7 @@ class ConversationItem extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Colors.grey
+                    color: Colors.white
                   ),
                 ),
                 const SizedBox(height: 3,),

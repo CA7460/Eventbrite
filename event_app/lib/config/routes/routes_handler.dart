@@ -125,7 +125,7 @@ Route<dynamic> generateMessengerRoute(RouteSettings settings) {
     case chatScreenRoute:
       return MaterialPageRoute(builder: (context) {
         ChatScreenArgument arguments = settings.arguments as ChatScreenArgument;
-        return ChatScreen(socket: arguments.socket, convoId: arguments.convoId);
+        return ChatScreen(socket: arguments.socket, conversation: arguments.conversation);
       });
     case messengerLandingScreenRoute:
       return MaterialPageRoute(builder: (context) => MainMessengerScreen());

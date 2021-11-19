@@ -12,6 +12,7 @@ import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart'
 import 'package:event_app/modules/app_features/crowd_games/models/gamestatus.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/scoreboard_screen.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
+import 'package:event_app/modules/app_features/discussion/models/conversation_type.dart';
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
 import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:intl/intl.dart';
@@ -52,6 +53,8 @@ Future<List> getEventsListFromDatabase(String mail) async {
   var url = Uri.parse(eventControlorUrl);
   var response = await http
       .post(url, body: {'action': 'listEventsForUserMail', 'mail': mail});
+
+   print(response.body);
   final data = json.decode(response.body);
   return data;
 }
@@ -59,7 +62,7 @@ Future<List> getEventsListFromDatabase(String mail) async {
 //
 // MESSENGER REQUESTS
 //
-Future<List<Conversation>> getConversations(String userMail, String eventId) async {
+Future<List<Conversation>> getConversations2(String userMail, String eventId) async {
   List<Conversation> conversations = [];
   var url = Uri.parse(messengerControlorUrl);
   var response = await http.post(url, body: {
@@ -68,9 +71,16 @@ Future<List<Conversation>> getConversations(String userMail, String eventId) asy
     'eventId': eventId});
   final data = json.decode(response.body);
   if (data[0] == 'OK'){
-    for (var i = 1; i < data.length -1; i++) {
-      Conversation conversation = Conversation.fromJson(data[i]);
-      conversations.add(conversation);
+    for (var i = 1; i <= data.length -1; i++) {
+      var conversation = {
+        "convoId": data[i]['conversation']['convoId'],
+        "title": data[i]['conversation']['title'],
+        "members": data[i]['members'],
+        "type": data[i]['conversation']['type'],
+        "updatedAt": data[i]['conversation']['updatedAt'],
+      };
+      Conversation convo = Conversation.fromJson(conversation);
+      conversations.add(convo);
     }
   }
   return conversations;
@@ -81,39 +91,15 @@ Future<List<Message>> getMessagesForConversation(String convoId) async {
   var url = Uri.parse(messengerControlorUrl);
   var response = await http.post(url, body: {
     'action': 'listMessages',
-    'convoid': convoId});
+    'convoId': convoId});
   final data = json.decode(response.body);
   if (data[0] == 'OK'){
-    for (var i = 1; i < data.length -1; i++) {
+    for (var i = 1; i <= data.length -1; i++) {
       Message message = Message.fromJson(data[i]);
       messages.add(message);
     }
   }
   return messages;
-}
-
-Future<List> sendMessageToConversation(Message message, String convoId) async {
-  var url = Uri.parse(messengerControlorUrl);
-  var response = await http.post(url, body: {
-    'action': 'sendMessage',
-    'convoId': convoId,
-    'message': message.toJson()
-  });
-  final data = json.decode(response.body);
-  return data;
-}
-      
-Future<List> sendNewMessage(Message message, Conversation conversation, String eventId) async {
-  var url = Uri.parse(messengerControlorUrl);
-  var body = jsonEncode({
-    'action': 'sendNewMessage',
-    'eventIt': eventId,
-    'conversation': conversation,
-    'message': message
-  });
-  var response = await http.post(url, body: body);
-  final data = json.decode(response.body);
-  return data;
 }
     
 //

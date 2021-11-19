@@ -11,6 +11,7 @@ import 'package:event_app/modules/app_features/discussion/models/conversation_ty
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:event_app/widgets/primary_button_widget.dart';
+import 'package:event_app/widgets/textfield_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -72,18 +73,17 @@ class _ChatScreenState extends State<NewMessageScreen> {
 
   _send(Conversation conversation, Message message, eventId) async {
     final body = {
-      "action" : "sendNewMessage",
       "conversation": {
         "convoId": conversation.convoId ?? null,
         "title": conversation.title ?? null,
         "members": conversation.members.map((e) => e.toJson()).toList(),
-        "lastMessage": conversation.lastMessage ?? null,
+        // "lastMessage": conversation.lastMessage ?? null,
         "type": type.toString().split('.').last,
         "updatedAt": conversation.updatedAt.toString()
       },
       "message": {
         'messageId': message.messageId,
-        'sentby': message.sentBy.userid,
+        'sentBy': message.sentBy.userid,
         'content': message.content,
         'isSeen': message.isSeen == true? 1: 0,
         'sentAt': message.sentAt.toString()
@@ -109,8 +109,17 @@ class _ChatScreenState extends State<NewMessageScreen> {
     _titleTextController = TextEditingController();
   }
 
+  _addNewConvo(convo){
+
+  }
+
+  _setSocket(){
+    widget.socket.on('newConvo', (convo) => _addNewConvo(convo));
+  }
+
   @override
   void initState() {
+    _setSocket();
     _loadLateFields();
     super.initState();
   }
@@ -129,20 +138,26 @@ class _ChatScreenState extends State<NewMessageScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Send a new Message'),
+        backgroundColor: primary_background,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Form(
             child: Container(
+              color: primary_background,
               padding: EdgeInsets.symmetric(horizontal:40, vertical: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(height: 20),
                   TextFormField(
+                    style: TextStyle(color: primary_green),
+                    autocorrect: false,
+                    enableSuggestions: false,
                     decoration: InputDecoration(
+                      focusColor: primary_blue,
                       border: UnderlineInputBorder(),
-                      label: Text('Title'),
+                      label: Text('Title', style: TextStyle(color: primary_blue),),
                       //hintText: 'Title'
                     ),
                     inputFormatters: [LengthLimitingTextInputFormatter(40)],
@@ -150,9 +165,12 @@ class _ChatScreenState extends State<NewMessageScreen> {
                   ),
                   SizedBox(height: 20),
                   TextFormField(
+                    autocorrect: false,
+                    enableSuggestions: false,
+                    style: TextStyle(color: primary_pink),
                     decoration: InputDecoration(
-                      border: UnderlineInputBorder(),
-                      label: Text('Message'),
+                      border: UnderlineInputBorder(borderSide: BorderSide(color: primary_pink)),
+                      label: Text('Message', style: TextStyle(color: primary_blue)),
                       //hintText: 'Message'
                     ),
                     inputFormatters: [LengthLimitingTextInputFormatter(450)],
@@ -169,6 +187,12 @@ class _ChatScreenState extends State<NewMessageScreen> {
                   ),
                   SizedBox(height: 40),
                   ToggleSwitch(
+                    inactiveBgColor: Colors.black,
+                    borderColor: [primary_blue],
+                    borderWidth: 1,
+                    inactiveFgColor: primary_green,
+                    dividerColor: primary_blue,
+                    activeBgColor: [primary_pink],
                     initialLabelIndex: togglePosition,
                     minWidth: 80,
                     totalSwitches: 3,
@@ -181,8 +205,9 @@ class _ChatScreenState extends State<NewMessageScreen> {
                   ),
                   SizedBox(height: 60),
                   if (togglePosition != 2) ...[
-                  Text('Send to:'),
+                  Text('Send to:', style: TextStyle(color: primary_green),),
                   DropdownButton(
+                    dropdownColor: Colors.grey.shade900,
                     value: selectedSendee,
                     onChanged: (value) {
                       setState(() {
@@ -191,14 +216,14 @@ class _ChatScreenState extends State<NewMessageScreen> {
                     },
                     items: sendees.map((sendee){
                       return DropdownMenuItem(
-                        child: Text(sendee.prenom + ' '+ sendee.nom),
-                        value: sendee
+                        child: Text(sendee.prenom + ' '+ sendee.nom, style: TextStyle(color: primary_pink,)),
+                        value: sendee,
                       );
                     }).toList(),
                     hint: Text('Send to:'),
                   ),
                   ],
-                  SizedBox(height: 70),
+                  SizedBox(height: togglePosition != 2? 75: 139),
                   PrimaryButton(
                     'Send',
                     eventbrite_red,
@@ -209,6 +234,7 @@ class _ChatScreenState extends State<NewMessageScreen> {
                           if (type != ConversationType.public){
                             sendTo = [];
                             sendTo.add(selectedSendee);
+                            sendTo.add(currentUser);
                           } else {
                             sendTo = attendees.attendees;
                           }
