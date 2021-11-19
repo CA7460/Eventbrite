@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:event_app/models/logged_user.dart';
+import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/avatar_title.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/chat_input.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/chat_window.dart';
+import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
 import 'package:event_app/modules/app_features/discussion/models/message_list.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +13,12 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String convoId;
+  final Conversation conversation;
   final io.Socket socket;
   const ChatScreen({
     Key? key,
     required this.socket,
-    required this.convoId
+    required this.conversation
   }) : super(key: key);
 
   @override
@@ -37,10 +41,14 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
-  _send(LoggedUser loggedUser){
+  _send(LoggedUser loggedUser, String convoId){
     var message = Message.noId(loggedUser.user!, _textController.text, DateTime.now(), false);
     if(message.content != '') {
-      widget.socket.emit('message', message.toJson());
+      Map<String, dynamic> payload ={
+        "message": message.toJson(),
+        "convoId": convoId
+      };
+      widget.socket.emit('message', payload);
       setState(() {
         _textController.text = '';
       });
@@ -48,12 +56,12 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _setSocket(){
-    widget.socket.on('message', (data) => print(data));
-    widget.socket.on('message', (data) => _addToMessageList(data));
+    widget.socket.on('message', (data) => _addToMessageList(data['message']));
   }
 
-  _addToMessageList(data) {
-    Message message = Message.fromJson(data);
+  _addToMessageList(data) { // Need to get messageId and User for sentBy
+    final User sentBy = widget.conversation.members.firstWhere((user) => user.userid == data['sentBy']);
+    Message message = Message(data['messageId'], sentBy, data['content'], DateTime.parse(data['sentAt']), data['isSeen'] == 0? false: true);
     MessageList messages = Provider.of<MessageList>(context, listen: false);
     messages.addMessage(message);
   }
@@ -78,7 +86,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final LoggedUser loggedUser = Provider.of<LoggedUser>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const AvatarTitle(title: 'Dan', avatarLetter: 'D'),
+        title: AvatarTitle(title: widget.conversation.title!, avatarLetter: widget.conversation.title!.substring(0, 1)), //should get conversation from parent
       ),
       body: SafeArea(
         child: Column(
@@ -86,12 +94,12 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               child: ChatWindow(
                 controller: _scrollController,
-                convoId: widget.convoId,
+                convoId: widget.conversation.convoId!,
               )
             ),
             ChatInput(
               controller: _textController,
-              onSubmit: () => _send(loggedUser))
+              onSubmit: () => _send(loggedUser, widget.conversation.convoId!))
           ],
         )
       ),

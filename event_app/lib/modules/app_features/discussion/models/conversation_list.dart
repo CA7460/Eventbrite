@@ -15,8 +15,8 @@ class ConversationList extends ChangeNotifier {
   }
 
   Future<void> loadConversations(String? userMail, String? eventId) async {
-    if (eventId != null && userId != null) {
-      convoList = await getConversations(userMail, eventId);
+    if (eventId != null && userMail != null) {
+      convoList = await getConversations2(userMail, eventId);
       convoList.sort((a,b) => a.updatedAt.compareTo(b.updatedAt));
     }
     notifyListeners();

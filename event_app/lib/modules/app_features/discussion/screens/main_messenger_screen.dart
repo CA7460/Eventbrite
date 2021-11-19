@@ -3,6 +3,7 @@ import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/avatar_title.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/chat_list.dart';
 import 'package:event_app/modules/app_features/discussion/models/chat_screen_argument.dart';
+import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation_type.dart';
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
 import 'package:event_app/modules/app_features/discussion/models/message_list.dart';
@@ -61,11 +62,11 @@ class _ChatScreenState extends State<MainMessengerScreen> {
   //   messages.addMessage(message);
   // }
 
-  _goToChatScreen(convoid) {
+  _goToChatScreen(conversation) {
     Utils.messengerNav.currentState!.pushNamed(
       chatScreenRoute,
       arguments: ChatScreenArgument(
-        convoid,
+         conversation,
          socket,
       )
     );

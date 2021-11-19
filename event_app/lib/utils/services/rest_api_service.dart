@@ -82,7 +82,7 @@ Future<List> getConversations(String userMail, String eventId) async {
   return finalData;
 }
 
-Future<List> getConversations2(String userMail, String eventId) async {
+Future<List<Conversation>> getConversations2(String userMail, String eventId) async {
   List<Conversation> conversations = [];
   var url = Uri.parse(messengerControlorUrl);
   var response = await http.post(url, body: {
@@ -92,7 +92,14 @@ Future<List> getConversations2(String userMail, String eventId) async {
   final data = json.decode(response.body);
   if (data[0] == 'OK'){
     for (var i = 1; i <= data.length -1; i++) {
-      Conversation convo = Conversation.fromJson(data[1]);
+      var conversation = {
+        "convoId": data[i]['conversation']['convoId'],
+        "title": data[i]['conversation']['title'],
+        "members": data[i]['members'],
+        "type": data[i]['conversation']['type'],
+        "updatedAt": data[i]['conversation']['updatedAt'],
+      };
+      Conversation convo = Conversation.fromJson(conversation);
       conversations.add(convo);
     }
   }

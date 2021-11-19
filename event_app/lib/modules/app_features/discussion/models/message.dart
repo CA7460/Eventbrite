@@ -1,6 +1,6 @@
 import 'package:event_app/models/user.dart';
 
-class Message {
+class Message{
   String? messageId;
   User sentBy;
   String content;
@@ -20,10 +20,9 @@ class Message {
 
   Map<String, dynamic> toJson() => {
       'messageId': messageId,
-      'sentby': sentBy.userid,
+      'sentBy': sentBy.userid,
       'content': content,
       'isSeen': isSeen == true? 1: 0,
       'sentAt': sentAt.toString()
   };
-
 }

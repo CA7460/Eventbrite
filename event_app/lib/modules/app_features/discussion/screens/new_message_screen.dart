@@ -72,18 +72,17 @@ class _ChatScreenState extends State<NewMessageScreen> {
 
   _send(Conversation conversation, Message message, eventId) async {
     final body = {
-      "action" : "sendNewMessage",
       "conversation": {
         "convoId": conversation.convoId ?? null,
         "title": conversation.title ?? null,
         "members": conversation.members.map((e) => e.toJson()).toList(),
-        "lastMessage": conversation.lastMessage ?? null,
+        // "lastMessage": conversation.lastMessage ?? null,
         "type": type.toString().split('.').last,
         "updatedAt": conversation.updatedAt.toString()
       },
       "message": {
         'messageId': message.messageId,
-        'sentby': message.sentBy.userid,
+        'sentBy': message.sentBy.userid,
         'content': message.content,
         'isSeen': message.isSeen == true? 1: 0,
         'sentAt': message.sentAt.toString()
@@ -109,8 +108,17 @@ class _ChatScreenState extends State<NewMessageScreen> {
     _titleTextController = TextEditingController();
   }
 
+  _addNewConvo(convo){
+
+  }
+
+  _setSocket(){
+    widget.socket.on('newConvo', (convo) => _addNewConvo(convo));
+  }
+
   @override
   void initState() {
+    _setSocket();
     _loadLateFields();
     super.initState();
   }
@@ -209,6 +217,7 @@ class _ChatScreenState extends State<NewMessageScreen> {
                           if (type != ConversationType.public){
                             sendTo = [];
                             sendTo.add(selectedSendee);
+                            sendTo.add(currentUser);
                           } else {
                             sendTo = attendees.attendees;
                           }
