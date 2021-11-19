@@ -38,8 +38,8 @@ class _ChatInputState extends State<ChatInput> {
             child: TextField(
               controller: widget.controller,
               style: const TextStyle(
-                fontSize: 16
-                
+                fontSize: 16,
+                color: Colors.white
               ),
               decoration: const InputDecoration(
                 border: InputBorder.none,
