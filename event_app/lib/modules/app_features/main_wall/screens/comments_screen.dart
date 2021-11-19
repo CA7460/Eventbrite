@@ -24,7 +24,7 @@ class _CommentWallState extends State<CommentWallScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final topLayoutHeight = screenSize.height * 0.1;
-    final centerLayoutHeight = screenSize.height * 0.90;
+    final centerLayoutHeight = screenSize.height * 0.80;
     return Center(
         child: Column(
       children: [
