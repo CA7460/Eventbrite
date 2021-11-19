@@ -1,18 +1,18 @@
-class CarPool {
-  String _carpoolid;
+class CarPoolEvent {
+  String carpoolid;
   DateTime createdOn;
   String title;
   String description;
   double? price;
   int numberOfSeats;
-  String status; //enum
+  int status; //enum
   String driverid;
   String passengerid;
-  String _eventId;
+  String eventId;
   String pickupaddressid;
 
-  CarPool(
-      this._carpoolid,
+  CarPoolEvent(
+      this.carpoolid,
       this.createdOn,
       this.title,
       this.description,
@@ -21,19 +21,19 @@ class CarPool {
       this.status,
       this.driverid,
       this.passengerid,
-      this._eventId,
+      this.eventId,
       this.pickupaddressid);
 
-  CarPool.fromJson(Map<String, dynamic> json)
-      : _carpoolid = json['carpoolid'],
+  CarPoolEvent.fromJson(Map<dynamic, dynamic> json) :
+        carpoolid = json['carpoolid'],
         createdOn = DateTime.parse(json['createdOn']),
         title = json['title'],
         description = json['description'],
         price = double.tryParse(json['price']),
         numberOfSeats = int.parse(json['numberOfSeats']),
-        status = json['status'],
+        status = int.parse(json['status']),
         driverid = json['driverid'],
         passengerid = json['passengerid'],
-        _eventId = json['eventId'],
+        eventId = json['eventId'],
         pickupaddressid = json['pickupaddressid'];
 }

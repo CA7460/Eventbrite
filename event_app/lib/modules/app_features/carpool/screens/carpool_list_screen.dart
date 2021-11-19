@@ -1,7 +1,7 @@
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
-import 'package:event_app/modules/app_features/carpool/models/car_pool.dart';
+import 'package:event_app/modules/app_features/carpool/models/car_pool_event.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
 import 'package:event_app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
 
   _CarPoolListScreenState(this.event);
 
-  late Future<List<CarPool>> _carPoolFuture;
+  late Future<List<CarPoolEvent>> _carPoolFuture;
 
   //final EventMod event;
   //_CarPoolListScreenState(this.event);
@@ -81,7 +81,7 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
 
 class CarPoolListViewWidget extends StatelessWidget {
   final Function refreshCarPoolList;
-  final List<CarPool> carpool;
+  final List<CarPoolEvent> carpool;
   final dynamic _listViewStateInstance;
 
   const CarPoolListViewWidget(

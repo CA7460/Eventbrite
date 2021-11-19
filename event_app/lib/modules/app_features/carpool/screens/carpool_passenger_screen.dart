@@ -1,14 +1,25 @@
+import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
+import 'package:event_app/modules/app_features/carpool/models/car_pool_event.dart';
 import 'package:event_app/modules/app_features/carpool/models/user_person.dart';
 import 'package:event_app/modules/app_features/crowd_games/screens/scoreboard_screen.dart';
 import 'package:event_app/utils/services/local_storage_service.dart';
+import 'package:event_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
 import 'package:event_app/widgets/primary_button_widget.dart';
 import 'package:event_app/modules/app_features/carpool/screens/carpool_passenger_screen.dart';
+import 'package:event_app/config/theme/colors.dart';
+import 'package:event_app/modules/event_manager/local_widgets/event_list_item.dart';
+import 'package:event_app/modules/event_manager/screens/event_manager_screen.dart';
+import 'package:event_app/models/eventmod.dart';
+import 'package:event_app/utils/services/local_storage_service.dart';
+import 'package:event_app/utils/services/rest_api_service.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'carpool_list_screen.dart';
 
@@ -26,241 +37,139 @@ class CarpoolPassengerScreen extends StatefulWidget {
 
 class _CarpoolPassengerScreenState extends State<CarpoolPassengerScreen> {
   final EventMod event;
-  late Future<UserPerson> _userPerson;
+  late Future<List<CarPoolEvent>> _carpoolEvents;
 
   _CarpoolPassengerScreenState(this.event);
 
   @override
   void initState() {
     super.initState();
-    _userPerson = getCarPoolUser();
+    _carpoolEvents = getCarPoolEvents();
   }
 
   void refreshCarPoolList() {
     setState(() {
-      _userPerson = getCarPoolUser();
+      _carpoolEvents = getCarPoolEvents();
     });
   }
 
-  Future<UserPerson> getCarPoolUser() async {
-    var response = await getCarPoolUserFromDatabase();
+  Future<List<CarPoolEvent>> getCarPoolEvents() async {
+    var response = await getCarPoolForEventFromDatabase('0x0d70522f2dbb11ec97710cc47ad3b416');
     if (response[0] == "OK" && response.length > 1) {
       response.removeAt(0);
-      return UserPerson.fromJson(response[0]);
+      print(response[0].toString());
+      return response.map((event) => CarPoolEvent.fromJson(event)).toList();
     }
-    return UserPerson('','','','','');
+    return <CarPoolEvent>[];
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final maxWidthForCard = screenWidth / 2;
-    final cardSize = maxWidthForCard - 20;
-    final labelWidth = cardSize - 26;
+    final screenSize = MediaQuery.of(context).size;
+    final topLayoutHeight = screenSize.height * 0.1;
+    final centerLayoutHeight = screenSize.height * 0.95;
+    return Center(
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.topCenter,
+              height: centerLayoutHeight,
+              color: primary_background,
+              child: FutureBuilder<List<CarPoolEvent>>(
+                  future: getCarPoolEvents(),
+                  builder: (
+                      BuildContext context,
+                      AsyncSnapshot<List<CarPoolEvent>> snapshot,
+                  ) {
+                    if (snapshot.hasData) {
+                      List<CarPoolEvent> events = snapshot.data!;
+                      return CarPoolEventsListViewWidget(events, this);
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  }),
+            ),
+          ],
+        ));
+  }
+}
 
+class CarPoolEventsListViewWidget extends StatelessWidget {
+  final List<CarPoolEvent> events;
+  final dynamic _listViewStateInstance;
+
+  const CarPoolEventsListViewWidget(this.events, this._listViewStateInstance,
+      {Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-        child: FutureBuilder<UserPerson>(
-            future: _userPerson,
-            builder: (
-                BuildContext context,
-                AsyncSnapshot<UserPerson> snapshot
-                )
-            {
-              if (snapshot.hasData) {
-                final user = snapshot.data!;
-                return SafeArea(
-                  child: Scaffold(
-                    body: Form(
-                      child: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: ListView(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 5, top: 5),
-                              child: PrimaryButton3("",primary_blue,
-                                  onPressed: () => {
-                                    // navigerEcrans(context, CarpoolPassengerScreen())
-                                    // Utils.carpoolNav.currentState!
-                                    //     .pushNamed(carPoolPassengerRoute)
-                                  }),
-                            ),
-
-                            SizedBox(
-                              height: 25,
-                            ),
-                            Text(
-                              user.firstName + " " + user.lastName,
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              event.name,
-                              style: TextStyle(
-                                fontSize: 18,
-                                //fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              event.city,
-                              style: TextStyle(
-                                fontSize: 18,
-                                //fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              event.location,
-                              style: TextStyle(
-                                fontSize: 18,
-                                //fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              event.streetNumber.toString() + ' ' + event.streetName + ', ' + event.city,
-                              style: TextStyle(
-                                fontSize: 18,
-                                // fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              event.startTime.toString(),
-                              style: TextStyle(
-                                fontSize: 18,
-                                //fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 5, bottom: 5),
-                              child: TextFormField(
-                                //  controller: nameController,
-                                onChanged: (value) {
-                                  // _exercice.name = nameController.text;
-                                },
-                                validator: (value) {
-                                  if (value != "") {
-                                    return value!.length < 30
-                                        ? null
-                                        : 'Maximum 30 caractères';
-                                  } else if (value!.contains(RegExp(r'[0-9]'))) {
-                                    return 'Le nom ne doit pas contenir de chiffre';
-                                  } else {
-                                    return 'Entrer un nom';
-                                  }
-                                },
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  labelText: 'Pick up address: ',
-                                  errorStyle: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // ===========  =================
-                            Padding(
-                              padding: EdgeInsets.only(top: 5, bottom: 5),
-                              child: TextFormField(
-                                //    controller: shortDescController,
-                                onChanged: (value) {
-                                  //    _exercice.description = shortDescController.text;
-                                },
-                                validator: (value) {
-                                  if (value == "") {
-                                    return 'Entrer une courte description';
-                                  }
-                                },
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  labelText: 'Pick up date and time: ',
-                                  errorStyle: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // ===========  =================
-                            Padding(
-                              padding: EdgeInsets.only(top: 5, bottom: 5),
-                              child: TextFormField(
-                                // controller: longDescController,
-                                onChanged: (value) {
-                                  //    _details.longDescription = longDescController.text;
-                                },
-                                validator: (value) {
-                                  if (value == "") {
-                                    return 'Entrer une description détaillée';
-                                  }
-                                },
-                                // keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                  labelText: 'Number of available seats: ',
-                                  //   hintText: 'Maximum 300 caractères',
-                                  errorStyle: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // ===========  =================
-
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 5, top: 35),
-                              child: Row(
-                                children: <Widget>[
-                                  Visibility(
-                                    //      visible: _isModificationButtonVisible,
-                                    child: Expanded(
-                                      child: RaisedButton(
-                                        color: Color(0xFF2195F2),
-                                        textColor: Colors.white,
-                                        child: Text(
-                                          'Add route',
-                                          textScaleFactor: 1.5,
-                                        ),
-                                        onPressed: () async {
-                                          //     String reponse = await this
-                                          //          ._enregistrerChangements('modifier');
-                                          //     Navigator.pop(context, reponse);
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                  // ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(color: primary_blue),
-                );
-              }
-            }
-        )
+      child: events.isEmpty
+          ? emptyList()
+          : ListView.builder(
+          itemCount: events.length,
+          itemBuilder: (context, index) {
+            return CarPoolEventListItem(events, index);
+          }),
     );
+  }
+
+  Widget emptyList() {
+    return Text(
+      'No Events availble',
+      style: TextStyle(
+        color: Colors.white,
+      ),
+    );
+  }
+}
+
+class CarPoolEventListItem extends StatelessWidget {
+  final List<CarPoolEvent> carPoolEvents;
+  final int index;
+  const CarPoolEventListItem(this.carPoolEvents, this.index, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final CarPoolEvent carPoolEvent = Provider.of<CarPoolEvent>(context);
+    return Card(
+        margin: EdgeInsets.fromLTRB(48, 6, 42, 0),
+        color: Colors.deepOrange,
+        borderOnForeground: true,
+        child: InkWell(
+            splashColor: Colors.red.withAlpha(30),
+            onTap: () {
+              //Provider a maintenant l'evenement en cours
+              //carPoolEvent.makeCurrentEvent(carPoolEvents[index]);
+              Utils.mainAppNav.currentState!.pushNamed(carPoolPassengerRoute, arguments: carPoolEvents[index]);
+              // Utils.mainAppNav.currentState!
+              //     .pushNamed(carPoolListRoute, arguments: events[index]);
+            },
+            child: Padding(
+              padding: EdgeInsets.all(4),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(carPoolEvents[index].title, //nom event
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold)),
+                    Text(carPoolEvents[index].description,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal)),
+                    Text(
+                        carPoolEvents[index].createdOn.toString() +
+                            "/" + carPoolEvents[index].createdOn.toString() +
+                            "/" + carPoolEvents[index].createdOn.toString(),
+                        style: TextStyle(
+                            color: Colors.yellow,
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal)),
+                  ]),
+            )));
   }
 }

@@ -397,3 +397,10 @@ Future<List> getCarPoolUserByEmailFromDatabase(String email) async {
 
   return data;
 }
+
+Future<List> getCarPoolForEventFromDatabase(String eventid) async {
+  var url = Uri.parse(carpoolControlorUrl);
+  var response = await http.post(url, body: {'action': 'getAvailableCarPoolByEventId', 'eventid': eventid});
+  final data = json.decode(response.body);
+  return data;
+}
