@@ -1,63 +1,52 @@
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/models/eventmod.dart';
 import 'package:event_app/modules/app_features/carpool/local_widgets/carpool_list_item.dart';
-import 'package:event_app/modules/app_features/carpool/models/carpool.dart';
+import 'package:event_app/modules/app_features/carpool/models/car_pool_event.dart';
+import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
 import 'package:event_app/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:event_app/utils/services/rest_api_service.dart';
-import 'package:event_app/modules/app_features/carpool/screens/carpool_driver_screen.dart';
-import 'package:event_app/modules/app_features/carpool/screens/carpool_passenger_screen.dart';
-
-// Future navigerEcrans(context, ecran) async {
-//   Navigator.push(context, MaterialPageRoute(builder: (context) => ecran));
-// }
 
 class CarPoolListScreen extends StatefulWidget {
   final EventMod event;
   const CarPoolListScreen({Key? key, required this.event}) : super(key: key);
 
   @override
-  _CarPoolListScreenState createState() => _CarPoolListScreenState();
+  _CarPoolListScreenState createState() => _CarPoolListScreenState(event);
 }
 
 class _CarPoolListScreenState extends State<CarPoolListScreen> {
-  late Future<List<CarPool>> _carPoolFuture;
+  final EventMod event;
+
+  _CarPoolListScreenState(this.event);
+
+  late Future<List<CarPoolEvent>> _carPoolFuture;
 
   //final EventMod event;
   //_CarPoolListScreenState(this.event);
-
+/*
   @override
   void initState() {
     super.initState();
     _carPoolFuture = getCarPool();
-
-    //print('Event itemid: ' + event.eventid);
   }
 
   void refreshCarPoolList() {
-    print('refreshing list');
     setState(() {
       _carPoolFuture = getCarPool();
     });
   }
 
   Future<List<CarPool>> getCarPool() async {
-    var response = await getCarPoolListFromDatabase();
+    var response = await getCarPoolUserFromDatabase();
     if (response[0] == "OK" && response.length > 1) {
       response.removeAt(0);
       return response.map((carpool) => CarPool.fromJson(carpool)).toList();
     }
     return <CarPool>[];
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    
-    // pour avoir le event , faire widget.event
-
-    print(widget.event.eventid);
-    print(widget.event.city);
-
     final screenSize = MediaQuery.of(context).size;
     final topLayoutHeight = screenSize.height * 0.1;
     final centerLayoutHeight = screenSize.height * 0.55;
@@ -71,17 +60,15 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                PrimaryButton2('I\'am a driver', Colors.black,
+                PrimaryButton2("I'am a driver", Colors.black,
                     onPressed: () => {
-                          // navigerEcrans(context, CarpoolDriverScreen())
-                          Utils.carpoolNav.currentState!
-                              .pushNamed(carPoolDriverRoute)
+                          //navigerEcrans(context, CarpoolDriverScreen(event))
+                          Utils.carpoolNav.currentState!.pushNamed(carPoolDriverRoute, arguments: event)
                         }),
-                PrimaryButton3('I\'am a passenger', Colors.black,
+                PrimaryButton3("I'am a passenger", Colors.black,
                     onPressed: () => {
-                          // navigerEcrans(context, CarpoolPassengerScreen())
-                          Utils.carpoolNav.currentState!
-                              .pushNamed(carPoolPassengerRoute)
+                          //navigerEcrans(context, CarpoolPassengerScreen())
+                          Utils.carpoolNav.currentState!.pushNamed(carPoolPassengerRoute, arguments: event)
                         }),
               ],
             ),
@@ -94,7 +81,7 @@ class _CarPoolListScreenState extends State<CarPoolListScreen> {
 
 class CarPoolListViewWidget extends StatelessWidget {
   final Function refreshCarPoolList;
-  final List<CarPool> carpool;
+  final List<CarPoolEvent> carpool;
   final dynamic _listViewStateInstance;
 
   const CarPoolListViewWidget(
@@ -164,7 +151,7 @@ class PrimaryButton2 extends StatelessWidget {
                   width: labelWidth,
                   color: Color(0xc53a4155),
                   padding: EdgeInsets.all(10),
-                  child: Text("I am a driver",
+                  child: Text("I\'am a driver",
                       style: TextStyle(fontSize: 16, color: Color(0xffc8f1f1)),
                       textAlign: TextAlign.center),
                 ),
@@ -215,7 +202,7 @@ class PrimaryButton3 extends StatelessWidget {
                   width: labelWidth,
                   color: Color(0xc53a4155),
                   padding: EdgeInsets.all(10),
-                  child: Text("I am a passenger",
+                  child: Text("I\'am a passenger",
                       style: TextStyle(fontSize: 16, color: Color(0xffc8f1f1)),
                       textAlign: TextAlign.center),
                 ),
