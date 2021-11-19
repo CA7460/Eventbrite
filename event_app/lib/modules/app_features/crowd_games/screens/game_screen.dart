@@ -20,7 +20,6 @@
 // // Count how many games of each categories
 // Future<List<GameCount>> getGameCounts() async {
 //   var response = await getGameCountsFromDatabase();
-//   print('gamecount stack');
 
 //   if (response[0] == "OK" && response.length > 1) {
 //     response.removeAt(0);

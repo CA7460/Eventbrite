@@ -10,8 +10,10 @@ import 'package:event_app/modules/app_features/crowd_games/models/crowdgame.dart
 import 'package:event_app/modules/app_features/crowd_games/models/gamemanager.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gameroom.dart';
 import 'package:event_app/modules/app_features/crowd_games/models/gamestatus.dart';
+import 'package:event_app/modules/app_features/crowd_games/screens/scoreboard_screen.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
+import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -50,7 +52,6 @@ Future<List> getEventsListFromDatabase(String mail) async {
   var url = Uri.parse(eventControlorUrl);
   var response = await http
       .post(url, body: {'action': 'listEventsForUserMail', 'mail': mail});
-  print(response.body);
   final data = json.decode(response.body);
   return data;
 }
@@ -315,7 +316,6 @@ Future<List> updateRoomStatusInDatabase(String roomid, String status) async {
       "UPDATE gameroom SET roomStatus = '$status' WHERE LOWER(CONCAT('0x',HEX(gameroomid)))='$roomid';";
   var response = await http
       .post(url, body: {'action': 'updateRoomStatus', 'request': request});
-  print(response.body);
   final data = json.decode(response.body);
   return data;
 }
@@ -369,7 +369,6 @@ Future<List> removeUserFromPlayerManagerInDatabase(String userMail) async {
       "DELETE FROM playermanager WHERE LOWER(CONCAT('0x',HEX(userid))) = (SELECT LOWER(CONCAT('0x',HEX(u.userid))) FROM users u WHERE u.mail='$userMail');";
   var response = await http.post(url,
       body: {'action': 'deletePlayerFromPlayerManager', 'request': request});
-  print(response.body);
   final data = json.decode(response.body);
   return data;
 }
@@ -381,15 +380,27 @@ Future<List> removeGamesCreatedByUserInDatabase(String userMail) async {
       "DELETE FROM gameroom WHERE LOWER(CONCAT('0x',HEX(userid))) = (SELECT LOWER(CONCAT('0x',HEX(u.userid))) FROM users u WHERE u.mail='$userMail');";
   var response = await http.post(url,
       body: {'action': 'deletePlayerFromPlayerManager', 'request': request});
-  print(response.body);
   final data = json.decode(response.body);
   return data;
 }
 
 // CAR POOL REQUESTS
-Future<List> getCarPoolListFromDatabase() async {
+Future<List> getCarPoolUserFromDatabase() async {
+  var user = await getUser();
+  return getCarPoolUserByEmailFromDatabase(user);
+}
+
+Future<List> getCarPoolUserByEmailFromDatabase(String email) async {
   var url = Uri.parse(carpoolControlorUrl);
-  var response = await http.post(url, body: {'action': 'listCarPool'});
+  var response = await http.post(url, body: {'action': 'getUserByMail', 'email': email});
+  final data = json.decode(response.body);
+
+  return data;
+}
+
+Future<List> getCarPoolForEventFromDatabase(String eventid) async {
+  var url = Uri.parse(carpoolControlorUrl);
+  var response = await http.post(url, body: {'action': 'getAvailableCarPoolByEventId', 'eventid': eventid});
   final data = json.decode(response.body);
   return data;
 }

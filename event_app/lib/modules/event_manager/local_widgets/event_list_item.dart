@@ -22,11 +22,6 @@ class EventListItem extends StatelessWidget {
         child: InkWell(
             splashColor: Colors.red.withAlpha(30),
             onTap: () {
-              print("L'event " +
-                  events[index].name +
-                  " à été cliquer. Id:" +
-                  events[index].eventid
-              );
               //Provider a maintenant l'evenement en cours
               currentEvent.makeCurrentEvent(events[index]);
               attendees.loadAttendees(events[index].eventid);
