@@ -59,29 +59,6 @@ Future<List> getEventsListFromDatabase(String mail) async {
 //
 // MESSENGER REQUESTS
 //
-Future<List> getConversations(String userMail, String eventId) async {
-  List<Map<String,dynamic>> finalData = [];
-  var url = Uri.parse(messengerControlorUrl);
-  var response = await http.post(url, body: {
-    'action': 'listConversations',
-    'mail': userMail,
-    'eventId': eventId});
-  final data = json.decode(response.body);
-  if (data[0] == 'OK'){
-    for (var i = 1; i <= data.length -1; i++) {
-      var convo = {
-        "convoId": data[i]['conversation']['convoId'],
-        "title": data[i]['conversation']['title'],
-        "members": data[i]['members'],
-        "type": data[i]['conversation']['type'],
-        "updatedAt": data[i]['conversation']['updatedAt'],
-      };
-      finalData.add(convo);
-    }
-  }
-  return finalData;
-}
-
 Future<List<Conversation>> getConversations2(String userMail, String eventId) async {
   List<Conversation> conversations = [];
   var url = Uri.parse(messengerControlorUrl);
@@ -120,30 +97,6 @@ Future<List<Message>> getMessagesForConversation(String convoId) async {
     }
   }
   return messages;
-}
-
-Future<List> sendMessageToConversation(Message message, String convoId) async {
-  var url = Uri.parse(messengerControlorUrl);
-  var response = await http.post(url, body: {
-    'action': 'sendMessage',
-    'convoId': convoId,
-    'message': message.toJson()
-  });
-  final data = json.decode(response.body);
-  return data;
-}
-      
-Future<List> sendNewMessage(Message message, Conversation conversation, String eventId) async {
-  var url = Uri.parse(messengerControlorUrl);
-  var body = jsonEncode({
-    'action': 'sendNewMessage',
-    'eventIt': eventId,
-    'conversation': conversation,
-    'message': message
-  });
-  var response = await http.post(url, body: body);
-  final data = json.decode(response.body);
-  return data;
 }
     
 //

@@ -1,11 +1,13 @@
 import 'dart:developer';
 
+import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/avatar_title.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/chat_input.dart';
 import 'package:event_app/modules/app_features/discussion/local_widgets/chat_window.dart';
 import 'package:event_app/modules/app_features/discussion/models/conversation.dart';
+import 'package:event_app/modules/app_features/discussion/models/conversation_type.dart';
 import 'package:event_app/modules/app_features/discussion/models/message.dart';
 import 'package:event_app/modules/app_features/discussion/models/message_list.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +88,17 @@ class _ChatScreenState extends State<ChatScreen> {
     final LoggedUser loggedUser = Provider.of<LoggedUser>(context);
     return Scaffold(
       appBar: AppBar(
-        title: AvatarTitle(title: widget.conversation.title!, avatarLetter: widget.conversation.title!.substring(0, 1)), //should get conversation from parent
+        backgroundColor: primary_background,
+        title: AvatarTitle(
+          title: widget.conversation.type == ConversationType.public?
+            widget.conversation.title!:
+            widget.conversation.members.firstWhere((member) => member.userid != loggedUser.user!.userid).prenom,
+          avatarLetter: widget.conversation.type == ConversationType.public?
+            widget.conversation.title!.substring(0, 1):
+            widget.conversation.members.firstWhere((member) => member.userid != loggedUser.user!.userid).prenom.substring(0, 1)
+          
+          // widget.conversation.title!.substring(0, 1)), //should get conversation from parent
+        ),
       ),
       body: SafeArea(
         child: Column(

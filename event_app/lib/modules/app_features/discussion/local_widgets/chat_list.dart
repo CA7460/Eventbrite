@@ -1,3 +1,4 @@
+import 'package:event_app/config/theme/colors.dart';
 import 'package:event_app/models/current_event.dart';
 import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/models/user.dart';
@@ -50,21 +51,24 @@ class ChatList extends StatelessWidget {
     final List<Conversation> conversations = currentConvos.convoList;
     var listedConversations = conversations.where((conversation) => conversation.type == conversationType).toList();
     return SafeArea(
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          var otherMembers = _stringMembers(listedConversations[index].members, loggedUser.user!.userid);
-          final now = DateTime.now();
-          final difference = now.difference(listedConversations[index].updatedAt);
-          return GestureDetector(
-            onTap: () => onTap(listedConversations[index]),
-            child: ConversationItem(
-              title: listedConversations[index].title == null? otherMembers: listedConversations[index].title!,
-              // lastMessage: listedConversations[index].lastMessage == null? null: listedConversations[index].lastMessage!.content, 
-              updatedAt: timeago.format(now.subtract(difference), locale: 'en_short')
-            ),
-          );
-        },
-        itemCount: listedConversations.length
+      child: Container(
+        color: primary_background,
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            var otherMembers = _stringMembers(listedConversations[index].members, loggedUser.user!.userid);
+            final now = DateTime.now();
+            final difference = now.difference(listedConversations[index].updatedAt);
+            return GestureDetector(
+              onTap: () => onTap(listedConversations[index]),
+              child: ConversationItem(
+                title: listedConversations[index].title == null? otherMembers: listedConversations[index].title!,
+                // lastMessage: listedConversations[index].lastMessage == null? null: listedConversations[index].lastMessage!.content, 
+                updatedAt: timeago.format(now.subtract(difference), locale: 'en_short')
+              ),
+            );
+          },
+          itemCount: listedConversations.length
+        ),
       )
     );
   }

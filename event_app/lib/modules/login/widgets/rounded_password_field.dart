@@ -31,6 +31,7 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
+      backgroundColor: Colors.black,
       child: TextFormField(
         style: TextStyle(color: primary_green),
         obscureText: _hidePassword,

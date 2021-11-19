@@ -1,3 +1,4 @@
+import 'package:event_app/config/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 class AvatarTitle extends StatelessWidget {
@@ -15,6 +16,7 @@ class AvatarTitle extends StatelessWidget {
     return Row(
       children:[
         CircleAvatar(
+          backgroundColor: primary_blue,
           radius: 16,
           child: Text(
             avatarLetter.substring(0,1)
