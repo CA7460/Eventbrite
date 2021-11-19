@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:event_app/config/routes/routes.dart';
 import 'package:event_app/models/attendee_list.dart';
 import 'package:event_app/models/current_event.dart';
@@ -14,7 +16,16 @@ import 'package:provider/provider.dart';
 import 'config/routes/routes_handler.dart' as router;
 import 'package:google_fonts/google_fonts.dart';
 
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
+
 void main() async {
+  HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.black.withOpacity(0),
