@@ -7,27 +7,27 @@ class RoundedInputField extends StatelessWidget {
     Key? key,
     required this.controller,
     this.hintText,
-    this.icon = Icons.person,
+    //this.icon = Icons.person,
   }) : super(key: key);
 
   final String? hintText;
   final TextEditingController controller;
-  final IconData icon;
+  // final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       child: TextFormField(
-        style: TextStyle(color: primary_pink),
+        style: TextStyle(color: black),
         decoration: InputDecoration(
           icon: Icon(
-            icon,
-            color: eventbrite_red,
+            Icons.mail,
+            color: Colors.black26,
           ),
-          border: UnderlineInputBorder(),
+          border: InputBorder.none,
           hintText: hintText, 
-          hintStyle: TextStyle(color: primary_pink)
+          hintStyle: TextStyle(color: Colors.black26)
           ),
         controller: controller,
         validator: (value) {

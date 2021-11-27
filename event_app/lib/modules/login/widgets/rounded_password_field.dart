@@ -7,12 +7,12 @@ class RoundedPasswordField extends StatefulWidget {
     Key? key,
     required this.controller,
     this.hintText,
-    this.icon = Icons.lock,
+    //this.icon = Icons.lock,
   }) : super(key: key);
 
   final String? hintText;
   final TextEditingController controller;
-  final IconData icon;
+  //final IconData icon;
 
   @override
   State<RoundedPasswordField> createState() => _RoundedPasswordFieldState();
@@ -31,16 +31,16 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       child: TextFormField(
-        style: TextStyle(color: primary_green),
+        style: TextStyle(color: black),
         obscureText: _hidePassword,
         enableSuggestions: false,
         autocorrect: false,
         decoration: InputDecoration(
           icon: Icon(
-            widget.icon,
-            color: eventbrite_red,
+            Icons.lock,
+            color: Colors.black26,
           ),
           suffixIcon: IconButton(
             icon: Icon(
@@ -51,9 +51,9 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
             ),
             onPressed: _toggleVisibility,
           ),
-          border: UnderlineInputBorder(),
+          border: InputBorder.none,
           hintText: widget.hintText,
-          hintStyle: TextStyle(color: primary_green)
+          hintStyle: TextStyle(color: Colors.black26)
           ),
         controller: widget.controller,
         validator: (value) {

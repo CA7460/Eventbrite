@@ -4,6 +4,7 @@ import 'package:event_app/models/logged_user.dart';
 import 'package:event_app/models/user.dart';
 import 'package:event_app/modules/login/widgets/rounded_input_field.dart';
 import 'package:event_app/modules/login/widgets/rounded_password_field.dart';
+import 'package:event_app/utils/utils.dart';
 import 'package:event_app/widgets/primary_button_widget.dart';
 import 'package:event_app/utils/services/local_storage_service.dart';
 import 'package:event_app/utils/services/rest_api_service.dart';
@@ -42,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
         await setUser(loggedUser.user!.mail);
         isLogged = true;
       }
-
     }
   }
 
@@ -56,43 +56,64 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // emailController.text = 'ykhonyak@email.com';
-    // passwordController.text = 'ykhonyak';
+    final screenSize = MediaQuery.of(context).size;
+    final topLayoutHeight = screenSize.height * 0.7;
+    final bottomLayoutHeight = screenSize.height * 0.3;
     final LoggedUser loggedUser = Provider.of<LoggedUser>(context);
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: primary_background,
         body: Form(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RoundedInputField(
-                  controller: emailController,
-                  hintText: 'Your Email',
+          child: Column(
+            children: [
+              Container(
+                height: topLayoutHeight,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Enter your",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 18)),
+                        Image.asset(
+                          'assets/images/eventbritelogo2.png',
+                          height: 34,
+                        ),
+                      ],
+                    ),
+                    Text("account informations",
+                        style: TextStyle(color: Colors.white, fontSize: 18)),
+                        SizedBox(height: 40,),
+                    RoundedInputField(
+                      controller: emailController,
+                      hintText: 'Email',
+                    ),
+                    SizedBox(height: 20,),
+                    RoundedPasswordField(
+                      controller: passwordController,
+                      hintText: 'Password',
+                    ),
+                  ],
                 ),
-                RoundedPasswordField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                ),
-                SizedBox(height: 30),
-                PrimaryButton('Login', primary_blue, onPressed: () async {
+              ),
+                    PrimaryButton('Confirm', primary_blue, onPressed: () async {
                   if (_validateForm()) {
                     FocusScope.of(context).requestFocus(FocusNode());
-                    await _checkLogin(
-                        emailController.text, passwordController.text, loggedUser);
+                    await _checkLogin(emailController.text,
+                        passwordController.text, loggedUser);
                     if (isLogged) {
-                      Navigator.pushNamed(context, eventManagerScreenRoute);
-                      // Code test pour Sam - crowd games
-                      // Navigator.pushNamed(context, appFeaturesMainScreenRoute);
+                      Utils.mainAppNav.currentState!
+                          .pushNamed(eventManagerScreenRoute);
                     }
                   }
                 }),
-              ],
-            ),
+            ],
           ),
           key: _loginFormKey,
-        ),
+        ),  
       ),
     );
   }
